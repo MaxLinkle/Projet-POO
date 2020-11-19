@@ -29,8 +29,10 @@ CREATE TABLE Personnel (
   nom VARCHAR(20) NOT NULL,
   prenom VARCHAR(20) NOT NULL,
   date_embauche DATE NOT NULL,
+  ID_superieur INT,
 
-  CONSTRAINT Personnel_PK PRIMARY KEY (ID_personnel)
+  CONSTRAINT Personnel_PK PRIMARY KEY (ID_personnel),
+  CONSTRAINT FK_ID_superieur FOREIGN KEY (ID_superieur) REFERENCES Personnel (ID_personnel)
 ) ENGINE=InnoDB;
 
 
