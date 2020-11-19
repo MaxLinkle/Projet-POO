@@ -4,27 +4,27 @@
 
 ## Résumé
 
-Durant cette partie du projet, il nous a était demandé de réalisé la structure de la base de donnée de notre client, ainsi que de realisé plusieur diagrammes UML demontrant les différente fonctionnalité du logiciel que le client désire.  
+Durant cette partie du projet, il nous a était demander de réalisé la structure de la base de donnée de notre client, ainsi que de realiser plusieurs diagrammes UML démontrant les différentes fonctionnalitées du logiciel que le client désire.  
 
-Vous retrouverai les différents schémas et diagrammes dans les dossiers du même nom si dessus.
+Vous retrouverez les différents schémas et diagrammes dans les dossiers du même nom si dessus.
 
 ## UML
 
 ### Diagramme d'activité
 
-Ce diagramme a pour objectif de nous montrer les différents flux d'information celon les evenements que rencontre le logiciel.
+Ce diagramme a pour objectif de nous montrer les différents flux d'information selon les evenements que rencontre le logiciel.
 
 ![](https://github.com/MaxLinkle/Projet-POO/blob/main/Livrable_1/UML/Diagramme%20d'Activit%C3%A9.png)
 
 ### Diagramme de cas d'utilisation
 
-Ce diagramme a pour objectif de nous montrer l'ensemble des fonctions/méthodes prevue pour la realisation du logiciel.  
+Ce diagramme a pour objectif de nous montrer l'ensemble des fonctions/méthodes prevues pour la realisation du logiciel.  
 
 ![](https://github.com/MaxLinkle/Projet-POO/blob/main/Livrable_1/UML/Diagramme%20de%20Cas%20d'Utilisation.png)
 
 ### Diagramme de classe
 
-Ce diagramme a pour objectif de nous montrer l'ensemble des classes prevue, les méthodes et attributs les composants et bien sûr leurs relations.  
+Ce diagramme a pour objectif de nous montrer l'ensemble des classes prevues, les méthodes et attributs les composants et bien sûr leurs relations.  
 
 ![](https://github.com/MaxLinkle/Projet-POO/blob/main/Livrable_1/UML/Diagramme%20de%20Classe.jpg)
 
@@ -54,7 +54,7 @@ Dans notre cas nous avons decidé de vous montrez les méthodes apliqué au pers
 
 ### Dictionnaire de donnée
 
-Ce dictinnaire de donnée a pour objectif de nous recenser la totaliter des données qui pourront être stoké dans notre base, en nous indiquant également leur appartenace à une table et leurs type.  
+Ce dictinnaire de donnée a pour objectif de nous recenser la totalité des données qui pourront être stoké dans notre base, en nous indiquant également leur appartenace à une table et leurs type.  
 
 ![](https://github.com/MaxLinkle/Projet-POO/blob/main/Livrable_1/Base%20de%20donn%C3%A9e/Dictionnaire%20de%20donn%C3%A9es.png)
 
@@ -73,6 +73,6 @@ Ce MPD a pour objectif de reafirmé toutes les relations entre nos tables grâce
 
 ### Code SQL
 
-Enfin, nous sommes à présent capable de sortir le code qui nous permettera de contruire les différentes table que nous avons définit, en respectant bien évidament les clefs primaires et étrangères pour nous relations.  
+Enfin, nous sommes à présent capable de sortir le code qui nous permettera de contruire les différentes tables que nous avons définit, en respectant bien évidament les clefs primaires et étrangères pour nos relations.  
 
 Vous retrouverez ce code dans le fichier si dessus : [***Create_Base.sql***](https://github.com/MaxLinkle/Projet-POO/blob/main/Livrable_1/Create_Base.sql)
