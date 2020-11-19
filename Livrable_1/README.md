@@ -56,7 +56,7 @@ Dans notre cas nous avons decidé de vous montrez les méthodes apliqué au pers
 
 Ce dictinnaire de donnée a pour objectif de nous recenser la totaliter des données qui pourront être stoké dans notre base, en nous indiquant également leur appartenace à une table et leurs type.  
 
-![](https://github.com/MaxLinkle/Projet-POO/blob/main/Livrable_1/Base%20de%20donn%C3%A9e/Dictionnaire%20de%20donn%C3%A9e.png)
+![](https://github.com/MaxLinkle/Projet-POO/blob/main/Livrable_1/Base%20de%20donn%C3%A9e/Dictionnaire%20de%20donn%C3%A9es.png)
 
 ### MCD
 
