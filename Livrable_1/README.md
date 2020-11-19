@@ -60,7 +60,7 @@ Ce dictinnaire de donnée a pour objectif de nous recenser la totalité des donn
 
 ### MCD
 
-Ce MCD a pour objectif de nous montré les différentes relations que nos tables possèderont entre elle.  
+Ce MCD a pour objectif de nous montré les différentes relations que nos tables possèderont entre elles.  
 
 ![](https://github.com/MaxLinkle/Projet-POO/blob/main/Livrable_1/Base%20de%20donn%C3%A9e/MCD.png)
 
