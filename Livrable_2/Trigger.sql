@@ -15,7 +15,7 @@ END |
 CREATE TRIGGER TCommande BEFORE DELETE
 ON Commande FOR EACH ROW
 BEGIN
-  DELETE FROM Fournir WHERE (ID_commande = old.commande);
+  DELETE FROM Fournir WHERE (ID_commande = OLD.commande);
 END |
 
 CREATE TRIGGER update_Catalogue AFTER UPDATE
