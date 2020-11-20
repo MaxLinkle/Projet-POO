@@ -5,9 +5,9 @@ ON Personnel FOR EACH ROW
 BEGIN
   DELETE FROM Adresse_personnel WHERE (ID_personnel = OLD.ID_personnel);
 
-    UPDATE Personnel
-    SET ID_superieur = NULL
-    WHERE ID_superieur = OLD.ID_personnel;
+  UPDATE Personnel
+  SET ID_superieur = NULL
+  WHERE ID_superieur = OLD.ID_personnel;
 END |
 
 
