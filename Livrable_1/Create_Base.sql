@@ -109,20 +109,20 @@ CREATE TABLE Fournir (
 ) ENGINE=InnoDB;
 
 
-DROP TABLE IF EXISTS Adresses_personnel ;
-CREATE TABLE Adresses_personnel (
-  adresse VARCHAR(50),
+DROP TABLE IF EXISTS Adresse_personnel ;
+CREATE TABLE Adresse_personnel (
+  adresse_personnel VARCHAR(50),
   ID_personnel INT NOT NULL,
   ID_ville INT NOT NULL,
 
-  CONSTRAINT FK_ID_personnel FOREIGN KEY (ID_personnel) REFERENCES Personnel (ID_personnel),
-  CONSTRAINT FK_ID_ville FOREIGN KEY (ID_ville) REFERENCES Ville (ID_ville)
+  CONSTRAINT FK_ID_adresse_personnel FOREIGN KEY (ID_personnel) REFERENCES Personnel (ID_personnel),
+  CONSTRAINT FK_ID_ville_personnel FOREIGN KEY (ID_ville) REFERENCES Ville (ID_ville)
 ) ENGINE=InnoDB;
 
 
-DROP TABLE IF EXISTS Adresses_clients ;
-CREATE TABLE Adresses_clients (
-  adresse_adresses_clients VARCHAR(50),
+DROP TABLE IF EXISTS Adresse_client ;
+CREATE TABLE Adresse_client (
+  adresse_client VARCHAR(50),
   ID_client INT NOT NULL,
   ID_ville INT NOT NULL,
   ID_type_adresse INT NOT NULL,
