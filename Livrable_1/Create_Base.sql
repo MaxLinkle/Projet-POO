@@ -84,6 +84,7 @@ CREATE TABLE Catalogue (
   taux_tva INT NOT NULL,
   stock INT NOT NULL,
   seuil_reapprovisionnement INT NOT NULL,
+  actif BOOLEAN,
 
   CONSTRAINT Catalogue_PK PRIMARY KEY (ID_article)
 ) ENGINE=InnoDB;
