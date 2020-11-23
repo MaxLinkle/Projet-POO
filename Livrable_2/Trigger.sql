@@ -39,3 +39,10 @@ DELIMITER ;
 --   FROM Catalogue
 --   WHERE actif = true;
 -- END |
+-- 
+-- DROP TRIGGER IF EXISTS insert_Personnel |
+-- CREATE TRIGGER insert_Personnel BEFORE INSERT
+-- ON Personnel FOR EACH ROW
+-- BEGIN
+--
+-- END |
