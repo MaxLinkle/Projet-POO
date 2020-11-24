@@ -1,5 +1,19 @@
 #pragma once
+#include "mysql.h"
+#include <vcclr.h>
 //#include "Individue.h"
+char* ToStringQuery(System::String^ query) {
+	pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+	size_t convertedChars = 0;
+	size_t  sizeInBytes = ((query->Length + 1) * 2);
+	errno_t err = 0;
+	char* ch = (char*)malloc(sizeInBytes);
+	err = wcstombs_s(&convertedChars,
+		ch, sizeInBytes,
+		wch, sizeInBytes);
+	return ch;
+}
+
 namespace NS_SuperC {
 
 	/// <summary>
@@ -35,33 +49,15 @@ namespace NS_SuperC {
 		/// <summary>
 		/// Verwendete Ressourcen bereinigen.
 		/// </summary>
-		
-		
-		bool Fermeture;
-		//Individu Joe;
+	//============================================================================
+		MYSQL* database;
+		MYSQL_RES* result;
+		MYSQL_ROW row;
 		Form^ Precedent;
+		bool Fermeture;
+	//============================================================================
 	private:
-/*		System::ComponentModel::Container^ components;
-#pragma region Windows SuperC Designer generated code
-		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung.
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
-		/// </summary>
-		void InitializeComponent(void)
-		{
-			this->SuspendLayout();
-			// 
-			// SuperC
-			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
-			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(300, 300);
-			this->Name = L"SuperC";
-			this->Text = L"Titre";
-			this->ResumeLayout(false);
 
-		}
-#pragma endregion*/
 
 	private: System::Void InitializeComponent() {
 		this->SuspendLayout();

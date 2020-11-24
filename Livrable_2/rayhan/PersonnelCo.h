@@ -1,11 +1,13 @@
 #pragma once
 #include "pch.h"
 #include "SC.h"
+
 namespace NS_Personnel {
 
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
+	using namespace System::Collections::Generic;
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
@@ -13,17 +15,19 @@ namespace NS_Personnel {
 	/// <summary>
 	/// Zusammenfassung für Form1
 	/// </summary>
-	public ref class Personnel : System::Windows::Forms::Form , SuperC
+	public ref class Personnel : System::Windows::Forms::Form// , SuperC
 	{
 	public:
 		Personnel(Form^ Prece)//:SuperC(Prece)
 		{
 			InitializeComponent();	
+			Precedent = Prece;
 		}
 
 		Personnel()//:SuperC()
 		{
 			InitializeComponent();
+			Precedent = nullptr;
 		}
 
 	protected:
@@ -43,8 +47,14 @@ namespace NS_Personnel {
 
 	private: System::Windows::Forms::TextBox^ Prenom;
 
-
-
+		   //EspacePerso^ Suivant;
+//============================================================================
+		   MYSQL* database;
+		   MYSQL_RES* result;
+		   MYSQL_ROW row;
+		   Form^ Precedent;
+		   bool Fermeture;
+//============================================================================
 	private: System::Windows::Forms::Label^ LabNom;
 	private: System::Windows::Forms::Label^ LabPrenom;
 	private: System::Windows::Forms::Label^ LabDate;
@@ -52,6 +62,8 @@ namespace NS_Personnel {
 	private: System::Windows::Forms::Button^ Connexion;
 	private: System::Windows::Forms::DateTimePicker^ PickDate;
 	private: System::Windows::Forms::Button^ But_Precedent;
+	private: System::Windows::Forms::Button^ Actualiser;
+
 	private: System::ComponentModel::IContainer^ components;
 		   /// <summary>
 		/// Erforderliche Designervariable.
@@ -65,6 +77,13 @@ namespace NS_Personnel {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			database = mysql_init(NULL);
+			if(database == NULL) {
+				errorProvider1->SetError(Connexion , "Impossible d'accées a la base de donnée");
+			}
+
+			
+			Fermeture = true;
 			this->components = (gcnew System::ComponentModel::Container());
 			this->Nom = (gcnew System::Windows::Forms::TextBox());
 			this->Prenom = (gcnew System::Windows::Forms::TextBox());
@@ -75,6 +94,7 @@ namespace NS_Personnel {
 			this->Connexion = (gcnew System::Windows::Forms::Button());
 			this->PickDate = (gcnew System::Windows::Forms::DateTimePicker());
 			this->But_Precedent = (gcnew System::Windows::Forms::Button());
+			this->Actualiser = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorProvider1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -132,6 +152,7 @@ namespace NS_Personnel {
 			this->Connexion->TabIndex = 6;
 			this->Connexion->Text = L"Valider";
 			this->Connexion->UseVisualStyleBackColor = true;
+			this->Connexion->Click += gcnew System::EventHandler(this, &Personnel::Connexion_Click);
 			// 
 			// PickDate
 			// 
@@ -150,12 +171,24 @@ namespace NS_Personnel {
 			this->But_Precedent->TabIndex = 8;
 			this->But_Precedent->Text = L"<";
 			this->But_Precedent->UseVisualStyleBackColor = true;
+			this->But_Precedent->Click += gcnew System::EventHandler(this, &Personnel::But_Precedent_Click);
+			// 
+			// Actualiser
+			// 
+			this->Actualiser->Location = System::Drawing::Point(45, 10);
+			this->Actualiser->Name = L"Actualiser";
+			this->Actualiser->Size = System::Drawing::Size(25, 25);
+			this->Actualiser->TabIndex = 9;
+			this->Actualiser->Text = L"!";
+			this->Actualiser->UseVisualStyleBackColor = true;
+			this->Actualiser->Click += gcnew System::EventHandler(this, &Personnel::Actualiser_Click);
 			// 
 			// Personnel
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(606, 403);
+			this->Controls->Add(this->Actualiser);
 			this->Controls->Add(this->But_Precedent);
 			this->Controls->Add(this->PickDate);
 			this->Controls->Add(this->Connexion);
@@ -175,12 +208,92 @@ namespace NS_Personnel {
 		}
 #pragma endregion
 
-	private: System::Void Personnel_Load(System::Object^ sender, System::EventArgs^ e) {
+private: System::Void Personnel_Load(System::Object^ sender, System::EventArgs^ e) {
+
+	if (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
+		errorProvider1->SetError((Control^)sender, "Connection impossible a la base");
 	}
+	else {
+
+		errorProvider1->Clear();
+
+	}
+
+}
+
+
+
 private: System::Void Personnel_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 
-	//Precedent->Close();
+	if (Fermeture) {
+
+		Precedent->Close();
+
+	}
+	else {
+
+		Precedent->Show();
+
+	}
+
 
 }
+
+
+private: System::Void Connexion_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	String^ query = "SELECT ID_personnel FROM Personnel WHERE (nom ='";
+			query += Nom->Text;
+			query += "')*(prenom ='";
+			query += Prenom->Text;
+			query += "')*(date_embauche ='";
+			query += PickDate->Text;
+			query += "');";
+			int state = mysql_query(database, ToStringQuery(query));
+			if (!state) {
+				result = mysql_store_result(database);
+				if (result->row_count == 1) {
+					/*row = mysql_fetch_row(result);
+					this->Hide();
+					this->Suivant = gcnew EspacePerso(this, row[0] );
+					this->Suivant->Show;*/
+					errorProvider1->SetError((Control^)sender, "OUIIIIIIIIIII");
+				}
+				else {
+					errorProvider1->SetError((Control^)sender,"Individus inconnue");
+				}
+				
+				
+				
+
+			}
+}
+
+
+
+
+private: System::Void But_Precedent_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	Fermeture = !Fermeture;
+	this->Close();
+
+}
+
+
+
+private: System::Void Actualiser_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	if (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
+		errorProvider1->SetError((Control^)sender, "Connection impossible a la base");
+	}
+	else {
+
+		errorProvider1->Clear();
+
+	}
+
+}
+
 };
 }
+
