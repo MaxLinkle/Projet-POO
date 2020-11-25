@@ -55,5 +55,5 @@ VALUES (NULL, 'Choipeau magique', '795842', '15,90', '20', '120', '100'),
 (NULL, 'Trivial Pursuit Harry Potter', '968751', '30', '20', '100', '20');
 
 INSERT INTO Type_adresse (ID_type_adresse, type_adresse)
-VALUES (NULL, 'adresse de livraison'),
-(NULL, 'adresse de facturation');
+VALUES (NULL, 'livraison'),
+(NULL, 'facturation');
