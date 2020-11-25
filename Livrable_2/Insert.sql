@@ -57,3 +57,9 @@ VALUES (NULL, 'Choipeau magique', '795842', '15,90', '20', '120', '100'),
 INSERT INTO Type_adresse (ID_type_adresse, type_adresse)
 VALUES (NULL, 'livraison'),
 (NULL, 'facturation');
+
+INSERT INTO Pays(ID_pays, pays)
+VALUES (NULL, 'France');
+
+INSERT INTO Ville (ID_ville, ville, ID_pays)
+VALUES (NULL, 'Nice', 1);
