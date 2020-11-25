@@ -1,5 +1,7 @@
 #pragma once
-#include "mysql.h"
+#include "pch.h"
+#include "UserControle.h"
+/*#include "mysql.h"
 #include <vcclr.h>
 //#include "Individue.h"
 char* ToStringQuery(System::String^ query) {
@@ -12,7 +14,7 @@ char* ToStringQuery(System::String^ query) {
 		ch, sizeInBytes,
 		wch, sizeInBytes);
 	return ch;
-}
+}*/
 
 namespace NS_SuperC {
 
