@@ -93,7 +93,7 @@ CREATE TABLE Catalogue (
 DROP TABLE IF EXISTS Type_adresse ;
 CREATE TABLE Type_adresse (
   ID_type_adresse INT AUTO_INCREMENT NOT NULL,
-  type_adresse VARCHAR(20) NOT NULL,
+  type_adresse VARCHAR(25) NOT NULL,
 
   CONSTRAINT Type_adresse_PK PRIMARY KEY (ID_type_adresse)
 ) ENGINE=InnoDB;

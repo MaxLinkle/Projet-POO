@@ -54,7 +54,7 @@ namespace NS_Client {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(300, 300);
+			this->ClientSize = System::Drawing::Size(1028, 510);
 			this->Name = L"Client";
 			this->Text = L"Client";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Client::Client_FormClosing);

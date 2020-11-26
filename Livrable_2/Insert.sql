@@ -53,3 +53,13 @@ VALUES (NULL, 'Choipeau magique', '795842', '15,90', '20', '120', '100'),
 (NULL, 'Figurine Hermione Granger', '762137', '10', '20', '528', '15'),
 (NULL, 'Figurine Ron Weasley', '449652', '10', '20', '590', '15'),
 (NULL, 'Trivial Pursuit Harry Potter', '968751', '30', '20', '100', '20');
+
+INSERT INTO Type_adresse (ID_type_adresse, type_adresse)
+VALUES (NULL, 'livraison'),
+(NULL, 'facturation');
+
+INSERT INTO Pays(ID_pays, pays)
+VALUES (NULL, 'France');
+
+INSERT INTO Ville (ID_ville, ville, ID_pays)
+VALUES (NULL, 'Nice', 1);
