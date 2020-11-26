@@ -306,14 +306,24 @@ namespace NS_Catalogue {
 		}
 #pragma endregion
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
+		nb_txt->Text = "0";
 		}
 
 	private: System::Void acheter_Click(System::Object^ sender, System::EventArgs^ e) {
-		this->Hide();
-		this->formu = gcnew NS_Formulaire::Formulaire_achat();
-		this->formu->Show();
-
-		
+		if (Convert::ToInt32(nb_txt->Text) == 0)
+		{
+			MessageBox::Show("Vous n'avez ajouter au panier ", "Info", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+		else if (Convert::ToInt32(nb_txt->Text) <= 0)
+		{
+			MessageBox::Show("Vous ne pouvez pas demander des quantitées négatives ", "Info", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+		else
+		{
+			this->Hide();
+			this->formu = gcnew NS_Formulaire::Formulaire_achat();
+			this->formu->Show();
+		}
 	}
 private: System::Void dataGridView1_CellValidated(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
 	double total = 0;
