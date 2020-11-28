@@ -1,7 +1,9 @@
 #pragma once
 #include <mysql.h>
 #include <iostream>
+#include <msclr\marshal_cppstd.h>
 #include"Formulaire_achat.h"
+#include "Facture.h"
 
 namespace NS_Catalogue {
 
@@ -22,6 +24,16 @@ namespace NS_Catalogue {
 		{
 			InitializeComponent();
 			ConnexionBase();
+			/*DataTable^ dt = gcnew DataTable();
+			for (int n = 0; n < dataGridView1->RowCount; n++)
+			{
+				bool selected = Convert::ToBoolean(dataGridView1->Rows[n]->Cells["Check"]->Value);
+				if (selected)
+				{
+					dt = ;
+				}
+				 
+			}*/
 			//
 			//TODO: ajoutez ici le code du constructeur
 			//
@@ -75,7 +87,7 @@ namespace NS_Catalogue {
 					dataGridView1->Rows[n]->Cells[1]->Value = gcnew String(row[0]);
 					dataGridView1->Rows[n]->Cells[2]->Value = ttc;
 					dataGridView1->Rows[n]->Cells[4]->Value = gcnew String(row[2]);
-					dataGridView1->Rows[n]->Cells[3]->Value = 0;
+					dataGridView1->Rows[n]->Cells[3]->Value = "0";
 					
 				}
 
@@ -121,6 +133,9 @@ namespace NS_Catalogue {
 
 
 	private: NS_Formulaire::Formulaire_achat^ formu ;
+private: System::Windows::Forms::TextBox^ test;
+
+	private: NS_Facture::Facture^ facture;
 
 	protected:
 
@@ -151,6 +166,7 @@ namespace NS_Catalogue {
 			this->nb_txt = (gcnew System::Windows::Forms::TextBox());
 			this->total_txt = (gcnew System::Windows::Forms::TextBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->test = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -194,6 +210,7 @@ namespace NS_Catalogue {
 			this->dataGridView1->Size = System::Drawing::Size(593, 397);
 			this->dataGridView1->TabIndex = 4;
 			this->dataGridView1->CellValidated += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MyForm::dataGridView1_CellValidated);
+			this->dataGridView1->RowValidated += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MyForm::dataGridView1_RowValidated);
 			// 
 			// Check
 			// 
@@ -281,11 +298,22 @@ namespace NS_Catalogue {
 			this->label3->TabIndex = 9;
 			this->label3->Text = L"€";
 			// 
+			// test
+			// 
+			this->test->Location = System::Drawing::Point(12, 440);
+			this->test->Multiline = true;
+			this->test->Name = L"test";
+			this->test->ReadOnly = true;
+			this->test->Size = System::Drawing::Size(323, 75);
+			this->test->TabIndex = 10;
+			this->test->Visible = false;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(736, 527);
+			this->Controls->Add(this->test);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->total_txt);
 			this->Controls->Add(this->nb_txt);
@@ -310,6 +338,20 @@ namespace NS_Catalogue {
 		}
 
 	private: System::Void acheter_Click(System::Object^ sender, System::EventArgs^ e) {
+		
+		//String^ achat;
+		//
+		////int achat = 5;
+		//for (int n = 0; n < dataGridView1->RowCount; n++)
+		//{
+		//	bool isSelected = Convert::ToBoolean(dataGridView1->Rows[n]->Cells["Check"]->Value);
+		//	if (isSelected == true)
+		//	{
+		//		achat = gcnew String(dataGridView1->Rows[n]->Cells[1]->Value->ToString() + "		" + dataGridView1->Rows[n]->Cells[2]->Value->ToString() + "		" + dataGridView1->Rows[n]->Cells[3]->Value->ToString() + "\n");
+		//	}
+		//	//this->facture->Show();
+		//}
+
 		if (Convert::ToInt32(nb_txt->Text) == 0)
 		{
 			MessageBox::Show("Vous n'avez ajouter au panier ", "Info", MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -321,8 +363,9 @@ namespace NS_Catalogue {
 		else
 		{
 			this->Hide();
-			this->formu = gcnew NS_Formulaire::Formulaire_achat();
+			this->formu = gcnew NS_Formulaire::Formulaire_achat(test->Text, nb_txt->Text, total_txt->Text);
 			this->formu->Show();
+			
 		}
 	}
 private: System::Void dataGridView1_CellValidated(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
@@ -344,12 +387,28 @@ private: System::Void dataGridView1_CellValidated(System::Object^ sender, System
 		if (isSelected == true)
 		{
 			total += (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Prix"]->Value)) * (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value));
-			totAr += Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value);
+			totAr += Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value);			
 		}
 	}
 	total_txt->Text = total.ToString();
 	nb_txt->Text = totAr.ToString();
+	
 }
+private: System::Void dataGridView1_RowValidated(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
+	String^ achat;
+	test->Text = "";
+	for (int n = 0; n < dataGridView1->RowCount; n++)
+	{
+		bool isSelected = Convert::ToBoolean(dataGridView1->Rows[n]->Cells["Check"]->Value);
+		if (isSelected == true)
+		{
+			achat = gcnew String(dataGridView1->Rows[n]->Cells[1]->Value->ToString() + "						" + dataGridView1->Rows[n]->Cells[2]->Value->ToString() + "				" + dataGridView1->Rows[n]->Cells[3]->Value->ToString()+ "\n\r");
+			test->Text += "\n" + achat;
+		}
 
+		
+	}
+	
+}
 };
 }
