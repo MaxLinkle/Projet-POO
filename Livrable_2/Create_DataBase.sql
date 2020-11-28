@@ -119,7 +119,7 @@ CREATE TABLE Adresse_personnel (
   ID_personnel INT NOT NULL,
   ID_ville INT NOT NULL,
 
-  CONSTRAINT Adresse_personnel_PK PRIMARY KEY (ID_adresse_presonnel),
+  CONSTRAINT Adresse_personnel_PK PRIMARY KEY (ID_adresse_personnel),
   CONSTRAINT FK_ID_personnel_a FOREIGN KEY (ID_personnel) REFERENCES Personnel (ID_personnel),
   CONSTRAINT FK_ID_ville_personnel FOREIGN KEY (ID_ville) REFERENCES Ville (ID_ville)
 ) ENGINE=InnoDB;
