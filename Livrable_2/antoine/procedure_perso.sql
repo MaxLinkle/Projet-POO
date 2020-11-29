@@ -83,15 +83,15 @@ BEGIN
     ROLLBACK;
   END;
 
-  SELECT ID_ville INTO ville_cli FROM Ville WHERE ville = i_ville;
-  SELECT ID_type_adresse INTO type_cli FROM Type_adresse WHERE type_adresse = i_type_adresse;
+  SELECT Ville.ID_ville INTO ville_cli FROM Ville WHERE Ville.ville = i_ville;
+  SELECT Type_adresse.ID_type_adresse INTO type_cli FROM Type_adresse WHERE Type_adresse.type_adresse = i_type;
 
   UPDATE Adresse_client
   SET
-    adresse_client = i_adresse,
-    ID_ville = ville_cli,
-    ID_type_adresse = type_cli
-  WHERE ID_adresse_client = i_id_adresse;
+    Adresse_client.adresse_client = i_adresse,
+    Adresse_client.ID_ville = ville_cli,
+    Adresse_client.ID_type_adresse = type_cli
+  WHERE Adresse_client.ID_adresse_client = i_id_adresse;
 END |
 
 
