@@ -1,3 +1,4 @@
+USE projet;
 DELIMITER |
 DROP TRIGGER IF EXISTS delete_Personnel |
 CREATE TRIGGER delete_Personnel BEFORE DELETE

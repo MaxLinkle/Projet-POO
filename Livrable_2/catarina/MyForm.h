@@ -24,16 +24,6 @@ namespace NS_Catalogue {
 		{
 			InitializeComponent();
 			ConnexionBase();
-			/*DataTable^ dt = gcnew DataTable();
-			for (int n = 0; n < dataGridView1->RowCount; n++)
-			{
-				bool selected = Convert::ToBoolean(dataGridView1->Rows[n]->Cells["Check"]->Value);
-				if (selected)
-				{
-					dt = ;
-				}
-				 
-			}*/
 			//
 			//TODO: ajoutez ici le code du constructeur
 			//
@@ -72,7 +62,7 @@ namespace NS_Catalogue {
 			}
 			
 			CheckBox^ Nom = gcnew CheckBox();
-			qstate = mysql_query(con, "SELECT nom, prix_ht, stock, taux_tva FROM Catalogue; ");
+			qstate = mysql_query(con, "SELECT nom, prix_ht, stock, taux_tva FROM Catalogue;");
 			
 			if (!qstate)
 			{
@@ -88,6 +78,7 @@ namespace NS_Catalogue {
 					dataGridView1->Rows[n]->Cells[2]->Value = ttc;
 					dataGridView1->Rows[n]->Cells[4]->Value = gcnew String(row[2]);
 					dataGridView1->Rows[n]->Cells[3]->Value = "0";
+					dataGridView1->Rows[n]->Cells[5]->Value = gcnew String(row[1]);
 					
 				}
 
@@ -115,11 +106,11 @@ namespace NS_Catalogue {
 	private: System::Windows::Forms::DataGridView^ dataGridView1;
 
 	private: System::Windows::Forms::Label^ label1;
-	private: System::Windows::Forms::DataGridViewCheckBoxColumn^ Check;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Nom;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Prix;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Quantite;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Max;
+
+
+
+
+
 	private: System::Windows::Forms::Label^ label2;
 
 
@@ -133,7 +124,22 @@ namespace NS_Catalogue {
 
 
 	private: NS_Formulaire::Formulaire_achat^ formu ;
+private: System::Windows::Forms::TextBox^ HT;
+private: System::Windows::Forms::Label^ label4;
+private: System::Windows::Forms::Label^ label5;
 private: System::Windows::Forms::TextBox^ test;
+private: System::Windows::Forms::DataGridViewCheckBoxColumn^ Check;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^ Nom;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^ Prix;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^ Quantite;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^ Max;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^ TVA;
+
+
+
+
+
+
 
 	private: NS_Facture::Facture^ facture;
 
@@ -156,17 +162,21 @@ private: System::Windows::Forms::TextBox^ test;
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->acheter = (gcnew System::Windows::Forms::Button());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
-			this->Check = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			this->Nom = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Prix = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Quantite = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Max = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->nb_txt = (gcnew System::Windows::Forms::TextBox());
 			this->total_txt = (gcnew System::Windows::Forms::TextBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->HT = (gcnew System::Windows::Forms::TextBox());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->test = (gcnew System::Windows::Forms::TextBox());
+			this->Check = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
+			this->Nom = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Prix = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Quantite = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Max = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->TVA = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -190,7 +200,7 @@ private: System::Windows::Forms::TextBox^ test;
 			// 
 			// acheter
 			// 
-			this->acheter->Location = System::Drawing::Point(593, 467);
+			this->acheter->Location = System::Drawing::Point(593, 512);
 			this->acheter->Name = L"acheter";
 			this->acheter->Size = System::Drawing::Size(75, 23);
 			this->acheter->TabIndex = 3;
@@ -201,9 +211,9 @@ private: System::Windows::Forms::TextBox^ test;
 			// dataGridView1
 			// 
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(5) {
+			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(6) {
 				this->Check,
-					this->Nom, this->Prix, this->Quantite, this->Max
+					this->Nom, this->Prix, this->Quantite, this->Max, this->TVA
 			});
 			this->dataGridView1->Location = System::Drawing::Point(75, 37);
 			this->dataGridView1->Name = L"dataGridView1";
@@ -211,6 +221,102 @@ private: System::Windows::Forms::TextBox^ test;
 			this->dataGridView1->TabIndex = 4;
 			this->dataGridView1->CellValidated += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MyForm::dataGridView1_CellValidated);
 			this->dataGridView1->RowValidated += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MyForm::dataGridView1_RowValidated);
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label1->Location = System::Drawing::Point(501, 475);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(86, 18);
+			this->label1->TabIndex = 5;
+			this->label1->Text = L"Total TTC : ";
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label2->Location = System::Drawing::Point(249, 443);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(142, 18);
+			this->label2->TabIndex = 6;
+			this->label2->Text = L"Nombre d\'article(s) :";
+			// 
+			// nb_txt
+			// 
+			this->nb_txt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->nb_txt->Location = System::Drawing::Point(388, 440);
+			this->nb_txt->Name = L"nb_txt";
+			this->nb_txt->ReadOnly = true;
+			this->nb_txt->Size = System::Drawing::Size(54, 24);
+			this->nb_txt->TabIndex = 7;
+			// 
+			// total_txt
+			// 
+			this->total_txt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->total_txt->Location = System::Drawing::Point(584, 472);
+			this->total_txt->Name = L"total_txt";
+			this->total_txt->ReadOnly = true;
+			this->total_txt->Size = System::Drawing::Size(70, 24);
+			this->total_txt->TabIndex = 8;
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label3->Location = System::Drawing::Point(660, 478);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(16, 18);
+			this->label3->TabIndex = 9;
+			this->label3->Text = L"€";
+			// 
+			// HT
+			// 
+			this->HT->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->HT->Location = System::Drawing::Point(584, 440);
+			this->HT->Name = L"HT";
+			this->HT->ReadOnly = true;
+			this->HT->Size = System::Drawing::Size(70, 24);
+			this->HT->TabIndex = 10;
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label4->Location = System::Drawing::Point(507, 443);
+			this->label4->Margin = System::Windows::Forms::Padding(3, 0, 1, 0);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(73, 18);
+			this->label4->TabIndex = 6;
+			this->label4->Text = L"Total HT :";
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label5->Location = System::Drawing::Point(660, 443);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(16, 18);
+			this->label5->TabIndex = 11;
+			this->label5->Text = L"€";
+			// 
+			// test
+			// 
+			this->test->Location = System::Drawing::Point(12, 472);
+			this->test->Multiline = true;
+			this->test->Name = L"test";
+			this->test->ReadOnly = true;
+			this->test->Size = System::Drawing::Size(379, 63);
+			this->test->TabIndex = 12;
+			this->test->Visible = false;
 			// 
 			// Check
 			// 
@@ -245,75 +351,22 @@ private: System::Windows::Forms::TextBox^ test;
 			this->Max->ReadOnly = true;
 			this->Max->Visible = false;
 			// 
-			// label1
+			// TVA
 			// 
-			this->label1->AutoSize = true;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(376, 483);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(53, 18);
-			this->label1->TabIndex = 5;
-			this->label1->Text = L"Total : ";
-			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(335, 456);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(142, 18);
-			this->label2->TabIndex = 6;
-			this->label2->Text = L"Nombre d\'article(s) :";
-			// 
-			// nb_txt
-			// 
-			this->nb_txt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->nb_txt->Location = System::Drawing::Point(474, 453);
-			this->nb_txt->Name = L"nb_txt";
-			this->nb_txt->ReadOnly = true;
-			this->nb_txt->Size = System::Drawing::Size(54, 24);
-			this->nb_txt->TabIndex = 7;
-			// 
-			// total_txt
-			// 
-			this->total_txt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->total_txt->Location = System::Drawing::Point(423, 480);
-			this->total_txt->Name = L"total_txt";
-			this->total_txt->ReadOnly = true;
-			this->total_txt->Size = System::Drawing::Size(70, 24);
-			this->total_txt->TabIndex = 8;
-			// 
-			// label3
-			// 
-			this->label3->AutoSize = true;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label3->Location = System::Drawing::Point(499, 483);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(16, 18);
-			this->label3->TabIndex = 9;
-			this->label3->Text = L"€";
-			// 
-			// test
-			// 
-			this->test->Location = System::Drawing::Point(12, 440);
-			this->test->Multiline = true;
-			this->test->Name = L"test";
-			this->test->ReadOnly = true;
-			this->test->Size = System::Drawing::Size(323, 75);
-			this->test->TabIndex = 10;
-			this->test->Visible = false;
+			this->TVA->HeaderText = L"TVA";
+			this->TVA->Name = L"TVA";
+			this->TVA->ReadOnly = true;
+			this->TVA->Visible = false;
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(736, 527);
+			this->ClientSize = System::Drawing::Size(736, 545);
 			this->Controls->Add(this->test);
+			this->Controls->Add(this->label5);
+			this->Controls->Add(this->label4);
+			this->Controls->Add(this->HT);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->total_txt);
 			this->Controls->Add(this->nb_txt);
@@ -338,19 +391,6 @@ private: System::Windows::Forms::TextBox^ test;
 		}
 
 	private: System::Void acheter_Click(System::Object^ sender, System::EventArgs^ e) {
-		
-		//String^ achat;
-		//
-		////int achat = 5;
-		//for (int n = 0; n < dataGridView1->RowCount; n++)
-		//{
-		//	bool isSelected = Convert::ToBoolean(dataGridView1->Rows[n]->Cells["Check"]->Value);
-		//	if (isSelected == true)
-		//	{
-		//		achat = gcnew String(dataGridView1->Rows[n]->Cells[1]->Value->ToString() + "		" + dataGridView1->Rows[n]->Cells[2]->Value->ToString() + "		" + dataGridView1->Rows[n]->Cells[3]->Value->ToString() + "\n");
-		//	}
-		//	//this->facture->Show();
-		//}
 
 		if (Convert::ToInt32(nb_txt->Text) == 0)
 		{
@@ -363,7 +403,7 @@ private: System::Windows::Forms::TextBox^ test;
 		else
 		{
 			this->Hide();
-			this->formu = gcnew NS_Formulaire::Formulaire_achat(test->Text, nb_txt->Text, total_txt->Text);
+			this->formu = gcnew NS_Formulaire::Formulaire_achat(test->Text, nb_txt->Text, total_txt->Text, HT->Text);
 			this->formu->Show();
 			
 		}
@@ -371,6 +411,7 @@ private: System::Windows::Forms::TextBox^ test;
 private: System::Void dataGridView1_CellValidated(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
 	double total = 0;
 	double totAr = 0;
+	double totHT = 0;
 	for (int n = 0; n < dataGridView1->RowCount; n++)
 	{
 		if (Convert::ToInt32(dataGridView1->Rows[n]->Cells[3]->Value) > Convert::ToInt32(dataGridView1->Rows[n]->Cells[4]->Value))
@@ -387,12 +428,15 @@ private: System::Void dataGridView1_CellValidated(System::Object^ sender, System
 		if (isSelected == true)
 		{
 			total += (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Prix"]->Value)) * (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value));
-			totAr += Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value);			
+			totAr += Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value);
+			totHT += Convert::ToDouble(dataGridView1->Rows[n]->Cells["TVA"]->Value) * (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value));
 		}
+		total_txt->Text = total.ToString();
+		nb_txt->Text = totAr.ToString();
+		HT->Text = totHT.ToString();
+
+
 	}
-	total_txt->Text = total.ToString();
-	nb_txt->Text = totAr.ToString();
-	
 }
 private: System::Void dataGridView1_RowValidated(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
 	String^ achat;
@@ -402,13 +446,10 @@ private: System::Void dataGridView1_RowValidated(System::Object^ sender, System:
 		bool isSelected = Convert::ToBoolean(dataGridView1->Rows[n]->Cells["Check"]->Value);
 		if (isSelected == true)
 		{
-			achat = gcnew String(dataGridView1->Rows[n]->Cells[1]->Value->ToString() + "						" + dataGridView1->Rows[n]->Cells[2]->Value->ToString() + "				" + dataGridView1->Rows[n]->Cells[3]->Value->ToString()+ "\n\r");
+			achat = gcnew String(dataGridView1->Rows[n]->Cells[1]->Value->ToString() + "			" + dataGridView1->Rows[n]->Cells[2]->Value->ToString() + "				" + dataGridView1->Rows[n]->Cells[3]->Value->ToString()+ "\n\r");
 			test->Text += "\n" + achat;
 		}
-
-		
 	}
-	
 }
 };
 }
