@@ -63,7 +63,6 @@ namespace NS_Personnel {
 	private: System::Windows::Forms::Label^ LabNom;
 	private: System::Windows::Forms::Label^ LabPrenom;
 	private: System::Windows::Forms::Label^ LabDate;
-	private: System::Windows::Forms::TextBox^ LabDebug;
 
 
 	//private: System::Windows::Forms::ErrorProvider^ errorProvider1;
@@ -91,7 +90,6 @@ namespace NS_Personnel {
 			this->LabNom = (gcnew System::Windows::Forms::Label());
 			this->LabPrenom = (gcnew System::Windows::Forms::Label());
 			this->LabDate = (gcnew System::Windows::Forms::Label());
-			this->LabDebug = (gcnew System::Windows::Forms::TextBox());
 			this->Connexion = (gcnew System::Windows::Forms::Button());
 			this->PickDate = (gcnew System::Windows::Forms::DateTimePicker());
 			this->checkBox1 = (gcnew System::Windows::Forms::CheckBox());
@@ -138,15 +136,6 @@ namespace NS_Personnel {
 			this->LabDate->TabIndex = 5;
 			this->LabDate->Text = L"Date";
 			// 
-			// LabDebug
-			// 
-			this->LabDebug->AutoSize = true;
-			this->LabDebug->Location = System::Drawing::Point(50, 180);
-			this->LabDebug->Name = L"LabDebug";
-			this->LabDebug->Size = System::Drawing::Size(38, 17);
-			this->LabDebug->TabIndex = 5;
-			this->LabDebug->Text = L"Date";
-			// 
 			// Connexion
 			// 
 			this->Connexion->Location = System::Drawing::Point(245, 278);
@@ -187,7 +176,6 @@ namespace NS_Personnel {
 			this->Controls->Add(this->PickDate);
 			this->Controls->Add(this->Connexion);
 			this->Controls->Add(this->LabDate);
-			this->Controls->Add(this->LabDebug);
 			this->Controls->Add(this->LabPrenom);
 			this->Controls->Add(this->LabNom);
 			this->Controls->Add(this->Prenom);
@@ -331,21 +319,7 @@ private:
 
 
 
-/*private: System::Void Personnel_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 
-	if (UsrCont->Fermeture) {
-
-		UsrCont->Precedent->Close();
-
-	}
-	else {
-
-		UsrCont->Precedent->Show();
-
-	}
-
-
-}*/
 	System::Void Check(System::Object^ sender, System::EventArgs^ e) {
 
 		PickDate->Enabled = checkBox1->Checked;

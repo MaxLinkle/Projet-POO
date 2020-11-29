@@ -10,7 +10,10 @@ namespace NS_EspacePersonnel {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	
+	typedef System::Void (*mptr)(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e);
+	mptr fptr;
+
+	//delegate System::Void Event(System::Object^, System::EventArgs^);
 
 	/// <summary>
 	/// Zusammenfassung für Form1
@@ -20,8 +23,16 @@ namespace NS_EspacePersonnel {
 	public:
 		EspPerso(Form^ Precedent,int indice)
 		{
+
+
+			
+			f = gcnew EventHandler(this, &EspPerso::RechercheClient);
+			//f = gcnew EventHandler(this, fptr);
+			
 			InitializeComponent();
+			prece = Precedent;
 		}
+		Form^ prece;
 
 	protected:
 		/// <summary>
@@ -45,13 +56,13 @@ namespace NS_EspacePersonnel {
 	private: System::Windows::Forms::Label^ LDate;
 
 	private: System::Windows::Forms::DateTimePicker^ Date;
-	private: System::Windows::Forms::Button^ button1;
-	private: System::Windows::Forms::Button^ button2;
+	private: System::Windows::Forms::Button^ Rechercher;
+	private: System::Windows::Forms::Button^ Creer;
 	private: System::Windows::Forms::Label^ label3;
 	private: System::Windows::Forms::DataGridView^ dataGridView1;
 
 
-
+	
 
 	
 
@@ -59,6 +70,7 @@ namespace NS_EspacePersonnel {
 
 	private:
 		System::ComponentModel::Container^ components;
+		//Event^ Cb;
 		EventHandler^ f;
 
 
@@ -79,8 +91,8 @@ namespace NS_EspacePersonnel {
 			   this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			   this->Rb_Personnel = (gcnew System::Windows::Forms::RadioButton());
 			   this->Rb_Client = (gcnew System::Windows::Forms::RadioButton());
-			   this->button1 = (gcnew System::Windows::Forms::Button());
-			   this->button2 = (gcnew System::Windows::Forms::Button());
+			   this->Rechercher = (gcnew System::Windows::Forms::Button());
+			   this->Creer = (gcnew System::Windows::Forms::Button());
 			   this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
 			   this->groupBox1->SuspendLayout();
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
@@ -169,6 +181,7 @@ namespace NS_EspacePersonnel {
 			   this->Rb_Personnel->TabIndex = 1;
 			   this->Rb_Personnel->Text = L"Personnel";
 			   this->Rb_Personnel->UseVisualStyleBackColor = true;
+			   this->Rb_Personnel->CheckedChanged += gcnew System::EventHandler(this, &EspPerso::Rb_Personnel_CheckedChanged);
 			   // 
 			   // Rb_Client
 			   // 
@@ -183,24 +196,24 @@ namespace NS_EspacePersonnel {
 			   this->Rb_Client->UseVisualStyleBackColor = true;
 			   this->Rb_Client->CheckedChanged += gcnew System::EventHandler(this, &EspPerso::Rb_Client_CheckedChanged);
 			   // 
-			   // button1
+			   // Rechercher
 			   // 
-			   this->button1->Location = System::Drawing::Point(114, 499);
-			   this->button1->Name = L"button1";
-			   this->button1->Size = System::Drawing::Size(132, 28);
-			   this->button1->TabIndex = 1;
-			   this->button1->Text = L"Rechercher";
-			   this->button1->UseVisualStyleBackColor = true;
-			   this->button1->Click += f;
+			   this->Rechercher->Location = System::Drawing::Point(114, 499);
+			   this->Rechercher->Name = L"Rechercher";
+			   this->Rechercher->Size = System::Drawing::Size(132, 28);
+			   this->Rechercher->TabIndex = 1;
+			   this->Rechercher->Text = L"Rechercher";
+			   this->Rechercher->UseVisualStyleBackColor = true;
+			   this->Rechercher->Click += f;
 			   // 
-			   // button2
+			   // Creer
 			   // 
-			   this->button2->Location = System::Drawing::Point(345, 499);
-			   this->button2->Name = L"button2";
-			   this->button2->Size = System::Drawing::Size(132, 28);
-			   this->button2->TabIndex = 2;
-			   this->button2->Text = L"Creer";
-			   this->button2->UseVisualStyleBackColor = true;
+			   this->Creer->Location = System::Drawing::Point(345, 499);
+			   this->Creer->Name = L"Creer";
+			   this->Creer->Size = System::Drawing::Size(132, 28);
+			   this->Creer->TabIndex = 2;
+			   this->Creer->Text = L"Creer";
+			   this->Creer->UseVisualStyleBackColor = true;
 			   // 
 			   // dataGridView1
 			   // 
@@ -219,53 +232,63 @@ namespace NS_EspacePersonnel {
 			   this->ClientSize = System::Drawing::Size(615, 567);
 			   this->Controls->Add(this->label3);
 			   this->Controls->Add(this->dataGridView1);
-			   this->Controls->Add(this->button2);
-			   this->Controls->Add(this->button1);
+			   this->Controls->Add(this->Creer);
+			   this->Controls->Add(this->Rechercher);
 			   this->Controls->Add(this->groupBox1);
 			   this->Name = L"EspPerso";
 			   this->Text = L"Espace Personelle";
+
+
+			   this->FormClosing += gcnew FormClosingEventHandler(this, &EspPerso::Closing);
+			   
+				   
 			   this->groupBox1->ResumeLayout(false);
 			   this->groupBox1->PerformLayout();
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			   this->ResumeLayout(false);
 			   this->PerformLayout();
+			   
 
 		   }
 #pragma endregion
-	private: System::Void Personnel_Click(System::Object^ sender, System::EventArgs^ e) {
 
-
-
-
+	private: System::Void Closing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
+		prece->Close();
 	}
-	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 
-	}
 
 	
 
 
 	
 	private: System::Void Rb_Client_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-		f = gcnew EventHandler(this,&EspPerso::RechercheClient); //Equivalent a ointeur de fonction
-		LDate->Text = "Date d'anniversaire";
+		this->Rechercher->Click -= f;
+		f = gcnew EventHandler(this,&EspPerso::RechercheClient); 
+		this->Rechercher->Click += f;
+		
+		
+		
+		LDate->Text = "Date d\'anniversaire";
 	}
 
 	private: System::Void Rb_Personnel_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-		f = gcnew EventHandler(this , &EspPerso::RecherchePersonnel); //Equivalent a ointeur de fonction
-		LDate->Text = "Date d'embauche";
+		this->Rechercher->Click -= f;
+		f = gcnew EventHandler(this , &EspPerso::RecherchePersonnel);
+		this->Rechercher->Click += f;
+		
+		LDate->Text = "Date d\'embauche";
 	}
 
 	System::Void RechercheClient(System::Object^ sender, System::EventArgs^ e) {
 
-		label3->Text = "Client";
+		//label3->Text = "Clients";
 
 
 	}
 
 	System::Void RecherchePersonnel(System::Object^ sender, System::EventArgs^ e) {
 
-		label3->Text = "Personnel";
+		//label3->Text = "Personnel";
 
 	}
 };
