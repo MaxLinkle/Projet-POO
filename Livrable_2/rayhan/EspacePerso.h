@@ -18,7 +18,7 @@ namespace NS_EspacePersonnel {
 	public ref class EspPerso : public System::Windows::Forms::Form
 	{
 	public:
-		EspPerso(void)
+		EspPerso(Form^ Precedent,int indice)
 		{
 			InitializeComponent();
 		}
@@ -47,13 +47,19 @@ namespace NS_EspacePersonnel {
 	private: System::Windows::Forms::DateTimePicker^ Date;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::Button^ button2;
-	delegate System::Void ptrf();
+	private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::DataGridView^ dataGridView1;
+
+
+
+
+	
 
 
 
 	private:
 		System::ComponentModel::Container^ components;
-
+		EventHandler^ f;
 
 
 #pragma region Windows Choix Designer generated code
@@ -64,6 +70,7 @@ namespace NS_EspacePersonnel {
 		   void InitializeComponent(void)
 		   {
 			   this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			   this->label3 = (gcnew System::Windows::Forms::Label());
 			   this->LDate = (gcnew System::Windows::Forms::Label());
 			   this->Date = (gcnew System::Windows::Forms::DateTimePicker());
 			   this->label2 = (gcnew System::Windows::Forms::Label());
@@ -74,7 +81,9 @@ namespace NS_EspacePersonnel {
 			   this->Rb_Client = (gcnew System::Windows::Forms::RadioButton());
 			   this->button1 = (gcnew System::Windows::Forms::Button());
 			   this->button2 = (gcnew System::Windows::Forms::Button());
+			   this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
 			   this->groupBox1->SuspendLayout();
+			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			   this->SuspendLayout();
 			   // 
 			   // groupBox1
@@ -87,17 +96,26 @@ namespace NS_EspacePersonnel {
 			   this->groupBox1->Controls->Add(this->textBox1);
 			   this->groupBox1->Controls->Add(this->Rb_Personnel);
 			   this->groupBox1->Controls->Add(this->Rb_Client);
-			   this->groupBox1->Location = System::Drawing::Point(12, 12);
+			   this->groupBox1->Location = System::Drawing::Point(12, 34);
 			   this->groupBox1->Name = L"groupBox1";
-			   this->groupBox1->Size = System::Drawing::Size(486, 252);
+			   this->groupBox1->Size = System::Drawing::Size(575, 202);
 			   this->groupBox1->TabIndex = 0;
 			   this->groupBox1->TabStop = false;
 			   this->groupBox1->Text = L"groupBox1";
 			   // 
+			   // label3
+			   // 
+			   this->label3->AutoSize = true;
+			   this->label3->Location = System::Drawing::Point(263, 251);
+			   this->label3->Name = L"label3";
+			   this->label3->Size = System::Drawing::Size(60, 17);
+			   this->label3->TabIndex = 9;
+			   this->label3->Text = L"Adresse";
+			   // 
 			   // LDate
 			   // 
 			   this->LDate->AutoSize = true;
-			   this->LDate->Location = System::Drawing::Point(173, 163);
+			   this->LDate->Location = System::Drawing::Point(213, 117);
 			   this->LDate->Name = L"LDate";
 			   this->LDate->Size = System::Drawing::Size(131, 17);
 			   this->LDate->TabIndex = 7;
@@ -105,7 +123,7 @@ namespace NS_EspacePersonnel {
 			   // 
 			   // Date
 			   // 
-			   this->Date->Location = System::Drawing::Point(110, 183);
+			   this->Date->Location = System::Drawing::Point(145, 137);
 			   this->Date->Name = L"Date";
 			   this->Date->Size = System::Drawing::Size(267, 22);
 			   this->Date->TabIndex = 1;
@@ -113,7 +131,7 @@ namespace NS_EspacePersonnel {
 			   // label2
 			   // 
 			   this->label2->AutoSize = true;
-			   this->label2->Location = System::Drawing::Point(301, 48);
+			   this->label2->Location = System::Drawing::Point(447, 48);
 			   this->label2->Name = L"label2";
 			   this->label2->Size = System::Drawing::Size(57, 17);
 			   this->label2->TabIndex = 5;
@@ -122,7 +140,7 @@ namespace NS_EspacePersonnel {
 			   // label1
 			   // 
 			   this->label1->AutoSize = true;
-			   this->label1->Location = System::Drawing::Point(135, 49);
+			   this->label1->Location = System::Drawing::Point(37, 48);
 			   this->label1->Name = L"label1";
 			   this->label1->Size = System::Drawing::Size(37, 17);
 			   this->label1->TabIndex = 4;
@@ -130,14 +148,14 @@ namespace NS_EspacePersonnel {
 			   // 
 			   // textBox2
 			   // 
-			   this->textBox2->Location = System::Drawing::Point(277, 68);
+			   this->textBox2->Location = System::Drawing::Point(404, 68);
 			   this->textBox2->Name = L"textBox2";
 			   this->textBox2->Size = System::Drawing::Size(100, 22);
 			   this->textBox2->TabIndex = 3;
 			   // 
 			   // textBox1
 			   // 
-			   this->textBox1->Location = System::Drawing::Point(110, 68);
+			   this->textBox1->Location = System::Drawing::Point(40, 68);
 			   this->textBox1->Name = L"textBox1";
 			   this->textBox1->Size = System::Drawing::Size(100, 22);
 			   this->textBox1->TabIndex = 2;
@@ -145,7 +163,7 @@ namespace NS_EspacePersonnel {
 			   // Rb_Personnel
 			   // 
 			   this->Rb_Personnel->AutoSize = true;
-			   this->Rb_Personnel->Location = System::Drawing::Point(337, 111);
+			   this->Rb_Personnel->Location = System::Drawing::Point(372, 165);
 			   this->Rb_Personnel->Name = L"Rb_Personnel";
 			   this->Rb_Personnel->Size = System::Drawing::Size(93, 21);
 			   this->Rb_Personnel->TabIndex = 1;
@@ -156,7 +174,7 @@ namespace NS_EspacePersonnel {
 			   // 
 			   this->Rb_Client->AutoSize = true;
 			   this->Rb_Client->Checked = true;
-			   this->Rb_Client->Location = System::Drawing::Point(40, 111);
+			   this->Rb_Client->Location = System::Drawing::Point(102, 165);
 			   this->Rb_Client->Name = L"Rb_Client";
 			   this->Rb_Client->Size = System::Drawing::Size(64, 21);
 			   this->Rb_Client->TabIndex = 0;
@@ -167,27 +185,40 @@ namespace NS_EspacePersonnel {
 			   // 
 			   // button1
 			   // 
-			   this->button1->Location = System::Drawing::Point(110, 270);
+			   this->button1->Location = System::Drawing::Point(114, 499);
 			   this->button1->Name = L"button1";
-			   this->button1->Size = System::Drawing::Size(110, 110);
+			   this->button1->Size = System::Drawing::Size(132, 28);
 			   this->button1->TabIndex = 1;
 			   this->button1->Text = L"Rechercher";
 			   this->button1->UseVisualStyleBackColor = true;
+			   this->button1->Click += f;
 			   // 
 			   // button2
 			   // 
-			   this->button2->Location = System::Drawing::Point(279, 270);
+			   this->button2->Location = System::Drawing::Point(345, 499);
 			   this->button2->Name = L"button2";
-			   this->button2->Size = System::Drawing::Size(110, 110);
+			   this->button2->Size = System::Drawing::Size(132, 28);
 			   this->button2->TabIndex = 2;
 			   this->button2->Text = L"Creer";
 			   this->button2->UseVisualStyleBackColor = true;
+			   // 
+			   // dataGridView1
+			   // 
+			   this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			   this->dataGridView1->Location = System::Drawing::Point(114, 271);
+			   this->dataGridView1->Name = L"dataGridView1";
+			   this->dataGridView1->RowHeadersWidth = 51;
+			   this->dataGridView1->RowTemplate->Height = 24;
+			   this->dataGridView1->Size = System::Drawing::Size(363, 205);
+			   this->dataGridView1->TabIndex = 3;
 			   // 
 			   // EspPerso
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			   this->ClientSize = System::Drawing::Size(505, 475);
+			   this->ClientSize = System::Drawing::Size(615, 567);
+			   this->Controls->Add(this->label3);
+			   this->Controls->Add(this->dataGridView1);
 			   this->Controls->Add(this->button2);
 			   this->Controls->Add(this->button1);
 			   this->Controls->Add(this->groupBox1);
@@ -195,7 +226,9 @@ namespace NS_EspacePersonnel {
 			   this->Text = L"Espace Personelle";
 			   this->groupBox1->ResumeLayout(false);
 			   this->groupBox1->PerformLayout();
+			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			   this->ResumeLayout(false);
+			   this->PerformLayout();
 
 		   }
 #pragma endregion
@@ -214,22 +247,25 @@ namespace NS_EspacePersonnel {
 
 	
 	private: System::Void Rb_Client_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-		ptrf^ f = gcnew ptrf(this,&EspPerso::RechercheClient); //Equivalent a ointeur de fonction
+		f = gcnew EventHandler(this,&EspPerso::RechercheClient); //Equivalent a ointeur de fonction
 		LDate->Text = "Date d'anniversaire";
 	}
 
 	private: System::Void Rb_Personnel_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-		ptrf^ f = gcnew ptrf(this, &EspPerso::RechercheClient); //Equivalent a ointeur de fonction
+		f = gcnew EventHandler(this , &EspPerso::RecherchePersonnel); //Equivalent a ointeur de fonction
 		LDate->Text = "Date d'embauche";
 	}
 
-	System::Void RechercheClient() {
+	System::Void RechercheClient(System::Object^ sender, System::EventArgs^ e) {
+
+		label3->Text = "Client";
 
 
 	}
 
-	System::Void RecherchePersonnel() {
+	System::Void RecherchePersonnel(System::Object^ sender, System::EventArgs^ e) {
 
+		label3->Text = "Personnel";
 
 	}
 };
