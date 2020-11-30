@@ -1,3 +1,5 @@
+USE projet;
+
 DELIMITER |
 DROP PROCEDURE IF EXISTS remplissage_Client |
 CREATE PROCEDURE remplissage_Client (IN i_nom VARCHAR(20), IN i_prenom VARCHAR(20), IN i_date_naissance DATE, IN i_adresse_client VARCHAR(50), IN i_ville VARCHAR(20), IN i_type_adresse VARCHAR(25))
