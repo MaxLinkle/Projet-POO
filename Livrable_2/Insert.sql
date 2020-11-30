@@ -1,12 +1,12 @@
 USE projet;
 
-INSERT INTO Catalogue (ID_article, nom, reference, prix_ht, taux_tva, coefficient_economie, stock, seuil_reapprovisionnement)
-VALUES (NULL, 'Choipeau magique', '795842', '15,90', '20', '0', '120', '100'),
-(NULL, 'Baguette de sureau', '496532', '25', '20', '0', '200', '50'),
-(NULL, 'Figurine Harry Potter', '624853', '10', '20', '0', '500', '20'),
-(NULL, 'Figurine Hermione Granger', '762137', '10', '20', '0', '528', '15'),
-(NULL, 'Figurine Ron Weasley', '449652', '10', '20', '0', '590', '15'),
-(NULL, 'Trivial Pursuit Harry Potter', '968751', '30', '20', '0', '100', '20');
+INSERT INTO Catalogue (ID_article, nom, reference, prix_ht, taux_tva, coefficient_economie, stock, seuil_reapprovisionnement, actif)
+VALUES (NULL, 'Choipeau magique', '795842', '15,90', '20', '0', '120', '100', '1'),
+(NULL, 'Baguette de sureau', '496532', '25', '20', '0', '200', '50', '1'),
+(NULL, 'Figurine Harry Potter', '624853', '10', '20', '0', '500', '20', '0'),
+(NULL, 'Figurine Hermione Granger', '762137', '10', '20', '0', '528', '15', '0'),
+(NULL, 'Figurine Ron Weasley', '449652', '10', '20', '0', '590', '15', '1'),
+(NULL, 'Trivial Pursuit Harry Potter', '968751', '30', '20', '0', '100', '20', '0');
 
 INSERT INTO Paiement(moyen_paiement)
 VALUES ('Par carte'),
