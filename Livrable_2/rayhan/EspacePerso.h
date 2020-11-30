@@ -10,10 +10,8 @@ namespace NS_EspacePersonnel {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	typedef System::Void (*mptr)(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e);
-	mptr fptr;
-
-	//delegate System::Void Event(System::Object^, System::EventArgs^);
+	delegate System::Void PRecherche(System::Object^ sender, System::EventArgs^ e);
+	
 
 	/// <summary>
 	/// Zusammenfassung für Form1
@@ -27,12 +25,20 @@ namespace NS_EspacePersonnel {
 
 			
 			f = gcnew EventHandler(this, &EspPerso::RechercheClient);
-			//f = gcnew EventHandler(this, fptr);
+			g = gcnew EventHandler(this, &EspPerso::CreerClient);
+			
 			
 			InitializeComponent();
 			prece = Precedent;
+			this->Date->Format = DateTimePickerFormat::Custom;
 		}
+	private: System::Windows::Forms::Button^ button1;
+	public:
+
+	private :
 		Form^ prece;
+	
+	
 
 	protected:
 		/// <summary>
@@ -72,6 +78,7 @@ namespace NS_EspacePersonnel {
 		System::ComponentModel::Container^ components;
 		//Event^ Cb;
 		EventHandler^ f;
+		EventHandler^ g;
 
 
 #pragma region Windows Choix Designer generated code
@@ -82,7 +89,6 @@ namespace NS_EspacePersonnel {
 		   void InitializeComponent(void)
 		   {
 			   this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			   this->label3 = (gcnew System::Windows::Forms::Label());
 			   this->LDate = (gcnew System::Windows::Forms::Label());
 			   this->Date = (gcnew System::Windows::Forms::DateTimePicker());
 			   this->label2 = (gcnew System::Windows::Forms::Label());
@@ -91,9 +97,11 @@ namespace NS_EspacePersonnel {
 			   this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			   this->Rb_Personnel = (gcnew System::Windows::Forms::RadioButton());
 			   this->Rb_Client = (gcnew System::Windows::Forms::RadioButton());
+			   this->label3 = (gcnew System::Windows::Forms::Label());
 			   this->Rechercher = (gcnew System::Windows::Forms::Button());
 			   this->Creer = (gcnew System::Windows::Forms::Button());
 			   this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+			   this->button1 = (gcnew System::Windows::Forms::Button());
 			   this->groupBox1->SuspendLayout();
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			   this->SuspendLayout();
@@ -115,15 +123,6 @@ namespace NS_EspacePersonnel {
 			   this->groupBox1->TabStop = false;
 			   this->groupBox1->Text = L"groupBox1";
 			   // 
-			   // label3
-			   // 
-			   this->label3->AutoSize = true;
-			   this->label3->Location = System::Drawing::Point(263, 251);
-			   this->label3->Name = L"label3";
-			   this->label3->Size = System::Drawing::Size(60, 17);
-			   this->label3->TabIndex = 9;
-			   this->label3->Text = L"Adresse";
-			   // 
 			   // LDate
 			   // 
 			   this->LDate->AutoSize = true;
@@ -135,6 +134,7 @@ namespace NS_EspacePersonnel {
 			   // 
 			   // Date
 			   // 
+			   this->Date->CustomFormat = L"yyyy-MM-dd";
 			   this->Date->Location = System::Drawing::Point(145, 137);
 			   this->Date->Name = L"Date";
 			   this->Date->Size = System::Drawing::Size(267, 22);
@@ -196,6 +196,15 @@ namespace NS_EspacePersonnel {
 			   this->Rb_Client->UseVisualStyleBackColor = true;
 			   this->Rb_Client->CheckedChanged += gcnew System::EventHandler(this, &EspPerso::Rb_Client_CheckedChanged);
 			   // 
+			   // label3
+			   // 
+			   this->label3->AutoSize = true;
+			   this->label3->Location = System::Drawing::Point(263, 251);
+			   this->label3->Name = L"label3";
+			   this->label3->Size = System::Drawing::Size(60, 17);
+			   this->label3->TabIndex = 9;
+			   this->label3->Text = L"Adresse";
+			   // 
 			   // Rechercher
 			   // 
 			   this->Rechercher->Location = System::Drawing::Point(114, 499);
@@ -204,7 +213,6 @@ namespace NS_EspacePersonnel {
 			   this->Rechercher->TabIndex = 1;
 			   this->Rechercher->Text = L"Rechercher";
 			   this->Rechercher->UseVisualStyleBackColor = true;
-			   this->Rechercher->Click += f;
 			   // 
 			   // Creer
 			   // 
@@ -225,11 +233,21 @@ namespace NS_EspacePersonnel {
 			   this->dataGridView1->Size = System::Drawing::Size(363, 205);
 			   this->dataGridView1->TabIndex = 3;
 			   // 
+			   // button1
+			   // 
+			   this->button1->Location = System::Drawing::Point(512, 3);
+			   this->button1->Name = L"button1";
+			   this->button1->Size = System::Drawing::Size(75, 25);
+			   this->button1->TabIndex = 10;
+			   this->button1->Text = L"Article >>";
+			   this->button1->UseVisualStyleBackColor = true;
+			   // 
 			   // EspPerso
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			   this->ClientSize = System::Drawing::Size(615, 567);
+			   this->Controls->Add(this->button1);
 			   this->Controls->Add(this->label3);
 			   this->Controls->Add(this->dataGridView1);
 			   this->Controls->Add(this->Creer);
@@ -237,17 +255,11 @@ namespace NS_EspacePersonnel {
 			   this->Controls->Add(this->groupBox1);
 			   this->Name = L"EspPerso";
 			   this->Text = L"Espace Personelle";
-
-
-			   this->FormClosing += gcnew FormClosingEventHandler(this, &EspPerso::Closing);
-			   
-				   
 			   this->groupBox1->ResumeLayout(false);
 			   this->groupBox1->PerformLayout();
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			   this->ResumeLayout(false);
 			   this->PerformLayout();
-			   
 
 		   }
 #pragma endregion
@@ -265,9 +277,39 @@ namespace NS_EspacePersonnel {
 		this->Rechercher->Click -= f;
 		f = gcnew EventHandler(this,&EspPerso::RechercheClient); 
 		this->Rechercher->Click += f;
+
+		this->Creer->Click -= g;
+		g = gcnew EventHandler(this, &EspPerso::CreerClient);
+		this->Creer->Click += g;
 		
+		dataGridView1->AllowUserToAddRows = true;
+		dataGridView1->AllowUserToDeleteRows = true;
+		dataGridView1->Rows->Clear();
+		dataGridView1->Columns->Clear();
+
+		dataGridView1->Columns->Add("Adresse", "Adresse");
+		dataGridView1->Columns->Add("Ville", "Ville");
+		dataGridView1->Columns->Add("Pays", "Pays");
+
+		array<String^>^ Valcl = gcnew array<String^>(3);
+		Valcl[0] = ("livraison");
+		Valcl[1] = ("facturation");
+		Valcl[2] = ("livraison et facturation");
+
+
+		DataGridViewComboBoxCell^ cl = gcnew DataGridViewComboBoxCell();
+
+		cl->DataSource = Valcl;
+		cl->Value = Valcl[0];
 		
+
+		DataGridViewComboBoxColumn^ temp = gcnew DataGridViewComboBoxColumn();
+		temp->CellTemplate = cl;
 		
+		dataGridView1->Columns->Add(temp);
+		
+		dataGridView1->Rows->Add();
+
 		LDate->Text = "Date d\'anniversaire";
 	}
 
@@ -276,8 +318,27 @@ namespace NS_EspacePersonnel {
 		f = gcnew EventHandler(this , &EspPerso::RecherchePersonnel);
 		this->Rechercher->Click += f;
 		
+		this->Creer->Click -= g;
+		g = gcnew EventHandler(this, &EspPerso::CreerPersonnel);
+		this->Creer->Click += g;
+
+		dataGridView1->AllowUserToAddRows = false;
+		dataGridView1->AllowUserToDeleteRows = false;
+		dataGridView1->Rows->Clear();
+		dataGridView1->Columns->Clear();
+
+		dataGridView1->Columns->Add("Adresse", "Adresse");
+		dataGridView1->Columns->Add("Ville", "Ville");
+		dataGridView1->Columns->Add("Pays", "Pays");
+				
+				
+
+		dataGridView1->Rows->Add();
+
+		
 		LDate->Text = "Date d\'embauche";
 	}
+
 
 	System::Void RechercheClient(System::Object^ sender, System::EventArgs^ e) {
 
@@ -288,8 +349,24 @@ namespace NS_EspacePersonnel {
 
 	System::Void RecherchePersonnel(System::Object^ sender, System::EventArgs^ e) {
 
+		
+
+	}
+
+
+	System::Void CreerClient(System::Object^ sender, System::EventArgs^ e) {
+
+		//label3->Text = "Clients";
+
+
+	}
+
+	System::Void CreerPersonnel(System::Object^ sender, System::EventArgs^ e) {
+
 		//label3->Text = "Personnel";
 
 	}
+
+
 };
 }
