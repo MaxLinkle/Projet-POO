@@ -61,7 +61,11 @@ DROP TABLE IF EXISTS Commande ;
 CREATE TABLE Commande (
   ID_commande INT AUTO_INCREMENT NOT NULL,
   reference VARCHAR(50) NOT NULL,
-  prix INT NOT NULL,
+  prix_ht INT NOT NULL,
+  prix_tva INT NOT NULL,
+  remise INT NOT NUll,
+  ID_adresse_livraison INT NOT NULL,
+  ID_adresse_facturation INT NOT NULL,
   date_livraison_prevue DATE,
   date_emission DATE,
   date_paiement DATE,
@@ -82,6 +86,7 @@ CREATE TABLE Catalogue (
   reference VARCHAR(50) NOT NULL,
   prix_ht INT NOT NULL,
   taux_tva INT NOT NULL,
+  coefficient_economie INT,
   stock INT NOT NULL,
   seuil_reapprovisionnement INT NOT NULL,
   actif BOOLEAN,
@@ -129,7 +134,7 @@ DROP TABLE IF EXISTS Adresse_client ;
 CREATE TABLE Adresse_client (
   ID_adresse_client INT AUTO_INCREMENT NOT NULL,
   adresse_client VARCHAR(50),
-  ID_client INT NOT NULL,
+  ID_client INT,
   ID_ville INT NOT NULL,
   ID_type_adresse INT NOT NULL,
 
