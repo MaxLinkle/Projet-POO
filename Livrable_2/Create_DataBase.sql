@@ -86,7 +86,7 @@ CREATE TABLE Catalogue (
   reference VARCHAR(50) NOT NULL,
   prix_ht INT NOT NULL,
   taux_tva INT NOT NULL,
-  coefficient_economie INT,
+  coefficient_economie INT NOT NULL,
   stock INT NOT NULL,
   seuil_reapprovisionnement INT NOT NULL,
   actif BOOLEAN,
