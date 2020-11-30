@@ -137,7 +137,7 @@ END |
 
 
 DROP PROCEDURE IF EXISTS verification_Catalogue_perso |
-CREATE PROCEDURE verifiactin_Catalogue_perso (IN i_id INT)
+CREATE PROCEDURE verification_Catalogue_perso (IN i_id INT)
 BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
   BEGIN
