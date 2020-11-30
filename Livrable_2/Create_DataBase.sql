@@ -89,7 +89,7 @@ CREATE TABLE Catalogue (
   coefficient_economie INT NOT NULL,
   stock INT NOT NULL,
   seuil_reapprovisionnement INT NOT NULL,
-  actif BOOLEAN,
+  actif BOOLEAN NOT NULL,
 
   CONSTRAINT Catalogue_PK PRIMARY KEY (ID_article)
 ) ENGINE=InnoDB;
