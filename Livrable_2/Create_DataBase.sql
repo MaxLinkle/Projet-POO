@@ -74,8 +74,6 @@ CREATE TABLE Commande (
   ID_paiement INT NOT NULL,
 
   CONSTRAINT Commande_PK PRIMARY KEY (ID_commande),
-  CONSTRAINT FK_ID_adresse_livraison FOREIGN KEY (ID_adresse_livraison) REFERENCES Adresse_client (ID_adresse_client),
-  CONSTRAINT FK_ID_adresse_facturation FOREIGN KEY (ID_adresse_facturation) REFERENCES Adresse_client (ID_adresse_client),
   CONSTRAINT FK_ID_client FOREIGN KEY (ID_client) REFERENCES Client (ID_client),
   CONSTRAINT FK_ID_paiement FOREIGN KEY (ID_paiement) REFERENCES Paiement (ID_paiement)
 ) ENGINE=InnoDB;
