@@ -172,6 +172,6 @@ BEGIN
 
   SELECT *
   FROM Catalogue
-  WHERE Catalogue.nom = i_nom, Catalogue.reference = i_ref, Catalogue.prix_ht = i_prix_ht, Catalogue.taux_tva = i_tva, Catalogue.coefficient_economie = i_coef, Catalogue.stock = i_stock, Catalogue.seuil_reapprovisionnement = seuil, Catalogue.actif = i_actif;
+  WHERE Catalogue.nom = i_nom AND Catalogue.reference = i_ref AND Catalogue.prix_ht = i_prix_ht AND Catalogue.taux_tva = i_tva AND Catalogue.coefficient_economie = i_coef AND Catalogue.stock = i_stock AND Catalogue.seuil_reapprovisionnement = i_seuil AND Catalogue.actif = i_actif;
 END |
 DELIMITER ;
