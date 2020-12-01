@@ -28,7 +28,7 @@ END |
 DROP PROCEDURE IF EXISTS Stat_Achat_stock |
 CREATE PROCEDURE Stat_Achat_stock ()
 BEGIN
-  SELECT Catalogue.nom, Catalogue.stock, AVG(Catalogue.stock * Catalogue.prix_ht * 0.5) AS Valeur_achat
+  SELECT Catalogue.nom, Catalogue.stock, Catalogue.stock * Catalogue.prix_ht * 0.5 AS Valeur_achat
   FROM Catalogue;
 END |
 
@@ -36,7 +36,7 @@ END |
 DROP PROCEDURE IF EXISTS Stat_Valeur_stock |
 CREATE PROCEDURE Stat_Valeur_stock ()
 BEGIN
-  SELECT Catalogue.nom, Catalogue.stock, AVG(Catalogue.stock * Catalogue.prix_ht) AS Valeur_Commercial
+  SELECT Catalogue.nom, Catalogue.stock, Catalogue.stock * Catalogue.prix_ht AS Valeur_Commercial
   FROM Catalogue;
 END |
 
