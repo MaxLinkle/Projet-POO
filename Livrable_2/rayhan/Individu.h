@@ -2,6 +2,7 @@
 using namespace System;
 public ref class Individu {
 protected: 
+	MapIndi* svc_Mappage;
 	String^ ID;
 	String^ Nom;
 	String^ Prenom;
@@ -60,9 +61,7 @@ public:
 
 		String^ Query = "SELECT ID_adresse_client FROM Client NATURAL JOIN Adresse_client WHERE ";
 		if(ID != "" ) {
-
 			Query += "ID_Client = '"+ ID +"'";
-
 		}
 		Query += ";";
 		return Query;
@@ -72,39 +71,24 @@ public:
 
 		String^ Query = "SELECT ID_adresse_client FROM Client NATURAL JOIN Adresse_client WHERE 1";
 		if (Adr == nullptr && PNom == "" && PPrenom == "" && PDate == "") {
-
 			Query += "AND 0";
-
 		}
 		else {
 			Struct_Adresse_Cli^ current = Adr;
 			while (Adr != nullptr) {
-
 				Query = "AND ID_adresse_client = '" + Adr->ID + "'";
 				current = current->Suivant;
-
 			}
 			if (PNom != "") {
-
 				Query = "AND nom = '" + PNom + "'";
-
-
 			}
 			if (PPrenom != "") {
-
 				Query = "AND prenom = '" + PPrenom + "'";
-
-
 			}
-
-
 		}
 		Query += ";";
 		return Query;
-
 	}
-
-
 };
 
 
@@ -124,9 +108,7 @@ public:
 
 		String^ Query = "SELECT ID_adresse_personnel FROM Personnel NATURAL JOIN Adresse_personnel WHERE 0";
 		if (ID != "") {
-
 			Query += " OR ID_Personnel = '" + ID + "'";
-
 		}
 		Query += ";";
 		return Query;
@@ -142,22 +124,13 @@ public:
 		}
 		else {
 			if(Adr != nullptr) {
-
 				Query = "AND ID_adresse_personnel = '" + Adr->ID + "'";
-
-
 			}
 			if (PNom != "") {
-
 				Query = "AND nom = '" + PNom + "'";
-
-
 			}
 			if (PPrenom != "") {
-
 				Query = "AND prenom = '" + PPrenom + "'";
-
-
 			}
 
 
