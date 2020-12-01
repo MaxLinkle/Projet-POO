@@ -6,7 +6,7 @@ USE projet;
 DROP TABLE IF EXISTS Pays ;
 CREATE TABLE Pays (
   ID_pays INT AUTO_INCREMENT NOT NULL,
-  pays VARCHAR(20) NOT NULL,
+  pays VARCHAR(50) NOT NULL,
 
   CONSTRAINT Pays_PK PRIMARY KEY (ID_pays)
 ) ENGINE=InnoDB;
@@ -15,7 +15,7 @@ CREATE TABLE Pays (
 DROP TABLE IF EXISTS Ville ;
 CREATE TABLE Ville (
   ID_ville INT AUTO_INCREMENT NOT NULL,
-  ville VARCHAR(20) NOT NULL,
+  ville VARCHAR(50) NOT NULL,
   ID_pays INT NOT NULL,
 
   CONSTRAINT Ville_PK PRIMARY KEY (ID_ville),
@@ -26,8 +26,8 @@ CREATE TABLE Ville (
 DROP TABLE IF EXISTS Personnel ;
 CREATE TABLE Personnel (
   ID_personnel INT AUTO_INCREMENT NOT NULL,
-  nom VARCHAR(20) NOT NULL,
-  prenom VARCHAR(20) NOT NULL,
+  nom VARCHAR(50) NOT NULL,
+  prenom VARCHAR(50) NOT NULL,
   date_embauche DATE NOT NULL,
   ID_superieur INT,
 
@@ -39,8 +39,8 @@ CREATE TABLE Personnel (
 DROP TABLE IF EXISTS Client ;
 CREATE TABLE Client (
   ID_client INT AUTO_INCREMENT NOT NULL,
-  nom VARCHAR(20) NOT NULL,
-  prenom VARCHAR(20) NOT NULL,
+  nom VARCHAR(50) NOT NULL,
+  prenom VARCHAR(50) NOT NULL,
   date_naissance DATE,
   date_premier_achat DATE,
 
@@ -51,7 +51,7 @@ CREATE TABLE Client (
 DROP TABLE IF EXISTS Paiement ;
 CREATE TABLE Paiement (
   ID_paiement INT AUTO_INCREMENT NOT NULL,
-  moyen_paiement VARCHAR(20),
+  moyen_paiement VARCHAR(50),
 
   CONSTRAINT Paiement_PK PRIMARY KEY (ID_paiement)
 ) ENGINE=InnoDB;
@@ -60,12 +60,16 @@ CREATE TABLE Paiement (
 DROP TABLE IF EXISTS Commande ;
 CREATE TABLE Commande (
   ID_commande INT AUTO_INCREMENT NOT NULL,
-  reference VARCHAR(20) NOT NULL,
-  prix INT NOT NULL,
+  reference VARCHAR(50) NOT NULL,
+  prix_ht INT NOT NULL,
+  prix_tva INT NOT NULL,
+  remise INT NOT NUll,
   date_livraison_prevue DATE,
   date_emission DATE,
   date_paiement DATE,
   date_solde DATE,
+  ID_adresse_livraison INT NOT NULL,
+  ID_adresse_facturation INT NOT NULL,
   ID_client INT NOT NULL,
   ID_paiement INT NOT NULL,
 
@@ -78,13 +82,14 @@ CREATE TABLE Commande (
 DROP TABLE IF EXISTS Catalogue ;
 CREATE TABLE Catalogue (
   ID_article INT AUTO_INCREMENT NOT NULL,
-  nom VARCHAR(20) NOT NULL,
-  reference VARCHAR(20) NOT NULL,
+  nom VARCHAR(50) NOT NULL,
+  reference VARCHAR(50) NOT NULL,
   prix_ht INT NOT NULL,
   taux_tva INT NOT NULL,
+  coefficient_economie INT NOT NULL,
   stock INT NOT NULL,
   seuil_reapprovisionnement INT NOT NULL,
-  actif BOOLEAN,
+  actif BOOLEAN NOT NULL,
 
   CONSTRAINT Catalogue_PK PRIMARY KEY (ID_article)
 ) ENGINE=InnoDB;
@@ -129,7 +134,7 @@ DROP TABLE IF EXISTS Adresse_client ;
 CREATE TABLE Adresse_client (
   ID_adresse_client INT AUTO_INCREMENT NOT NULL,
   adresse_client VARCHAR(50),
-  ID_client INT NOT NULL,
+  ID_client INT,
   ID_ville INT NOT NULL,
   ID_type_adresse INT NOT NULL,
 

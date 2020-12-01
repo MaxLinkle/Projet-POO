@@ -1,17 +1,19 @@
 #pragma once
 #include "pch.h"
 #include "SC.h"
+#include "EspacePerso.h"
+#include <iostream>
 
 namespace NS_Personnel {
 
 	using namespace System;
-	using namespace UsrContrl;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
 	using namespace System::Collections::Generic;
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace NS_EspacePersonnel;
 	using namespace NS_SuperC;
 	/// <summary>
 	/// Zusammenfassung für Form1
@@ -50,7 +52,7 @@ namespace NS_Personnel {
 
 	private: System::Windows::Forms::TextBox^ Prenom;
 
-		   //EspacePerso^ Suivant;
+	EspPerso^ Suivant;
 //============================================================================
 //		   MYSQL* database;
 //		   MYSQL_RES* result;
@@ -61,10 +63,11 @@ namespace NS_Personnel {
 	private: System::Windows::Forms::Label^ LabNom;
 	private: System::Windows::Forms::Label^ LabPrenom;
 	private: System::Windows::Forms::Label^ LabDate;
-	//private: UsrContrle^ UsrCont;
+
 
 	//private: System::Windows::Forms::ErrorProvider^ errorProvider1;
 	private: System::Windows::Forms::Button^ Connexion;
+	private: System::Windows::Forms::CheckBox^ checkBox1;
 	private: System::Windows::Forms::DateTimePicker^ PickDate;
 	//private: System::Windows::Forms::Button^ But_Precedent;
 	//private: System::Windows::Forms::Button^ Actualiser;
@@ -82,30 +85,14 @@ namespace NS_Personnel {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			/*database = mysql_init(NULL);
-			if(database == NULL) {
-				errorProvider1->SetError(Connexion , "Impossible d'accées a la base de donnée");
-			}*/
-
-			
-			
-			//this->components = (gcnew System::ComponentModel::Container());
 			this->Nom = (gcnew System::Windows::Forms::TextBox());
 			this->Prenom = (gcnew System::Windows::Forms::TextBox());
 			this->LabNom = (gcnew System::Windows::Forms::Label());
 			this->LabPrenom = (gcnew System::Windows::Forms::Label());
 			this->LabDate = (gcnew System::Windows::Forms::Label());
-			//this->errorProvider1 = (gcnew System::Windows::Forms::ErrorProvider(this->components));
 			this->Connexion = (gcnew System::Windows::Forms::Button());
 			this->PickDate = (gcnew System::Windows::Forms::DateTimePicker());
-			this->UsrCont = (gcnew  UsrContrle());
-
-			//this->But_Precedent = (gcnew System::Windows::Forms::Button());
-			//this->Actualiser = (gcnew System::Windows::Forms::Button());
-			//(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorProvider1))->BeginInit();
-
-			//this->UsrCon = (gcnew );
-
+			this->checkBox1 = (gcnew System::Windows::Forms::CheckBox());
 			this->SuspendLayout();
 			// 
 			// Nom
@@ -117,7 +104,7 @@ namespace NS_Personnel {
 			// 
 			// Prenom
 			// 
-			this->Prenom->Location = System::Drawing::Point(247, 134);
+			this->Prenom->Location = System::Drawing::Point(245, 135);
 			this->Prenom->Name = L"Prenom";
 			this->Prenom->Size = System::Drawing::Size(100, 22);
 			this->Prenom->TabIndex = 1;
@@ -148,18 +135,9 @@ namespace NS_Personnel {
 			this->LabDate->Size = System::Drawing::Size(38, 17);
 			this->LabDate->TabIndex = 5;
 			this->LabDate->Text = L"Date";
-
-			//this->UsrCont->Name = L"UsrCont";
-			//this->UsrCont->Location = System::Drawing::Point(0, 0);
-
-			/* // 
-			// errorProvider1
-			// 
-			this->errorProvider1->ContainerControl = this;*/
 			// 
 			// Connexion
 			// 
-			//this->errorProvider1->SetIconAlignment(this->Connexion, System::Windows::Forms::ErrorIconAlignment::MiddleLeft);
 			this->Connexion->Location = System::Drawing::Point(245, 278);
 			this->Connexion->Name = L"Connexion";
 			this->Connexion->Size = System::Drawing::Size(100, 54);
@@ -172,38 +150,29 @@ namespace NS_Personnel {
 			// 
 			this->PickDate->CustomFormat = L"yyyy-MM-dd";
 			this->PickDate->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
-			this->PickDate->Location = System::Drawing::Point(430, 132);
+			this->PickDate->Location = System::Drawing::Point(430, 135);
 			this->PickDate->Name = L"PickDate";
 			this->PickDate->Size = System::Drawing::Size(120, 22);
 			this->PickDate->TabIndex = 7;
-			/* // 
-			// But_Precedent
+			this->PickDate->Enabled = false;
 			// 
-			this->But_Precedent->Location = System::Drawing::Point(10, 10);
-			this->But_Precedent->Name = L"But_Precedent";
-			this->But_Precedent->Size = System::Drawing::Size(25, 25);
-			this->But_Precedent->TabIndex = 8;
-			this->But_Precedent->Text = L"<";
-			this->But_Precedent->UseVisualStyleBackColor = true;
-			this->But_Precedent->Click += gcnew System::EventHandler(this, &Personnel::But_Precedent_Click);
+			// checkBox1
 			// 
-			// Actualiser
-			// 
-			this->Actualiser->Location = System::Drawing::Point(45, 10);
-			this->Actualiser->Name = L"Actualiser";
-			this->Actualiser->Size = System::Drawing::Size(25, 25);
-			this->Actualiser->TabIndex = 9;
-			this->Actualiser->Text = L"!";
-			this->Actualiser->UseVisualStyleBackColor = true;
-			this->Actualiser->Click += gcnew System::EventHandler(this, &Personnel::Actualiser_Click);*/
+			this->checkBox1->AutoSize = true;
+			this->checkBox1->Location = System::Drawing::Point(406, 139);
+			this->checkBox1->Name = L"checkBox1";
+			this->checkBox1->Size = System::Drawing::Size(18, 17);
+			this->checkBox1->TabIndex = 8;
+			this->checkBox1->UseVisualStyleBackColor = true;
+			this->checkBox1->CheckedChanged += gcnew EventHandler(this,&Personnel::Check);
+			
 			// 
 			// Personnel
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(606, 403);
-			//this->Controls->Add(this->Actualiser);
-			//this->Controls->Add(this->But_Precedent);
+			this->Controls->Add(this->checkBox1);
 			this->Controls->Add(this->PickDate);
 			this->Controls->Add(this->Connexion);
 			this->Controls->Add(this->LabDate);
@@ -211,17 +180,13 @@ namespace NS_Personnel {
 			this->Controls->Add(this->LabNom);
 			this->Controls->Add(this->Prenom);
 			this->Controls->Add(this->Nom);
-			//this->Controls->Add(this->UsrCont);
 			this->Name = L"Personnel";
-			this->Text = L"Personnel";
+			this->Text = L"Personnel";			
 
-			this->UsrCont->But_Precedent->Click += gcnew  System::EventHandler(this, &SuperC::But_Precedent_Click);
-			this->FormClosing += gcnew FormClosingEventHandler(this, &SuperC::Personnel_FormClosing);
-			this->Load += gcnew System::EventHandler(this, &SuperC::Personnel_Load);
 
-			//this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Personnel::Personnel_FormClosing);
-			//this->Load += gcnew System::EventHandler(this, &Personnel::Personnel_Load);
-			//(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorProvider1))->EndInit();
+
+
+
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -354,50 +319,64 @@ private:
 
 
 
-/*private: System::Void Personnel_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 
-	if (UsrCont->Fermeture) {
+	System::Void Check(System::Object^ sender, System::EventArgs^ e) {
 
-		UsrCont->Precedent->Close();
-
-	}
-	else {
-
-		UsrCont->Precedent->Show();
+		PickDate->Enabled = checkBox1->Checked;
 
 	}
 
+	private: System::Void Connexion_Click(System::Object^ sender, System::EventArgs^ e) {
 
-}*/
+		String^ query = "SELECT ID_personnel FROM Personnel WHERE (nom ='";
+		query += Nom->Text;
+		query += "')*(prenom ='";
+		query += Prenom->Text;
+		query += "')";
 
 
-private: System::Void Connexion_Click(System::Object^ sender, System::EventArgs^ e) {
+		if(checkBox1->Checked){
+		query += "*(date_embauche ='";
+		query += PickDate->Text;
+		query += "');";
+		}
 
-	String^ query = "SELECT ID_personnel FROM Personnel WHERE (nom ='";
-			query += Nom->Text;
-			query += "')*(prenom ='";
-			query += Prenom->Text;
-			query += "')*(date_embauche ='";
-			query += PickDate->Text;
-			query += "');";
-			int state = mysql_query(UsrCont->database, ToStringQuery(query));
-			if (!state) {
-				UsrCont->result = mysql_store_result(UsrCont->database);
-				if (UsrCont->result->row_count == 1) {
-					/*row = mysql_fetch_row(result);
+		int state = 0;
+		/*UsrCont->database = mysql_init(NULL);
+		
+			if (mysql_real_connect(UsrCont->database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
+				UsrCont->errorProvider1->SetError((Control^)sender, "Connection impossible a la base");
+			}
+			else {
+				UsrCont->errorProvider1->Clear();
+			}*/
+
+			
+			MYSQL_RES* result = executerQuery(ToStringQuery(query));
+
+			//LabDebug->Text = executerQuery(ToStringQuery(query));
+
+			if (result != NULL) {
+				if (result->row_count == 1) {
+					row = mysql_fetch_row(result);
 					this->Hide();
-					this->Suivant = gcnew EspacePerso(this, row[0] );
-					this->Suivant->Show;*/
-					UsrCont->errorProvider1->SetError((Control^)sender, "OUIIIIIIIIIII");
+					this->Suivant = gcnew EspPerso(this, Convert::ToInt16(row[0]));
+					this->Suivant->Show();
+
 				}
 				else {
-					UsrCont->errorProvider1->SetError((Control^)sender,"Individus inconnue");
+					errorProvider1->SetError((Control^)sender, "Individus inconnue");
 				}
-				
-				
-				
-
 			}
+			else {
+
+				errorProvider1->SetError((Control^)sender, "Erreur BDD");
+			}
+
+
+
+			
+		
 }
 
 
