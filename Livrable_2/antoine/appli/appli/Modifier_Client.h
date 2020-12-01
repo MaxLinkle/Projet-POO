@@ -72,6 +72,15 @@ namespace Client {
 	private: System::Windows::Forms::CheckBox^ checkBox_livr;
 
 	private: System::Windows::Forms::CheckBox^ checkBox_fact;
+
+
+
+
+
+
+
+	private: System::Windows::Forms::RichTextBox^ richTextBox2;
+	private: System::Windows::Forms::TextBox^ textBox_retour;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ data_adresse;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ data_ville;
 	private: System::Windows::Forms::DataGridViewCheckBoxColumn^ data_livr;
@@ -79,12 +88,19 @@ namespace Client {
 	private: System::Windows::Forms::DataGridViewButtonColumn^ data_supr;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ data_upda;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ data_id;
-	private: System::Windows::Forms::RichTextBox^ richTextBox2;
-	private: System::Windows::Forms::TextBox^ textBox_retour;
+
+
+
+
+
+
+
+
+	private: System::ComponentModel::IContainer^ components;
 
 	private:
 
-		System::ComponentModel::Container^ components;
+
 
 #pragma region Windows Form Designer generated code
 
@@ -101,19 +117,19 @@ namespace Client {
 			this->textBox_prenom = (gcnew System::Windows::Forms::TextBox());
 			this->textBox_nom = (gcnew System::Windows::Forms::TextBox());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
-			this->data_adresse = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->data_ville = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->data_livr = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			this->data_fact = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			this->data_supr = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
-			this->data_upda = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
-			this->data_id = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->button_ajout = (gcnew System::Windows::Forms::Button());
 			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
 			this->checkBox_livr = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBox_fact = (gcnew System::Windows::Forms::CheckBox());
 			this->richTextBox2 = (gcnew System::Windows::Forms::RichTextBox());
 			this->textBox_retour = (gcnew System::Windows::Forms::TextBox());
+			this->data_id = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->data_upda = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			this->data_supr = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			this->data_fact = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
+			this->data_livr = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
+			this->data_ville = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->data_adresse = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -201,46 +217,7 @@ namespace Client {
 			this->dataGridView1->Size = System::Drawing::Size(702, 146);
 			this->dataGridView1->TabIndex = 33;
 			this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Modifier_Client::dataGridView1_CellContentClick);
-			// 
-			// data_adresse
-			// 
-			this->data_adresse->HeaderText = L"adresse";
-			this->data_adresse->Name = L"data_adresse";
-			// 
-			// data_ville
-			// 
-			this->data_ville->HeaderText = L"ville";
-			this->data_ville->Name = L"data_ville";
-			// 
-			// data_livr
-			// 
-			this->data_livr->FalseValue = L"0";
-			this->data_livr->HeaderText = L"livraison";
-			this->data_livr->Name = L"data_livr";
-			this->data_livr->TrueValue = L"1";
-			// 
-			// data_fact
-			// 
-			this->data_fact->FalseValue = L"0";
-			this->data_fact->HeaderText = L"facturation";
-			this->data_fact->Name = L"data_fact";
-			this->data_fact->TrueValue = L"1";
-			// 
-			// data_supr
-			// 
-			this->data_supr->HeaderText = L"";
-			this->data_supr->Name = L"data_supr";
-			// 
-			// data_upda
-			// 
-			this->data_upda->HeaderText = L"";
-			this->data_upda->Name = L"data_upda";
-			// 
-			// data_id
-			// 
-			this->data_id->HeaderText = L"id";
-			this->data_id->Name = L"data_id";
-			this->data_id->Visible = false;
+			this->dataGridView1->UserAddedRow += gcnew System::Windows::Forms::DataGridViewRowEventHandler(this, &Modifier_Client::dataGridView1_UserAddedRow);
 			// 
 			// button_ajout
 			// 
@@ -294,6 +271,46 @@ namespace Client {
 			this->textBox_retour->Name = L"textBox_retour";
 			this->textBox_retour->Size = System::Drawing::Size(100, 20);
 			this->textBox_retour->TabIndex = 39;
+			// 
+			// data_id
+			// 
+			this->data_id->HeaderText = L"id";
+			this->data_id->Name = L"data_id";
+			this->data_id->Visible = false;
+			// 
+			// data_upda
+			// 
+			this->data_upda->HeaderText = L"";
+			this->data_upda->Name = L"data_upda";
+			// 
+			// data_supr
+			// 
+			this->data_supr->HeaderText = L"";
+			this->data_supr->Name = L"data_supr";
+			// 
+			// data_fact
+			// 
+			this->data_fact->FalseValue = L"0";
+			this->data_fact->HeaderText = L"facturation";
+			this->data_fact->Name = L"data_fact";
+			this->data_fact->TrueValue = L"1";
+			// 
+			// data_livr
+			// 
+			this->data_livr->FalseValue = L"0";
+			this->data_livr->HeaderText = L"livraison";
+			this->data_livr->Name = L"data_livr";
+			this->data_livr->TrueValue = L"1";
+			// 
+			// data_ville
+			// 
+			this->data_ville->HeaderText = L"ville";
+			this->data_ville->Name = L"data_ville";
+			// 
+			// data_adresse
+			// 
+			this->data_adresse->HeaderText = L"adresse";
+			this->data_adresse->Name = L"data_adresse";
 			// 
 			// Modifier_Client
 			// 
@@ -488,45 +505,82 @@ namespace Client {
 		int i = e->RowIndex;
 		int j = e->ColumnIndex;
 
+
 		System::String^ query;
 
 		
-		if (j == 4) {
+		if (j == 4 && dataGridView1->Rows[i]->Cells[4]->Value->ToString() == "suprimer") {
 			query = "START TRANSACTION; CALL delete_Adresse_client('";
 			query += dataGridView1->Rows[i]->Cells[6]->Value->ToString();
 			query += "'); CALL verification_Adresse_client('";
-			//query += textBox_id->Text;
 			query += id;
 			query += "'); COMMIT;";
 		}
+		else if (j == 4 && dataGridView1->Rows[i]->Cells[4]->Value->ToString() == "ajout") {
+
+			if (dataGridView1->Rows[i]->Cells[0]->Value->ToString() != "" && dataGridView1->Rows[i]->Cells[1]->Value->ToString() != "" && (dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "True" || dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "True")) {
+
+				query = "START TRANSACTION; CALL ajout_Adresse_client('";
+				query += id;
+				query += "', '";
+				query += dataGridView1->Rows[i]->Cells[0]->Value->ToString();
+				query += "', '";
+				query += dataGridView1->Rows[i]->Cells[1]->Value->ToString();
+
+				System::String^ exit;
+				exit = dataGridView1->Rows[i]->Cells[2]->Value->ToString();
+				exit += "   ";
+				exit += dataGridView1->Rows[i]->Cells[3]->Value->ToString();
+				richTextBox2->Text = exit;
+
+				if ((dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "True") && (dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "True")) {
+					query += "', 'livraison et facturation');";
+				}
+				else if (dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "True") {
+					query += "', 'livraison'); ";
+				}
+				else if (dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "True") {
+					query += "', 'facturation'); ";
+				}
+
+				query += " CALL verification_Adresse_client('";
+				query += id;
+				query += "'); COMMIT;";
+
+
+			}
+		}
 		else if (j == 5) {
-			query = "START TRANSACTION; CALL update_Adresse_client('";
-			query += dataGridView1->Rows[i]->Cells[6]->Value->ToString();
-			query += "', '"; 
-			query += dataGridView1->Rows[i]->Cells[0]->Value->ToString();
-			query += "', '";
-			query += dataGridView1->Rows[i]->Cells[1]->Value->ToString();
 
-			System::String^ exit;
-			exit = dataGridView1->Rows[i]->Cells[2]->Value->ToString();
-			exit += "   ";
-			exit += dataGridView1->Rows[i]->Cells[3]->Value->ToString();
-			richTextBox2->Text = exit;
+			if (dataGridView1->Rows[i]->Cells[0]->Value->ToString() != "" && dataGridView1->Rows[i]->Cells[1]->Value->ToString() != "" && (dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "True" || dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "True")) {
+				query = "START TRANSACTION; CALL update_Adresse_client('";
+				query += dataGridView1->Rows[i]->Cells[6]->Value->ToString();
+				query += "', '";
+				query += dataGridView1->Rows[i]->Cells[0]->Value->ToString();
+				query += "', '";
+				query += dataGridView1->Rows[i]->Cells[1]->Value->ToString();
 
-			if ((dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "True") && (dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "True")) {
-				query += "', 'livraison et facturation');";
-			}
-			else if (dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "True") {
-				query += "', 'livraison'); ";
-			}
-			else if (dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "True") {
-				query += "', 'facturation'); ";
-			}
+				System::String^ exit;
+				exit = dataGridView1->Rows[i]->Cells[2]->Value->ToString();
+				exit += "   ";
+				exit += dataGridView1->Rows[i]->Cells[3]->Value->ToString();
+				richTextBox2->Text = exit;
 
-			query += " CALL verification_Adresse_client('";
-			//query += textBox_id->Text;
-			query += id;
-			query += "'); COMMIT;";
+				if ((dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "True") && (dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "True")) {
+					query += "', 'livraison et facturation');";
+				}
+				else if (dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "True") {
+					query += "', 'livraison'); ";
+				}
+				else if (dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "True") {
+					query += "', 'facturation'); ";
+				}
+
+				query += " CALL verification_Adresse_client('";
+				//query += textBox_id->Text;
+				query += id;
+				query += "'); COMMIT;";
+			}
 		}
 		else {
 			return;
@@ -556,6 +610,12 @@ namespace Client {
 
 
 		this->load_query();
+	}
+
+	private: System::Void dataGridView1_UserAddedRow(System::Object^ sender, System::Windows::Forms::DataGridViewRowEventArgs^ e) {
+		dataGridView1->Rows[dataGridView1->RowCount - 2]->Cells[4]->Value = "ajout";
+		dataGridView1->Rows[dataGridView1->RowCount - 2]->Cells[2]->Value = false;
+		dataGridView1->Rows[dataGridView1->RowCount - 2]->Cells[3]->Value = false;
 	}
 };
 }

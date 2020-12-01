@@ -224,19 +224,20 @@ namespace Client {
 				qstate = mysql_query(con, ch);
 				if (!qstate) {
 					res = mysql_store_result(con);
-					while (row = mysql_fetch_row(res)) {
-						id = gcnew String(row[0]);
+
+					if (res != NULL) {
+						if (res->row_count == 1) {
+							row = mysql_fetch_row(res);
+							this->Hide();
+							Client::Page_Client^ Page = gcnew Client::Page_Client(this, Convert::ToString(row[0]));
+							Page->Show();
+						}
+					}
+					else {
+						// probleme de connetion
 					}
 				}
-
-
-
-				this->Hide();
-				Client::Page_Client^ Page = gcnew Client::Page_Client(this, id);
-				Page->Show();
 			}
 		}
-	
-		
 	};
 }
