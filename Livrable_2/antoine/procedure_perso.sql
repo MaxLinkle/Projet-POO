@@ -112,8 +112,8 @@ BEGIN
   INNER JOIN Ville ON Adresse_client.ID_ville = Ville.ID_ville
   WHERE Adresse_client.ID_client = i_id_client;
 END |
-                                                                                                                                 
-                                                                                                                                 
+
+
 DROP PROCEDURE IF EXISTS update_Catalogue_perso |
 CREATE PROCEDURE update_Catalogue_perso (IN i_id_cat INT, IN i_nom VARCHAR(50), IN i_ref VARCHAR(50), IN i_prix_ht INT, IN i_tva INT, IN i_coef INT, IN i_stock INT, IN i_seuil INT, IN i_actif BOOLEAN)
 BEGIN
@@ -147,5 +147,31 @@ BEGIN
   SELECT Catalogue.nom, Catalogue.reference, Catalogue.prix_ht, Catalogue.taux_tva, Catalogue.coefficient_economie, Catalogue.stock, Catalogue.seuil_reapprovisionnement, Catalogue.actif
   FROM Catalogue
   WHERE Catalogue.ID_article = i_id;
+END |
+
+
+DROP PROCEDURE IF EXISTS ajout_Catalogue_perso |
+CREATE PROCEDURE ajout_Catalogue_perso (IN i_nom VARCHAR(50), IN i_ref VARCHAR(50), IN i_prix_ht INT, IN i_tva INT, IN i_coef INT, IN i_stock INT, IN i_seuil INT, IN i_actif BOOLEAN)
+BEGIN
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    ROLLBACK;
+  END;
+
+  INSERT INTO Catalogue (nom, reference, prix_ht, taux_tva, coefficient_economie, stock, seuil_reapprovisionnement, actif)
+  VALUES (i_nom, i_ref, i_prix_ht, i_tva, i_coef, i_stock, i_seuil, i_actif);
+END |
+
+DROP PROCEDURE IF EXISTS verification_ajout_Catalogue_perso |
+CREATE PROCEDURE verification_ajout_Catalogue_perso (IN i_nom VARCHAR(50), IN i_ref VARCHAR(50), IN i_prix_ht INT, IN i_tva INT, IN i_coef INT, IN i_stock INT, IN i_seuil INT, IN i_actif BOOLEAN)
+BEGIN
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    ROLLBACK;
+  END;
+
+  SELECT *
+  FROM Catalogue
+  WHERE Catalogue.nom = i_nom, Catalogue.reference = i_ref, Catalogue.prix_ht = i_prix_ht, Catalogue.taux_tva = i_tva, Catalogue.coefficient_economie = i_coef, Catalogue.stock = i_stock, Catalogue.seuil_reapprovisionnement = seuil, Catalogue.actif = i_actif;
 END |
 DELIMITER ;
