@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Choix.h"
-
+//#include "EspacePerso.h"
+#include "CataloguePersonnel.h"
 using namespace System;
 
 //int main(array<System::String ^> ^args)
@@ -15,6 +15,7 @@ using namespace System::Windows::Forms;
 int main() {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
-	Application::Run(gcnew NS_Choix::Choix()); 
+	Application::Run(gcnew Perso::Catalogue_Perso());
+	
 	return 0;
 }

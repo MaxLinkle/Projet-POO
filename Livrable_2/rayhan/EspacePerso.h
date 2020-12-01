@@ -274,13 +274,13 @@ namespace NS_EspacePersonnel {
 
 	
 	private: System::Void Rb_Client_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-		this->Rechercher->Click -= f;
-		f = gcnew EventHandler(this,&EspPerso::RechercheClient); 
-		this->Rechercher->Click += f;
+		//this->Rechercher->Click -= f;
+		//f = gcnew EventHandler(this,&EspPerso::RechercheClient); 
+		//this->Rechercher->Click += f;
 
-		this->Creer->Click -= g;
-		g = gcnew EventHandler(this, &EspPerso::CreerClient);
-		this->Creer->Click += g;
+		//this->Creer->Click -= g;
+		//g = gcnew EventHandler(this, &EspPerso::CreerClient);
+		//this->Creer->Click += g;
 		
 		dataGridView1->AllowUserToAddRows = true;
 		dataGridView1->AllowUserToDeleteRows = true;
@@ -314,13 +314,13 @@ namespace NS_EspacePersonnel {
 	}
 
 	private: System::Void Rb_Personnel_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-		this->Rechercher->Click -= f;
-		f = gcnew EventHandler(this , &EspPerso::RecherchePersonnel);
-		this->Rechercher->Click += f;
-		
-		this->Creer->Click -= g;
-		g = gcnew EventHandler(this, &EspPerso::CreerPersonnel);
-		this->Creer->Click += g;
+		//this->Rechercher->Click -= f;
+		//f = gcnew EventHandler(this , &EspPerso::RecherchePersonnel);
+		//this->Rechercher->Click += f;
+		//
+		//this->Creer->Click -= g;
+		//g = gcnew EventHandler(this, &EspPerso::CreerPersonnel);
+		//this->Creer->Click += g;
 
 		dataGridView1->AllowUserToAddRows = false;
 		dataGridView1->AllowUserToDeleteRows = false;
@@ -342,8 +342,7 @@ namespace NS_EspacePersonnel {
 
 	System::Void RechercheClient(System::Object^ sender, System::EventArgs^ e) {
 
-		//label3->Text = "Clients";
-
+		
 
 	}
 

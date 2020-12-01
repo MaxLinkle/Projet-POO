@@ -52,6 +52,8 @@ namespace Perso {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ data_stock;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ data_seuil;
 	private: System::Windows::Forms::DataGridViewCheckBoxColumn^ data_actif;
+	private: System::Windows::Forms::TextBox^ textBox1;
+	private: System::Windows::Forms::RichTextBox^ richTextBox1;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ data_save;
 
 
@@ -74,17 +76,23 @@ namespace Perso {
 			   this->data_seuil = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			   this->data_actif = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
 			   this->data_save = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			   this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			   this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			   this->SuspendLayout();
 			   // 
 			   // dataGridView1
 			   // 
+			   this->dataGridView1->AllowUserToDeleteRows = false;
 			   this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			   this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(10) {
 				   this->data_id,
 					   this->data_nom, this->data_ref, this->data_prixht, this->data_tva, this->data_coeff, this->data_stock, this->data_seuil, this->data_actif,
 					   this->data_save
 			   });
+
+			   
+
 			   this->dataGridView1->Location = System::Drawing::Point(12, 56);
 			   this->dataGridView1->Name = L"dataGridView1";
 			   this->dataGridView1->RowHeadersWidth = 51;
@@ -92,6 +100,7 @@ namespace Perso {
 			   this->dataGridView1->Size = System::Drawing::Size(1178, 263);
 			   this->dataGridView1->TabIndex = 0;
 			   this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Catalogue_Perso::dataGridView1_CellContentClick);
+			   this->dataGridView1->UserAddedRow += gcnew System::Windows::Forms::DataGridViewRowEventHandler(this, &Catalogue_Perso::dataGridView1_UserAddedRow);
 			   // 
 			   // data_id
 			   // 
@@ -164,17 +173,35 @@ namespace Perso {
 			   this->data_save->Name = L"data_save";
 			   this->data_save->Width = 125;
 			   // 
+			   // textBox1
+			   // 
+			   this->textBox1->Location = System::Drawing::Point(12, 361);
+			   this->textBox1->Name = L"textBox1";
+			   this->textBox1->Size = System::Drawing::Size(609, 22);
+			   this->textBox1->TabIndex = 1;
+			   // 
+			   // richTextBox1
+			   // 
+			   this->richTextBox1->Location = System::Drawing::Point(639, 325);
+			   this->richTextBox1->Name = L"richTextBox1";
+			   this->richTextBox1->Size = System::Drawing::Size(586, 130);
+			   this->richTextBox1->TabIndex = 2;
+			   this->richTextBox1->Text = L"";
+			   // 
 			   // Catalogue_Perso
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			   this->ClientSize = System::Drawing::Size(1267, 460);
+			   this->Controls->Add(this->richTextBox1);
+			   this->Controls->Add(this->textBox1);
 			   this->Controls->Add(this->dataGridView1);
 			   this->Name = L"Catalogue_Perso";
 			   this->Text = L"Choix";
 			   this->Load += gcnew System::EventHandler(this, &Catalogue_Perso::Catalogue_Perso_Load);
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			   this->ResumeLayout(false);
+			   this->PerformLayout();
 
 		   }
 #pragma endregion
@@ -204,7 +231,7 @@ namespace Perso {
 			this->dataGridView1->Refresh();
 
 			System::String^ query;
-			query = "SELECT ID_article, nom, reference, prix_ht, taux_tva, coefficient_economie, stock, seuil_reapprovisionnement, actif FROM Catalogue,";
+			query = "SELECT ID_article, nom, reference, prix_ht, taux_tva, coefficient_economie, stock, seuil_reapprovisionnement, actif FROM Catalogue;";
 
 			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
 			size_t convertedChars = 0;
@@ -234,10 +261,17 @@ namespace Perso {
 					dataGridView1->Rows[i]->Cells[6]->Value = gcnew String(row[6]);
 					dataGridView1->Rows[i]->Cells[7]->Value = gcnew String(row[7]);
 
-					if (gcnew String(row[8]) == "true") {
+					System::String^ mensonge;
+					mensonge = "oui ";
+					mensonge += gcnew String(row[8]);
+
+					textBox1->Text = mensonge;
+
+
+					if (gcnew String(row[8]) == "1") {
 						dataGridView1->Rows[i]->Cells[8]->Value = true;
 					}
-					else if (gcnew String(row[8]) == "false") {
+					else if (gcnew String(row[8]) == "0") {
 						dataGridView1->Rows[i]->Cells[8]->Value = false;
 					}
 				
@@ -257,16 +291,71 @@ namespace Perso {
 			System::String^ query;
 
 			if (j == 9){
+				query = "START TRANSACTION; CALL update_Catalogue_perso('";
+				query += dataGridView1->Rows[i]->Cells[0]->Value->ToString();
+				query += "', '";
+				query += dataGridView1->Rows[i]->Cells[1]->Value->ToString();
+				query += "', '";
+				query += dataGridView1->Rows[i]->Cells[2]->Value->ToString();
+				query += "', '";
+				query += dataGridView1->Rows[i]->Cells[3]->Value->ToString();
+				query += "', '";
+				query += dataGridView1->Rows[i]->Cells[4]->Value->ToString();
+				query += "', '";
+				query += dataGridView1->Rows[i]->Cells[5]->Value->ToString();
+				query += "', '";
+				query += dataGridView1->Rows[i]->Cells[6]->Value->ToString();
+				query += "', '";
+				query += dataGridView1->Rows[i]->Cells[7]->Value->ToString();
 
+
+				if (dataGridView1->Rows[i]->Cells[8]->Value->ToString() == "True") {
+					query += "', '1');";
+				}
+				else if (dataGridView1->Rows[i]->Cells[8]->Value->ToString() == "False") {
+					query += "', '0');";
+				}
+
+				query += " CALL verification_Catalogue_perso('";
+				query += dataGridView1->Rows[i]->Cells[0]->Value->ToString();
+				query += "'); COMMIT;";
 			}
 			else {
 				return;
 			}
+
+			richTextBox1->Text = query;
+
+			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+			size_t convertedChars = 0;
+			size_t  sizeInBytes = ((query->Length + 1) * 2);
+			errno_t err = 0;
+
+			char* ch = (char*)malloc(sizeInBytes);
+			err = wcstombs_s(&convertedChars,
+				ch, sizeInBytes,
+				wch, sizeInBytes);
+
+			bool qstate;
+
+			qstate = mysql_query(con, ch);
+			if (qstate) {
+				//erreur
+			}
+			else {
+				//cool
+			}
+
+			load_query();
 		}	
 
 
 		private: System::Void Catalogue_Perso_Load(System::Object^ sender, System::EventArgs^ e) {
 			load_query();
+		}
+
+		private: System::Void dataGridView1_UserAddedRow(System::Object^ sender, System::Windows::Forms::DataGridViewRowEventArgs^ e) {
+		
 		}
 	};
 }

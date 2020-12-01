@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 //#include "UserControle.h"
+#include "Individu.h"
 #include <consoleapi.h>
 #include <iostream> 
 
