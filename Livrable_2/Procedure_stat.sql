@@ -44,7 +44,7 @@ END |
 DROP PROCEDURE IF EXISTS `Stat_Panier_moy` |
 CREATE PROCEDURE `Stat_Panier_moy` (IN `PNom` VARCHAR(50),IN `PPrenom` VARCHAR(50))
 BEGIN
-  SELECT AVG(prix_ht+prix_tva)
+  SELECT AVG(prix_ht+prix_tva - remise)
   FROM Client NATURAL JOIN Commande
   WHERE nom = PNom AND prenom = PPrenom;
 END |
@@ -53,7 +53,7 @@ END |
 DROP PROCEDURE IF EXISTS `Stat_Total_achat_client` |
 CREATE PROCEDURE `Stat_Total_achat_client` (IN `PNom` VARCHAR(50),IN `PPrenom` VARCHAR(50))
 BEGIN
-  SELECT SUM(prix_ht+prix_tva)
+  SELECT SUM(prix_ht+prix_tva - remise)
   FROM Client NATURAL JOIN Commande
   WHERE nom = PNom AND prenom = PPrenom;
 END |
