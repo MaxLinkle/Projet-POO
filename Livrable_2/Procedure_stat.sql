@@ -34,3 +34,13 @@ BEGIN
   LIMIT 10;
 END |
 DELIMITER ;
+
+DELIMITER |
+DROP PROCEDURE IF EXISTS `Stat_Panier_moy` |
+CREATE PROCEDURE `Stat_Panier_moy` (IN `PNom` VARCHAR(50),IN `PPrenom` VARCHAR(50))
+BEGIN
+SELECT AVG(prix_ht+prix_tva)
+FROM Client NATURAL JOIN Commande 
+WHERE nom = PNom AND prenom = PPrenom;
+END |
+DELIMITER;
