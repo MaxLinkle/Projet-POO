@@ -33,4 +33,21 @@ BEGIN
   ORDER BY quantite_total ASC
   LIMIT 10;
 END |
+
+
+DROP PROCEDURE IF EXISTS Stat_Achat_stock |
+CREATE PROCEDURE Stat_Achat_stock ()
+BEGIN
+  SELECT Catalogue.nom, Catalogue.stock, AVG(Catalogue.prix_ht * 0.5) AS Valeur_achat
+  FROM Catalogue;
+END |
+
+
+DROP PROCEDURE IF EXISTS `Stat_Panier_moy` |
+CREATE PROCEDURE `Stat_Panier_moy` (IN `PNom` VARCHAR(50),IN `PPrenom` VARCHAR(50))
+BEGIN
+SELECT AVG(prix_ht+prix_tva)
+FROM Client NATURAL JOIN Commande
+WHERE nom = PNom AND prenom = PPrenom;
+END |
 DELIMITER ;
