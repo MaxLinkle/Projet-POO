@@ -64,4 +64,17 @@ BEGIN
   FROM  Commande
   WHERE MONTH(date_solde) = MONTH(PDAte) AND  YEAR(date_solde) = YEAR(PDAte);
 END |
+                                                                                       
+
+DROP PROCEDURE IF EXISTS `generer_reference`|
+CREATE PROCEDURE `generer_reference`(IN `id_client` INT, IN `id_commande` INT, OUT `reference` VARCHAR(50)) 
+BEGIN
+   SELECT CONCAT(LEFT(T1.prenom, 2), LEFT(T1.nom, 2), YEAR(NOW()), LEFT(T2.ville, 3), id_commande) INTO reference
+  FROM (SELECT Client.* , Commande.ID_adresse_livraison FROM Client
+  NATURAL JOIN Commande WHERE Commande.ID_commande = id_commande) AS T1
+  INNER JOIN (SELECT * FROM Adresse_client
+  NATURAL JOIN Ville) AS T2
+ ON T2.ID_adresse_client = T1.ID_adresse_livraison;
+END |                                                                                     
+                                                                                       
 DELIMITER ;
