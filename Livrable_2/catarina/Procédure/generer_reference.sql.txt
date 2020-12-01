@@ -1,0 +1,14 @@
+DELIMITER $$
+CREATE DEFINER=`admin`@`%` PROCEDURE `generer_reference`(IN `id_client` INT, IN `id_commande` INT, OUT `reference` VARCHAR(20))
+BEGIN
+  SELECT CONCAT(LEFT(Client.prenom, 2), LEFT(Client.nom, 2), YEAR(NOW()), LEFT(Ville.ville, 3), id_commande) INTO reference
+  FROM Client
+  INNER JOIN Adresse_client
+    ON Client.ID_client = Adresse_client.ID_client
+      AND (Adresse_client.ID_type_adresse = 1 
+        OR Adresse_client.ID_type_adresse = 3)
+  INNER JOIN Ville
+    ON Adresse_client.ID_ville = Ville.ID_ville
+  WHERE Client.ID_client = id_client;
+END$$
+DELIMITER ;
