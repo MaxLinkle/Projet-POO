@@ -1,1 +1,3 @@
-﻿  appli.vcxproj -> D:\SCOLAIRE\CESI\2eme année\projet\Programme_objet\appli\x64\Release\appli.exe
+﻿  CppCLR_WinformsProjekt.cpp
+D:\SCOLAIRE\CESI\2eme année\projet\Programme_objet\appli\appli\Connection_Client.h(195,21): warning C4101: 'id' : variable locale non référencée
+  appli.vcxproj -> D:\SCOLAIRE\CESI\2eme année\projet\Programme_objet\appli\x64\Release\appli.exe
