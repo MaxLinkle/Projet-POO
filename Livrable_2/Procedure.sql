@@ -38,4 +38,26 @@ BEGIN
   INNER JOIN Ville ON Adresse_client.ID_ville = Ville.ID_ville
   WHERE nom = i_nom AND prenom = i_prenom AND date_naissance = i_date_naissance;
 END |
+
+DELIMITER |
+
+DROP PROCEDURE IF EXISTS `Ajouter_Adresse_Perso` |
+CREATE PROCEDURE `Ajouter_Adresse_Perso`(IN IDPERSO INT, IN PVille VARCHAR(50),IN PAdresse VARCHAR(50)) 
+BEGIN
+  DECLARE IDVil INT;
+  SELECT ID_Ville INTO IDVil FROM Ville WHERE PVille = ville;
+  IF(SELECT COUNT(*) FROM Adresse_personnel WHERE ID_personnel = IDPerso) = 0 THEN
+
+    INSERT INTO Adresse_personnel(ID_personnel,adresse_personnel,ID_ville) VALUES (IDPerso,PAdresse,IDvil);
+
+  ELSEIF (SELECT COUNT(*) FROM Adresse_personnel WHERE ID_personnel = IDPerso) = 1 THEN
+
+    UPDATE Adresse_personnel SET adresse_personnel = PAdresse , ID_ville = IDvil WHERE IDPerso = ID_personnel;
+
+  END IF;
+
+
+END |
+
+
 DELIMITER ;
