@@ -2,7 +2,7 @@
 #include <mysql.h>
 #include<vcclr.h>
 #include "Facture.h"
-#include"MyForm.h"
+#include"Catalogue_Client.h"
 
 namespace Client {
 
@@ -845,14 +845,7 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	//Si les adresses de livraison et de facturation existe déjà
 	if (Liv_Existe_Btn->Checked == true && Fact_Exist_Btn->Checked == true)
 	{
-		for (int n = 0; n < RecapData->RowCount; n++)
-		{
-			query = gcnew String("CALL update_Catalogue('");
-			query += RecapData->Rows[n]->Cells[2]->Value->ToString();
-			query += gcnew String("','");
-			query += RecapData->Rows[n]->Cells[3]->Value->ToString();
-			query += gcnew String("';");
-		}
+		
 		query = "CALL ajout_Commande('";
 		query += totHT_txt->Text;
 		query += "', '";
@@ -876,20 +869,69 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		query += "', '";
 		query += Metho_achat->SelectedItem->ToString();
 		query += "'); ";
-		/*for (int n = 0; n < RecapData->RowCount; n++)
-		{
-			query = gcnew String("CALL update_Catalogue('");
-			query += RecapData->Rows[n]->Cells[2]->Value->ToString();
-			query += gcnew String("','");
-			query += RecapData->Rows[n]->Cells[3]->Value->ToString();
-			query += gcnew String("';");
-		}*/
+	}
+	else if (Fact_Nouv_Btn->Checked == true && Liv_Nouv_Btn->Checked == true)
+	{
+
+		if (Liv_Txt->Text == Fact_Txt->Text && Ville_liv->Text == Ville_fact->Text) {
+			query += "CALL ajout_Adresse_client('";
+			query += id_client->Text;
+			query += "', '";
+			query += Liv_Txt->Text;
+			query += "', '";
+			query += Ville_liv->Text;
+			query += "', 'livraison et facturation'); ";
+		}
+		else {
+			query += "CALL ajout_Adresse_client('";
+			query += id_client->Text;
+			query += "', '";
+			query += Liv_Txt->Text;
+			query += "', '";
+			query += Ville_liv->Text;
+			query += "', 'livraison'); ";
+
+			query += "CALL ajout_Adresse_client('";
+			query += id_client->Text;
+			query += "', '";
+			query += Fact_Txt->Text;
+			query += "', '";
+			query += Ville_fact->Text;
+			query += "', 'facturation'); ";
+		}
+
+		query += "CALL ajout_Commande('";
+		query += totHT_txt->Text;
+		query += "', '";
+		query += totTVA_txt->Text;
+		query += "', '";
+		query += Remise->Text;
+		query += "', '";
+		query += dateLiv->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += dateEmi->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += datePaye->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += dateSolde->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += Liv_Txt->Text;
+		query += "', '";
+		query += Fact_Txt->Text;
+		query += "', '";
+		query += id_client->Text;
+		query += "', '";
+		query += Metho_achat->SelectedItem->ToString();
+		query += "'); ";
+
 	}
 	//Si l'utilisateur rentre une nouvelle adresse de livraison
 	else if (Liv_Nouv_Btn->Checked == true)
 	{
 
-		query += ("CALL ajout_Adresse_client(NULL,'");
+		query += "CALL ajout_Adresse_client('";
+		query += id_client->Text;
+		query += "', '";
 		query += Liv_Txt->Text;
 		query += "', '";
 		query += Ville_liv->Text;
@@ -908,7 +950,7 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		query += "', '";
 		query += dateSolde->Value.Date.ToString("yyyy/MM/dd");
 		query += "', '";
-		query += adresse_de_liv;
+		query += Liv_Txt->Text;
 		query += "', '";
 		query += adresse_de_fact;
 		query += "', '";
@@ -918,11 +960,14 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		query += "');";
 		
 	}
+	//Si l'utilisateur rentre une nouvelle adresse de facturation
 	else if (Fact_Nouv_Btn->Checked == true)
 	{
 		
-		query += "CALL ajout_Adresse_client(NULL,'";
-		query += adresse_de_fact;
+		query += "CALL ajout_Adresse_client('";
+		query += id_client->Text;
+		query += "', '";
+		query += Fact_Txt->Text;
 		query += "', '";
 		query += Ville_fact->Text;
 		query += "', 'facturation'); CALL ajout_Commande('";
@@ -942,7 +987,7 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		query += "', '";
 		query += adresse_de_liv;
 		query += "', '";
-		query += adresse_de_fact;
+		query += Fact_Txt->Text;
 		query += "', '";
 		query += id_client->Text;
 		query += "', '";
@@ -950,88 +995,6 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		query += "'); ";
 	}
 
-	else if (Fact_Nouv_Btn->Checked == true && Liv_Nouv_Btn->Checked == true)
-	{
-		if (Fact_Txt->Text != Select_Liv_Combo->Items->ToString())
-		{
-			Fact = "facturation";
-		}
-		else if (Fact_Txt->Text == Select_Liv_Combo->Items->ToString())
-		{
-			Fact = "livraison et facturation";
-		}
-		if (Liv_Txt->Text != Select_Fact_Combo->Items->ToString())
-		{
-			Liv = "livraison";
-		}
-		else if (Liv_Txt->Text == Select_Fact_Combo->Items->ToString())
-		{
-			Liv = "livraison et facturation";
-		}
-
-		
-
-		if (Liv_Txt->Text == Fact_Txt->Text && Ville_liv->Text == Ville_fact->Text) {
-			query = ("CALL ajout_Adresse_client(NULL,'");
-			query += Liv_Txt->Text;
-			query += "', '";
-			query += Ville_liv->Text;
-			query += "', 'livraison et facturation'); CALL ajout_Commande('";
-		}
-		else {
-			query = ("CALL ajout_Adresse_client(NULL,'");
-			query += Liv_Txt->Text;
-			query += "', '";
-			query += Ville_liv->Text;
-			query += "', 'livraison'); ";
-
-			query = ("CALL ajout_Adresse_client(NULL,'");
-			query += Fact_Txt->Text;
-			query += "', '";
-			query += Ville_fact->Text;
-			query += "', 'facturation'); ";
-		}
-
-		query += "CALL ajout_Adresse_client(NULL,'";
-		query += adresse_de_fact;
-		query += "', '";
-		query += Ville_fact->Text;
-		query += "', 'facturation'); CALL ajout_Commande('";
-		query += totHT_txt->Text;
-		query += "', '";
-		query += totTVA_txt->Text;
-		query += "', '";
-		query += Remise->Text;
-		query += "', '";
-		query += dateLiv->Value.Date.ToString("yyyy/MM/dd");
-		query += "', '";
-		query += dateEmi->Value.Date.ToString("yyyy/MM/dd");
-		query += "', '";
-		query += datePaye->Value.Date.ToString("yyyy/MM/dd");
-		query += "', '";
-		query += dateSolde->Value.Date.ToString("yyyy/MM/dd");
-		query += "', '";
-		query += adresse_de_liv;
-		query += "', '";
-		query += adresse_de_fact;
-		query += "', '";
-		query += id_client->Text;
-		query += "', '";
-		query += Metho_achat->SelectedItem->ToString();
-		query += "'); ";
-
-	}
-
-
-	// STOCk 
-	/*for (int n = 0; n < RecapData->RowCount; n++)
-	{
-		query = gcnew String("CALL update_Catalogue('");
-		query += RecapData->Rows[n]->Cells[2]->Value->ToString();
-		query += gcnew String("','");
-		query += RecapData->Rows[n]->Cells[3]->Value->ToString();
-		query += gcnew String("';");
-	}*/
 
 	pin_ptr<const wchar_t> wch = PtrToStringChars(query);
 	size_t convertedChars = 0;
@@ -1046,14 +1009,74 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	std::cout << ch << std::endl << std::endl;
 
 
-	richTextBox1->Text = query;
+	System::String^ id_commande;
 
 	//Execution de la requête
 	qstate = mysql_query(con, ch);
 	if (!qstate)
 	{
 		res = mysql_store_result(con);
+		while (row = mysql_fetch_row(res))
+		{
+			id_commande = gcnew String(row[0]);
+		}
 	}
+
+
+	System::String^ query_2;
+	// STOCk 
+	for (int n = 0; n < RecapData->RowCount -1 ; n++)
+	{
+		query_2 += "CALL update_Catalogue_stock('";
+		query_2 += RecapData->Rows[n]->Cells[3]->Value->ToString();
+		query_2 += "', '";
+		query_2 += RecapData->Rows[n]->Cells[2]->Value->ToString();
+		query_2 += "'); ";
+	}
+
+	// Fournir
+	for (int n = 0; n < RecapData->RowCount - 1; n++)
+	{
+		query_2 += "CALL ajout_Fournir('";
+		query_2 += RecapData->Rows[n]->Cells[2]->Value->ToString();
+		query_2 += "', '";
+		query_2 += RecapData->Rows[n]->Cells[3]->Value->ToString();
+		query_2 += "', '";
+		query_2 += id_commande;
+		query_2 += "'); ";
+	}
+
+	pin_ptr<const wchar_t> wch_2 = PtrToStringChars(query_2);
+	size_t convertedChars_2 = 0;
+	size_t  sizeInBytes_2 = ((query->Length + 1) * 2);
+	errno_t err_2 = 0;
+	char* ch_2 = (char*)malloc(sizeInBytes_2);
+	err_2 = wcstombs_s(&convertedChars_2,
+		ch_2, sizeInBytes_2,
+		wch_2, sizeInBytes_2);
+
+
+	std::cout << ch_2 << std::endl << std::endl;
+
+	con = mysql_init(NULL);
+
+	if (con == NULL)
+	{
+		finish_with_error(con);
+		exit(1);
+	}
+
+	if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
+		finish_with_error(con);
+	}
+
+	//Execution de la requête
+	qstate = mysql_query(con, ch_2);
+	if (!qstate)
+	{
+		res = mysql_store_result(con);
+	}
+	
 	
 	//Création d'une DataTable pour stocké les donnée à envoyer dans Facture.h	
 	DataTable^ transfert = gcnew DataTable();
