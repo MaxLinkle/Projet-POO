@@ -135,7 +135,7 @@ namespace NS_SuperC {
 
 	public:
 	System::Void Personnel_Load(System::Object^ sender, System::EventArgs^ e) {
-		if (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
+		if (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
 			errorProvider1->SetError((Control^)sender, "Connection impossible a la base");
 		}
 		else {
@@ -144,7 +144,7 @@ namespace NS_SuperC {
 	}
 
 	private: System::Void Actualiser_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
+		if (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
 			errorProvider1->SetError((Control^)sender, "Connection impossible a la base");
 		}
 		else {
@@ -173,7 +173,7 @@ namespace NS_SuperC {
 
 protected:
 	 MYSQL_RES* executerQuery(char* query) {
-
+		 
 		 while(mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) { }
 
 		 int state = mysql_query(database, query);
@@ -188,6 +188,45 @@ protected:
 		 
 		 }
 	 }
+
+	 MYSQL_RES* executerQuery(String^ QueryS) {
+		 char * query = ToStringQuery(QueryS);
+
+		 while (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {}
+
+		 int state = mysql_query(database, query);
+		 //mysql_error(database) ;
+		 if (!state) {
+
+			 return mysql_store_result(database);
+
+		 }
+		 else {
+
+			 return NULL;
+
+		 }
+	 }
+
+	 bool executerNonQuery(String^ QueryS) {
+		 char * query = ToStringQuery(QueryS);
+
+		 while (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {}
+
+		 int state = mysql_query(database, query);
+		 //mysql_error(database) ;
+		 return (!state);
+	 }
+
+	 bool executerNonQuery(char* query) {
+
+		 while (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {}
+
+		 int state = mysql_query(database, query);
+		 //mysql_error(database) ;
+		 return (!state);
+	 }
+
 
 
 	};

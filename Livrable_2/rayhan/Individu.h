@@ -15,9 +15,9 @@ public ref struct Struct_Adresse {
 public class MapIndi {
 public:
 
-	virtual String^ MapperIDtoAddr(String^ ID) {};
-	virtual String^ MapperID(Struct_Adresse_Cli^ Adr, String^ PNom, String^ PPrenom, String^ PDate) {};
-	virtual String^ MapperIdent(String^ ID) {};
+	virtual String^ MapperIDtoAddr(String^ ID) { return nullptr; };
+	virtual String^ MapperID(Struct_Adresse_Cli^ Adr, String^ PNom, String^ PPrenom, String^ PDate) { return nullptr; };
+	virtual String^ MapperIdent(String^ ID) { return nullptr; };
 
 };
 
@@ -119,6 +119,7 @@ protected:
 	String^ Nom;
 	String^ Prenom;
 	String^ Date;
+	Struct_Adresse^ Adresse;
 public:
 	Individu(String^ PID) {
 		ID = PID;
@@ -126,23 +127,27 @@ public:
 		Prenom = "";
 		Date = "";
 	}
-	Individu(String^ PNom, String^ PPrenom, String^ PDate) {
+	Individu(String^ PNom, String^ PPrenom, String^ PDate, Struct_Adresse_Cli^ Adr) {
 		ID = "";
 		Nom = PNom;
 		Prenom = PPrenom;
 		Date = PDate;
+		Adresse = Adr;
+		
+	}
+	~Individu() {
+		delete svc_Mappage;
 	}
 
 };
 
 public ref class Client : public Individu {
-private :
-
-	Struct_Adresse^ Adresse;
-
 public :
 
-	Client(Struct_Adresse_Cli^ Adr, String^ PNom, String^ PPrenom, String^ PDate) :Individu(PNom, PPrenom, PDate) { Adresse = Adr; }
+	Client(Struct_Adresse_Cli^ Adr ,String^ PNom, String^ PPrenom, String^ PDate) :Individu(PNom, PPrenom, PDate, Adr) {
+		
+		svc_Mappage = new MapCLi();
+	}
 	
 	Client(String^ PID) :Individu(PID) {}
 
@@ -150,11 +155,10 @@ public :
 
 
 public ref class Personnel : public Individu {
-private :
-	Struct_Adresse^ Adresse;
 public :
-	Personnel(Struct_Adresse_Cli^ Adr, String^ PNom, String^ PPrenom, String^ PDate) :Individu(PNom, PPrenom, PDate) { Adresse = Adr; }
+	Personnel(Struct_Adresse_Cli^ Adr, String^ PNom, String^ PPrenom, String^ PDate) :Individu(PNom, PPrenom, PDate,Adr) { svc_Mappage = new MapCLi(); }
 	Personnel(String^ PID):Individu(PID){}
+	
 };
 
 

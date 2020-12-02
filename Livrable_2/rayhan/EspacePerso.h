@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "UserControle.h"
 #include "SC.h"
+#include "Recherche.h"
 namespace NS_EspacePersonnel {
 
 	using namespace System;
@@ -10,6 +11,7 @@ namespace NS_EspacePersonnel {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace NS_Recherche;
 	delegate System::Void PRecherche(System::Object^ sender, System::EventArgs^ e);
 	
 
@@ -43,6 +45,8 @@ namespace NS_EspacePersonnel {
 
 	private: System::Windows::Forms::Label^ label4;
 	private: System::Windows::Forms::CheckBox^ checkBox1;
+	private: System::Windows::Forms::Button^ Stat;
+
 	public:
 
 	private :
@@ -106,12 +110,12 @@ namespace NS_EspacePersonnel {
 			   this->TextPrenomSup = (gcnew System::Windows::Forms::TextBox());
 			   this->label4 = (gcnew System::Windows::Forms::Label());
 			   this->CheckDate = (gcnew System::Windows::Forms::CheckBox());
-			   this->LDate = (gcnew System::Windows::Forms::Label());
-			   this->Date = (gcnew System::Windows::Forms::DateTimePicker());
 			   this->label2 = (gcnew System::Windows::Forms::Label());
 			   this->label1 = (gcnew System::Windows::Forms::Label());
+			   this->LDate = (gcnew System::Windows::Forms::Label());
 			   this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			   this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			   this->Date = (gcnew System::Windows::Forms::DateTimePicker());
 			   this->Rb_Personnel = (gcnew System::Windows::Forms::RadioButton());
 			   this->Rb_Client = (gcnew System::Windows::Forms::RadioButton());
 			   this->label3 = (gcnew System::Windows::Forms::Label());
@@ -119,6 +123,7 @@ namespace NS_EspacePersonnel {
 			   this->Creer = (gcnew System::Windows::Forms::Button());
 			   this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
 			   this->button1 = (gcnew System::Windows::Forms::Button());
+			   this->Stat = (gcnew System::Windows::Forms::Button());
 			   this->groupBox1->SuspendLayout();
 			   this->GroupSuperieur->SuspendLayout();
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
@@ -215,23 +220,6 @@ namespace NS_EspacePersonnel {
 			   this->CheckDate->UseVisualStyleBackColor = true;
 			   this->CheckDate->CheckedChanged += gcnew System::EventHandler(this, &EspPerso::CheckDate_CheckedChanged);
 			   // 
-			   // LDate
-			   // 
-			   this->LDate->AutoSize = true;
-			   this->LDate->Location = System::Drawing::Point(366, 60);
-			   this->LDate->Name = L"LDate";
-			   this->LDate->Size = System::Drawing::Size(131, 17);
-			   this->LDate->TabIndex = 7;
-			   this->LDate->Text = L"Date d\'anniversaire";
-			   // 
-			   // Date
-			   // 
-			   this->Date->CustomFormat = L"yyyy-MM-dd";
-			   this->Date->Location = System::Drawing::Point(369, 78);
-			   this->Date->Name = L"Date";
-			   this->Date->Size = System::Drawing::Size(128, 22);
-			   this->Date->TabIndex = 1;
-			   // 
 			   // label2
 			   // 
 			   this->label2->AutoSize = true;
@@ -250,6 +238,15 @@ namespace NS_EspacePersonnel {
 			   this->label1->TabIndex = 4;
 			   this->label1->Text = L"Nom";
 			   // 
+			   // LDate
+			   // 
+			   this->LDate->AutoSize = true;
+			   this->LDate->Location = System::Drawing::Point(366, 60);
+			   this->LDate->Name = L"LDate";
+			   this->LDate->Size = System::Drawing::Size(131, 17);
+			   this->LDate->TabIndex = 7;
+			   this->LDate->Text = L"Date d\'anniversaire";
+			   // 
 			   // textBox2
 			   // 
 			   this->textBox2->Location = System::Drawing::Point(211, 78);
@@ -263,6 +260,14 @@ namespace NS_EspacePersonnel {
 			   this->textBox1->Name = L"textBox1";
 			   this->textBox1->Size = System::Drawing::Size(100, 22);
 			   this->textBox1->TabIndex = 2;
+			   // 
+			   // Date
+			   // 
+			   this->Date->CustomFormat = L"yyyy-MM-dd";
+			   this->Date->Location = System::Drawing::Point(369, 78);
+			   this->Date->Name = L"Date";
+			   this->Date->Size = System::Drawing::Size(128, 22);
+			   this->Date->TabIndex = 1;
 			   // 
 			   // Rb_Personnel
 			   // 
@@ -305,6 +310,7 @@ namespace NS_EspacePersonnel {
 			   this->Rechercher->TabIndex = 1;
 			   this->Rechercher->Text = L"Rechercher";
 			   this->Rechercher->UseVisualStyleBackColor = true;
+			   this->Rechercher->Click += gcnew System::EventHandler(this, &EspPerso::Recherche);
 			   // 
 			   // Creer
 			   // 
@@ -314,6 +320,7 @@ namespace NS_EspacePersonnel {
 			   this->Creer->TabIndex = 2;
 			   this->Creer->Text = L"Creer";
 			   this->Creer->UseVisualStyleBackColor = true;
+			   this->Creer->Click += gcnew System::EventHandler(this, &EspPerso::CreerIndi);
 			   // 
 			   // dataGridView1
 			   // 
@@ -334,11 +341,22 @@ namespace NS_EspacePersonnel {
 			   this->button1->Text = L"Article >>";
 			   this->button1->UseVisualStyleBackColor = true;
 			   // 
+			   // Stat
+			   // 
+			   this->Stat->Location = System::Drawing::Point(223, 5);
+			   this->Stat->Name = L"Stat";
+			   this->Stat->Size = System::Drawing::Size(152, 33);
+			   this->Stat->TabIndex = 11;
+			   this->Stat->Text = L"Statistique";
+			   this->Stat->UseVisualStyleBackColor = true;
+			   this->Stat->Click += gcnew System::EventHandler(this, &EspPerso::button2_Click);
+			   // 
 			   // EspPerso
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			   this->ClientSize = System::Drawing::Size(609, 551);
+			   this->Controls->Add(this->Stat);
 			   this->Controls->Add(this->button1);
 			   this->Controls->Add(this->label3);
 			   this->Controls->Add(this->dataGridView1);
@@ -376,6 +394,8 @@ namespace NS_EspacePersonnel {
 		//this->Creer->Click -= g;
 		//g = gcnew EventHandler(this, &EspPerso::CreerClient);
 		//this->Creer->Click += g;
+		TextNomSup->Text = "";
+		TextPrenomSup->Text = "";
 		func = gcnew Addrgetter(this, &EspPerso::AddrClient);
 		dataGridView1->AllowUserToAddRows = true;
 		dataGridView1->AllowUserToDeleteRows = true;
@@ -443,7 +463,7 @@ namespace NS_EspacePersonnel {
 
 	private: 
 	System::Void Recherche(System::Object^ sender, System::EventArgs^ e) {
-		Individu^ Steve;
+		Individu^* Steve = nullptr;
 
 		if(Rb_Client->Checked)
 		{
@@ -451,7 +471,7 @@ namespace NS_EspacePersonnel {
 			if (CheckDate->Checked) {
 				PDate = Date->Value.ToString(Date->CustomFormat);
 			}
-			Steve = gcnew Client(func(), textBox1->Text, textBox2->Text,PDate);
+			(*Steve) = gcnew Client(func(), textBox1->Text, textBox2->Text,PDate);
 
 		}
 		else 
@@ -459,21 +479,44 @@ namespace NS_EspacePersonnel {
 			
 			String^ PDate = Date->Value.ToString(Date->CustomFormat);
 			
-			Steve = gcnew Personnel(func(), textBox1->Text, textBox2->Text, PDate);
+			(*Steve) = gcnew Personnel(func(), textBox1->Text, textBox2->Text, PDate);
 
 
 		}
-
+		this->Hide();
+		FormRecherche^ PageSuivante = gcnew FormRecherche(this,Steve);
+		
 
 	}
 
 
 	System::Void CreerIndi(System::Object^ sender, System::EventArgs^ e) {
 
+		String^ Client = (Rb_Client->Checked)? "1" : "0";
+		String^ Query = "SELECT  AjoutIndividus(" + Client + ",'" + textBox1->Text + "','" + textBox2->Text + "','" + Date->Value.ToString(Date->CustomFormat) + "','"+ TextNomSup->Text +"','"+ TextPrenomSup->Text +"');";
+		MYSQL_RES* result;
+		MYSQL_ROW Qrow;
+		/*Executer query*/
+		Qrow = mysql_fetch_row(result);
+
+
+		for each (DataGridViewRow^ row in dataGridView1->Rows) {
+
+			if (Client == "1") {
+
+				Query = "CALL ajout_Adresse_client(" + Convert::ToString(Qrow[0]) + ",'" + row->Cells[0]->Value->ToString() + "','" + row->Cells[1]->Value->ToString() + "','" + row->Cells[2]->Value->ToString() + "');";
+
+			}
+			else {
+
+				Query = "CALL Ajouter_Adresse_Perso(" + Convert::ToString(Qrow[0]) + ",'" + row->Cells[0]->Value->ToString() + "','" + row->Cells[1]->Value->ToString() +"');";
+
+			}
 
 
 
 
+		}
 	}
 
 private: System::Void EspPerso_Load(System::Object^ sender, System::EventArgs^ e) {
@@ -513,7 +556,8 @@ private: System::Void CheckDate_CheckedChanged(System::Object^ sender, System::E
 
 }
 private: System::Void checkBox1_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-
+	TextNomSup->Text = "";
+	TextPrenomSup->Text = "";
 	TextNomSup->Enabled = checkBox1->Checked;
 	TextPrenomSup->Enabled = checkBox1->Checked;
 }
@@ -600,6 +644,7 @@ private: System::Void checkBox1_CheckedChanged(System::Object^ sender, System::E
 
 		   return Adr;
 	   }
+
 
 };
 }
