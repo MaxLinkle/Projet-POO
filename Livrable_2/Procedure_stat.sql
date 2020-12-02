@@ -41,6 +41,22 @@ BEGIN
 END |
 
 
+DROP PROCEDURE IF EXISTS Stat_Estimation_tva |
+CREATE PROCEDURE Stat_Estimation_tva (IN i_tva INT)
+BEGIN
+  SELECT Catalogue.nom, Catalogue.stock, Catalogue.stock * Catalogue.prix_ht + (Catalogue.stock * Catalogue.prix_ht * (i_tva / 100)) AS Valeur_stock_TVA
+  FROM Catalogue;
+END |
+
+
+DROP PROCEDURE IF EXISTS Stat_Estimation_marge |
+CREATE PROCEDURE Stat_Estimation_marge (IN i_marge INT)
+BEGIN
+  SELECT Catalogue.nom, Catalogue.stock, Catalogue.stock * Catalogue.prix_ht + (Catalogue.stock * Catalogue.prix_ht * 0.5 * (i_tva / 100)) AS Valeur_stock_TVA
+  FROM Catalogue;
+END |
+
+
 DROP PROCEDURE IF EXISTS `Stat_Panier_moy` |
 CREATE PROCEDURE `Stat_Panier_moy` (IN `PNom` VARCHAR(50),IN `PPrenom` VARCHAR(50))
 BEGIN
@@ -64,10 +80,10 @@ BEGIN
   FROM  Commande
   WHERE MONTH(date_solde) = MONTH(PDAte) AND  YEAR(date_solde) = YEAR(PDAte);
 END |
-                                                                                       
+
 
 DROP PROCEDURE IF EXISTS `generer_reference`|
-CREATE PROCEDURE `generer_reference`(IN `id_client` INT, IN `id_commande` INT, OUT `reference` VARCHAR(50)) 
+CREATE PROCEDURE `generer_reference`(IN `id_client` INT, IN `id_commande` INT, OUT `reference` VARCHAR(50))
 BEGIN
    SELECT CONCAT(LEFT(T1.prenom, 2), LEFT(T1.nom, 2), YEAR(NOW()), LEFT(T2.ville, 3), id_commande) INTO reference
   FROM (SELECT Client.* , Commande.ID_adresse_livraison FROM Client
@@ -75,6 +91,5 @@ BEGIN
   INNER JOIN (SELECT * FROM Adresse_client
   NATURAL JOIN Ville) AS T2
  ON T2.ID_adresse_client = T1.ID_adresse_livraison;
-END |                                                                                     
-                                                                                       
+END |
 DELIMITER ;
