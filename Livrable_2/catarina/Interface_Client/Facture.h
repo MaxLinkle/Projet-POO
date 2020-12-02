@@ -30,6 +30,7 @@ namespace Client {
 		{
 			InitializeComponent();
 			recap->DataSource = transfert;
+			recap->Columns[3]->Visible = false;
 			tot_txt->Text = total;
 			nb_txt->Text = nb;
 			nom_txt->Text = nom;
@@ -379,11 +380,11 @@ namespace Client {
 			this->date_emi->AutoSize = true;
 			this->date_emi->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->date_emi->Location = System::Drawing::Point(88, 269);
+			this->date_emi->Location = System::Drawing::Point(103, 268);
 			this->date_emi->Name = L"date_emi";
-			this->date_emi->Size = System::Drawing::Size(108, 13);
+			this->date_emi->Size = System::Drawing::Size(93, 13);
 			this->date_emi->TabIndex = 43;
-			this->date_emi->Text = L"Date d\'émission : ";
+			this->date_emi->Text = L"Date Emision : ";
 			// 
 			// label3
 			// 
