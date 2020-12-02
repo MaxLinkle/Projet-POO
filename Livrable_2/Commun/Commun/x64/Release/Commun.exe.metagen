@@ -32,8 +32,8 @@ Class Struct_Adresse: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     System.String ID : Public
     System.String Adresse : Public
     System.String Ville : Public
+    System.String Pays : Public
     System.String Type_adresse : Public
-    Struct_Adresse* Suivant : Public
 Struct MapIndi: AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, BeforeFieldInit
   :System.ValueType
 Struct MapCLi: AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, BeforeFieldInit
@@ -41,24 +41,35 @@ Struct MapCLi: AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, B
 Struct MapPer: AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, BeforeFieldInit
   :System.ValueType
 Class Individu: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
-    Void .ctor(System.String, System.String, System.String, Struct_Adresse): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String, System.String, System.Collections.ArrayList): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
     Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Interfaces:
     System.IDisposable
   Methods:
+    GetAdresse(): PrivateScope, Public, HideBySig
+    GetDPA(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    GetIdSup(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    GetSup(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    GetId(): PrivateScope, Public, HideBySig
+    GetNom(): PrivateScope, Public, HideBySig
+    GetPrenom(): PrivateScope, Public, HideBySig
+    GetDate(): PrivateScope, Public, HideBySig
     IsClient(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
     Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
 Class CLClient: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :Individu
     Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
-    Void .ctor(Struct_Adresse, System.String, System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Collections.ArrayList, System.String, System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Methods:
+    GetDPA(): PrivateScope, Public, Virtual, HideBySig
     IsClient(): PrivateScope, Public, Virtual, HideBySig
 Class Personnel: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :Individu
     Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
-    Void .ctor(Struct_Adresse, System.String, System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Collections.ArrayList, System.String, System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Methods:
+    GetIdSup(): PrivateScope, Public, Virtual, HideBySig
+    GetSup(): PrivateScope, Public, Virtual, HideBySig
     IsClient(): PrivateScope, Public, Virtual, HideBySig
 Class NS_SuperC.SuperC: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
@@ -85,11 +96,14 @@ Class UsrContrl.UsrContrle: AutoLayout, AnsiClass, Class, Public, BeforeFieldIni
     System.Windows.Forms.Form Precedent : Public
   Methods:
     executerQuery(SByte*): PrivateScope, Public, HideBySig
+Class NS_Recherche.CLRecherche: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(System.Windows.Forms.Form, Individu): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
 Class Perso.Catalogue_Perso: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
 Class NS_EspacePersonnel.EspPerso: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
-  :System.Windows.Forms.Form
+  :NS_SuperC.SuperC
     Void .ctor(System.Windows.Forms.Form, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
 Class NS_EspacePersonnel.EspPerso+Addrgetter: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
   :System.MulticastDelegate

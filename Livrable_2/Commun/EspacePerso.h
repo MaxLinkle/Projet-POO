@@ -13,16 +13,17 @@ namespace NS_EspacePersonnel {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace NS_Recherche;
+	using namespace NS_SuperC
 	delegate System::Void PRecherche(System::Object^ sender, System::EventArgs^ e);
 	
 
 	/// <summary>
 	/// Zusammenfassung für Form1
 	/// </summary>
-	public ref class EspPerso : public System::Windows::Forms::Form
+	public ref class EspPerso : public SuperC
 	{
 	public:
-		EspPerso(Form^ Precedent,int indice)
+		EspPerso(Form^ Precedent,int indice):SuperC(Precedent)
 		{
 
 
@@ -32,7 +33,7 @@ namespace NS_EspacePersonnel {
 			
 			
 			InitializeComponent();
-			prece = Precedent;
+			//prece = Precedent;
 			this->Date->Format = DateTimePickerFormat::Custom;
 		}
 	private: System::Windows::Forms::Button^ button1;
@@ -51,7 +52,7 @@ namespace NS_EspacePersonnel {
 	public:
 
 	private :
-		Form^ prece;
+		//Form^ prece;
 	
 	
 
