@@ -3,7 +3,7 @@
 #include <iostream>
 #include"Formulaire_achat.h"
 
-namespace Client{
+namespace Client {
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -36,95 +36,95 @@ namespace Client{
 
 
 	public:DateTimePicker^ dateAnniv = gcnew DateTimePicker();
-		MyForm(String^ i_id)
-		{
-			InitializeComponent();
-			
-			id = i_id;
-			//
-			//TODO: ajoutez ici le code du constructeur
-			//
-			ConnexionBase();
-		}
+		  MyForm(String^ i_id)
+		  {
+			  InitializeComponent();
 
-		void finish_with_error(MYSQL* con)
-		{
-			std::cout << "Error: " << mysql_error(con);
-			mysql_close(con);
-			exit(1);
-		}
+			  id = i_id;
+			  //
+			  //TODO: ajoutez ici le code du constructeur
+			  //
+			  ConnexionBase();
+		  }
 
-		void ConnexionBase()
-		{
-			MYSQL* con;
-			MYSQL_RES* res;
-			MYSQL_ROW row;
-			const char username[] = "root";
-			const char password[] = "toor";
-			con = mysql_init(NULL);
-			int qstate;
-			if (con == NULL)
-			{
-				finish_with_error(con);
-				exit(1);
-			}
-			else {
-				std::cout << "Success!\n";
-			}
+		  void finish_with_error(MYSQL* con)
+		  {
+			  std::cout << "Error: " << mysql_error(con);
+			  mysql_close(con);
+			  exit(1);
+		  }
 
-			if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
-				finish_with_error(con);
-			}
-			else {
-				std::cout << "Success!\n";
-			}
-			
-			CheckBox^ Nom = gcnew CheckBox();
-			String^ query = gcnew String("SELECT nom, prix_ht, stock, taux_tva, ID_article FROM Catalogue WHERE actif = 1; SELECT date_naissance, date_premier_achat FROM Client WHERE ID_client =");
-			query += id;
-			query += (";");
+		  void ConnexionBase()
+		  {
+			  MYSQL* con;
+			  MYSQL_RES* res;
+			  MYSQL_ROW row;
+			  const char username[] = "root";
+			  const char password[] = "toor";
+			  con = mysql_init(NULL);
+			  int qstate;
+			  if (con == NULL)
+			  {
+				  finish_with_error(con);
+				  exit(1);
+			  }
+			  else {
+				  std::cout << "Success!\n";
+			  }
 
-			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
-			size_t convertedChars = 0;
-			size_t  sizeInBytes = ((query->Length + 1) * 2);
-			errno_t err = 0;
-			char* ch = (char*)malloc(sizeInBytes);
-			err = wcstombs_s(&convertedChars,
-				ch, sizeInBytes,
-				wch, sizeInBytes);
-			qstate = mysql_query(con, ch);
-			
-			if (!qstate)
-			{
-				res = mysql_store_result(con);
-				while (row = mysql_fetch_row(res))
-				{
-					int n = dataGridView1->Rows->Add();
-					double ht = atof(row[1]);
-					double tva = atof(row[3]);
-					double ttc = ht * ((tva/100)+1);
-					
-					dataGridView1->Rows[n]->Cells[1]->Value = gcnew String(row[0]);
-					dataGridView1->Rows[n]->Cells[2]->Value = ttc;
-					dataGridView1->Rows[n]->Cells[4]->Value = gcnew String(row[2]);
-					dataGridView1->Rows[n]->Cells[3]->Value = "0";
-					dataGridView1->Rows[n]->Cells[5]->Value = gcnew String(row[1]);
-					dataGridView1->Rows[n]->Cells[6]->Value = gcnew String(row[4]);
-					
-				}
-				mysql_free_result(res);
+			  if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
+				  finish_with_error(con);
+			  }
+			  else {
+				  std::cout << "Success!\n";
+			  }
 
-				mysql_next_result(con);
-				res = mysql_store_result(con);
+			  CheckBox^ Nom = gcnew CheckBox();
+			  String^ query = gcnew String("SELECT nom, prix_ht, stock, taux_tva, ID_article FROM Catalogue WHERE actif = 1; SELECT date_naissance, date_premier_achat FROM Client WHERE ID_client =");
+			  query += id;
+			  query += (";");
 
-				while (row = mysql_fetch_row(res))
-				{
-					dateAnniv->Value = DateTime::ParseExact(gcnew String(row[0]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
-					dateAchat->Value = DateTime::ParseExact(gcnew String(row[1]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
-				}
+			  pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+			  size_t convertedChars = 0;
+			  size_t  sizeInBytes = ((query->Length + 1) * 2);
+			  errno_t err = 0;
+			  char* ch = (char*)malloc(sizeInBytes);
+			  err = wcstombs_s(&convertedChars,
+				  ch, sizeInBytes,
+				  wch, sizeInBytes);
+			  qstate = mysql_query(con, ch);
 
-			}
-		}
+			  if (!qstate)
+			  {
+				  res = mysql_store_result(con);
+				  while (row = mysql_fetch_row(res))
+				  {
+					  int n = dataGridView1->Rows->Add();
+					  double ht = atof(row[1]);
+					  double tva = atof(row[3]);
+					  double ttc = ht * ((tva / 100) + 1);
+
+					  dataGridView1->Rows[n]->Cells[1]->Value = gcnew String(row[0]);
+					  dataGridView1->Rows[n]->Cells[2]->Value = ttc;
+					  dataGridView1->Rows[n]->Cells[4]->Value = gcnew String(row[2]);
+					  dataGridView1->Rows[n]->Cells[3]->Value = "0";
+					  dataGridView1->Rows[n]->Cells[5]->Value = gcnew String(row[1]);
+					  dataGridView1->Rows[n]->Cells[6]->Value = gcnew String(row[4]);
+
+				  }
+				  mysql_free_result(res);
+
+				  mysql_next_result(con);
+				  res = mysql_store_result(con);
+
+				  while (row = mysql_fetch_row(res))
+				  {
+					  dateAnniv->Value = DateTime::ParseExact(gcnew String(row[0]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
+					  dateAchat->Value = DateTime::ParseExact(gcnew String(row[1]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
+				  }
+
+			  }
+		  }
 
 	protected:
 		/// <summary>
@@ -164,10 +164,10 @@ namespace Client{
 
 
 
-	private: Client::Formulaire_achat^ formu ;
-private: System::Windows::Forms::TextBox^ HT;
-private: System::Windows::Forms::Label^ label4;
-private: System::Windows::Forms::Label^ label5;
+	private: Client::Formulaire_achat^ formu;
+	private: System::Windows::Forms::TextBox^ HT;
+	private: System::Windows::Forms::Label^ label4;
+	private: System::Windows::Forms::Label^ label5;
 
 	private: Client::Facture^ facture;
 
@@ -463,13 +463,12 @@ private: System::Windows::Forms::Label^ label5;
 			this->PerformLayout();
 
 		}
-	DateTimePicker^ dateActuel = gcnew DateTimePicker();
-			
+		DateTimePicker^ dateActuel = gcnew DateTimePicker();
+
 
 #pragma endregion
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 		nb_txt->Text = "0";
-		dateActuel->Value.Today;
 
 		if ((dateActuel->Value.Day == dateAnniv->Value.Day) && (dateActuel->Value.Month == dateAnniv->Value.Month))
 		{
@@ -487,9 +486,9 @@ private: System::Windows::Forms::Label^ label5;
 			remise->Visible = true;
 			remise->Text = "Vous avez une remise de 5%";
 		}
-		
 
-		}
+
+	}
 
 	private: System::Void acheter_Click(System::Object^ sender, System::EventArgs^ e) {
 
@@ -521,55 +520,54 @@ private: System::Windows::Forms::Label^ label5;
 			this->Hide();
 			this->formu = gcnew Client::Formulaire_achat(nb_txt->Text, total_txt->Text, HT->Text, id, transfert, remise_txt->Text, dateAnniv->Value, dateAchat->Value);
 			this->formu->Show();
-			
-		}
-	}
-private: System::Void dataGridView1_CellValidated(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
-	double total = 0;
-	double totAr = 0;
-	double totHT = 0;
-	double Reduc;
-	dateActuel->Value.Today;
-	for (int n = 0; n < dataGridView1->RowCount; n++)
-	{
-		if (Convert::ToInt32(dataGridView1->Rows[n]->Cells[3]->Value) > Convert::ToInt32(dataGridView1->Rows[n]->Cells[4]->Value))
-		{
-			dataGridView1->Rows[n]->DefaultCellStyle->BackColor = System::Drawing::Color::PaleVioletRed;
-			MessageBox::Show("Quantite Indisponible. \n Quantite Max : " + dataGridView1->Rows[n]->Cells[4]->Value, "Info", MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
-		else if (Convert::ToInt32(dataGridView1->Rows[n]->Cells[3]->Value) <= Convert::ToInt32(dataGridView1->Rows[n]->Cells[4]->Value))
-		{
-			dataGridView1->Rows[n]->DefaultCellStyle->BackColor = System::Drawing::Color::White;
-		}
-
-		bool isSelected = Convert::ToBoolean(dataGridView1->Rows[n]->Cells["Check"]->Value);
-		if (isSelected == true)
-		{
-			total += (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Prix"]->Value)) * (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value));
-			totAr += Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value);
-			totHT += Convert::ToDouble(dataGridView1->Rows[n]->Cells["TVA"]->Value) * (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value));
 
 		}
-		if ((dateActuel->Value.Day == dateActuel->Value.Month) && (dateAnniv->Value.Day == dateAnniv->Value.Month))
-		{
-			Reduc = (total - (total * 0.1));
-			remise_txt->Text = Reduc.ToString();
-		}
-		else if ((dateActuel->Value.Day == dateAchat->Value.Day) && (dateActuel->Value.Month == dateAchat->Value.Month))
-		{
-			Reduc = (total - (total * 0.05));
-			remise_txt->Text = Reduc.ToString();
-		}
-		else
-		{
-			Reduc = 0;
-			remise_txt->Text = Reduc.ToString();
-		}
-		total_txt->Text = total.ToString();
-		nb_txt->Text = totAr.ToString();
-		HT->Text = totHT.ToString();
-		//remise_txt->Text = Reduc.ToString();
 	}
-}
-};
+	private: System::Void dataGridView1_CellValidated(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
+		double total = 0;
+		double totAr = 0;
+		double totHT = 0;
+		double Reduc;
+		dateActuel->Value.Today;
+		for (int n = 0; n < dataGridView1->RowCount; n++)
+		{
+			if (Convert::ToInt32(dataGridView1->Rows[n]->Cells[3]->Value) > Convert::ToInt32(dataGridView1->Rows[n]->Cells[4]->Value))
+			{
+				dataGridView1->Rows[n]->DefaultCellStyle->BackColor = System::Drawing::Color::PaleVioletRed;
+				MessageBox::Show("Quantite Indisponible. \n Quantite Max : " + dataGridView1->Rows[n]->Cells[4]->Value, "Info", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			}
+			else if (Convert::ToInt32(dataGridView1->Rows[n]->Cells[3]->Value) <= Convert::ToInt32(dataGridView1->Rows[n]->Cells[4]->Value))
+			{
+				dataGridView1->Rows[n]->DefaultCellStyle->BackColor = System::Drawing::Color::White;
+			}
+
+			bool isSelected = Convert::ToBoolean(dataGridView1->Rows[n]->Cells["Check"]->Value);
+			if (isSelected == true)
+			{
+				total += (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Prix"]->Value)) * (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value));
+				totAr += Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value);
+				totHT += Convert::ToDouble(dataGridView1->Rows[n]->Cells["TVA"]->Value) * (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value));
+
+			}
+			if ((dateActuel->Value.Day == dateActuel->Value.Day) && (dateAnniv->Value.Month == dateAnniv->Value.Month))
+			{
+				Reduc = (total - (total * 0.1));
+				remise_txt->Text = Reduc.ToString();
+			}
+			else if ((dateActuel->Value.Day == dateAchat->Value.Day) && (dateActuel->Value.Month == dateAchat->Value.Month))
+			{
+				Reduc = (total - (total * 0.05));
+				remise_txt->Text = Reduc.ToString();
+			}
+			else
+			{
+				Reduc = 0;
+				remise_txt->Text = Reduc.ToString();
+			}
+			total_txt->Text = total.ToString();
+			nb_txt->Text = totAr.ToString();
+			HT->Text = totHT.ToString();
+		}
+	}
+	};
 }

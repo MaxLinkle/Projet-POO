@@ -27,7 +27,7 @@ BEGIN
   WHERE Commande.ID_commande = id_commande;
 END |
 
-
+DELIMITER |
 DROP PROCEDURE IF EXISTS ajoutUpdate_Adresse_client |
 CREATE PROCEDURE ajoutUpdate_Adresse_client(IN i_id INT, IN i_adresse VARCHAR(50), IN i_ville INT(20), IN i_type INT(25))
 BEGIN
@@ -49,7 +49,7 @@ BEGIN
   WHERE Adresse_client.adresse_client = i_adresse AND Ville.ville = i_ville AND Adresse_client.ID_client = i_id;
 
   SELECT Ville.ID_ville INTO ville_cli FROM Ville WHERE Ville.ville = i_ville;
-  SELECT Type_adresse.ID_type_adresse INTO type_cli FROM Type_adresse WHERE Type_adresse.type_adresse = i_type_adresse;
+  SELECT Type_adresse.ID_type_adresse INTO type_cli FROM Type_adresse WHERE Type_adresse.type_adresse = i_type;
 
   IF id_var = NULL
   THEN
@@ -67,7 +67,7 @@ BEGIN
       UPDATE Adresse_client
       SET ID_type_adresse = 3
       WHERE ID_client = i_id_client;
-      
+
     END IF;
 
   END IF;

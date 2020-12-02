@@ -18,14 +18,13 @@ namespace Client {
 	/// </summary>
 	public ref class Formulaire_achat : public System::Windows::Forms::Form
 	{
-	private: DateTimePicker^ dateAnniv = gcnew DateTimePicker();
-	private: DateTimePicker^ dateAchat = gcnew DateTimePicker();
 	private: System::Windows::Forms::TextBox^ Ville_liv;
 	private: System::Windows::Forms::Label^ label8;
 	private: System::Windows::Forms::TextBox^ Ville_fact;
+	private: System::Windows::Forms::RichTextBox^ richTextBox1;
 	private: Label^ Remise = gcnew Label();
 	public:
-		Formulaire_achat(String^ nb, String^ total, String^ HT, String^ id, DataTable^ transfert, String^ remise, DateTime anniv, DateTime achat)
+		Formulaire_achat(String^ nb, String^ total, String^ HT, String^ id, DataTable^ transfert, String^ remise)
 		{
 			InitializeComponent();
 			nb_txt->Text = nb;
@@ -35,8 +34,6 @@ namespace Client {
 			remise_txt->Text = remise;
 			RecapData->DataSource = transfert;
 			RecapData->Columns[3]->Visible = false;
-			dateAnniv->Value = anniv;
-			dateAchat->Value = achat;
 			ConnexionBase();
 
 			
@@ -182,7 +179,8 @@ private: System::Windows::Forms::Label^ lbl_tot;
 
 
 private: System::Windows::Forms::DateTimePicker^ dateLiv;
-private: System::Windows::Forms::DateTimePicker^ dateEmi;
+private: System::Windows::Forms::DateTimePicker^ datePaye;
+
 private: System::Windows::Forms::Label^ LivPrev;
 private: System::Windows::Forms::Label^ label4;
 private: System::Windows::Forms::Label^ label3;
@@ -215,11 +213,15 @@ private: System::Windows::Forms::Label^ label7;
 		void InitializeComponent(void)
 		{
 			this->addLivraison = (gcnew System::Windows::Forms::GroupBox());
+			this->Ville_liv = (gcnew System::Windows::Forms::TextBox());
+			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->Liv_Txt = (gcnew System::Windows::Forms::TextBox());
 			this->Select_Liv_Combo = (gcnew System::Windows::Forms::ComboBox());
 			this->Liv_Nouv_Btn = (gcnew System::Windows::Forms::RadioButton());
 			this->Liv_Existe_Btn = (gcnew System::Windows::Forms::RadioButton());
 			this->addFacturation = (gcnew System::Windows::Forms::GroupBox());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->Ville_fact = (gcnew System::Windows::Forms::TextBox());
 			this->Fact_Txt = (gcnew System::Windows::Forms::TextBox());
 			this->Select_Fact_Combo = (gcnew System::Windows::Forms::ComboBox());
 			this->Fact_Nouv_Btn = (gcnew System::Windows::Forms::RadioButton());
@@ -252,12 +254,9 @@ private: System::Windows::Forms::Label^ label7;
 			this->tot_txt = (gcnew System::Windows::Forms::TextBox());
 			this->lbl_tot = (gcnew System::Windows::Forms::Label());
 			this->dateLiv = (gcnew System::Windows::Forms::DateTimePicker());
-			this->dateEmi = (gcnew System::Windows::Forms::DateTimePicker());
+			this->datePaye = (gcnew System::Windows::Forms::DateTimePicker());
 			this->LivPrev = (gcnew System::Windows::Forms::Label());
-			this->label6 = (gcnew System::Windows::Forms::Label());
-			this->Ville_liv = (gcnew System::Windows::Forms::TextBox());
-			this->Ville_fact = (gcnew System::Windows::Forms::TextBox());
-			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
 			this->addLivraison->SuspendLayout();
 			this->addFacturation->SuspendLayout();
 			this->Récapitulatif->SuspendLayout();
@@ -278,6 +277,22 @@ private: System::Windows::Forms::Label^ label7;
 			this->addLivraison->TabIndex = 0;
 			this->addLivraison->TabStop = false;
 			this->addLivraison->Text = L"Addresse de Livraison";
+			// 
+			// Ville_liv
+			// 
+			this->Ville_liv->Location = System::Drawing::Point(26, 117);
+			this->Ville_liv->Name = L"Ville_liv";
+			this->Ville_liv->Size = System::Drawing::Size(141, 20);
+			this->Ville_liv->TabIndex = 21;
+			// 
+			// label6
+			// 
+			this->label6->AutoSize = true;
+			this->label6->Location = System::Drawing::Point(23, 100);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(32, 13);
+			this->label6->TabIndex = 20;
+			this->label6->Text = L"Ville :";
 			// 
 			// Liv_Txt
 			// 
@@ -331,6 +346,22 @@ private: System::Windows::Forms::Label^ label7;
 			this->addFacturation->TabIndex = 1;
 			this->addFacturation->TabStop = false;
 			this->addFacturation->Text = L"Adresse de Facturation";
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Location = System::Drawing::Point(25, 101);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(32, 13);
+			this->label8->TabIndex = 22;
+			this->label8->Text = L"Ville :";
+			// 
+			// Ville_fact
+			// 
+			this->Ville_fact->Location = System::Drawing::Point(28, 117);
+			this->Ville_fact->Name = L"Ville_fact";
+			this->Ville_fact->Size = System::Drawing::Size(141, 20);
+			this->Ville_fact->TabIndex = 22;
 			// 
 			// Fact_Txt
 			// 
@@ -637,19 +668,18 @@ private: System::Windows::Forms::Label^ label7;
 			this->dateLiv->TabIndex = 16;
 			this->dateLiv->Value = System::DateTime(2020, 11, 27, 22, 13, 23, 0);
 			// 
-			// dateEmi
+			// datePaye
 			// 
-			this->dateEmi->AccessibleRole = System::Windows::Forms::AccessibleRole::None;
-			this->dateEmi->CalendarForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->dateEmi->CustomFormat = L"yyyy-MM-dd";
-			this->dateEmi->DropDownAlign = System::Windows::Forms::LeftRightAlignment::Right;
-			this->dateEmi->Enabled = false;
-			this->dateEmi->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
-			this->dateEmi->Location = System::Drawing::Point(18, 655);
-			this->dateEmi->Name = L"dateEmi";
-			this->dateEmi->Size = System::Drawing::Size(200, 20);
-			this->dateEmi->TabIndex = 17;
-			this->dateEmi->Visible = false;
+			this->datePaye->AccessibleRole = System::Windows::Forms::AccessibleRole::None;
+			this->datePaye->CalendarForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->datePaye->CustomFormat = L"yyyy-MM-dd";
+			this->datePaye->DropDownAlign = System::Windows::Forms::LeftRightAlignment::Right;
+			this->datePaye->Enabled = false;
+			this->datePaye->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
+			this->datePaye->Location = System::Drawing::Point(18, 655);
+			this->datePaye->Name = L"datePaye";
+			this->datePaye->Size = System::Drawing::Size(200, 20);
+			this->datePaye->TabIndex = 17;
 			// 
 			// LivPrev
 			// 
@@ -660,45 +690,22 @@ private: System::Windows::Forms::Label^ label7;
 			this->LivPrev->TabIndex = 18;
 			this->LivPrev->Text = L"Date de Livraison estimé : ";
 			// 
-			// label6
+			// richTextBox1
 			// 
-			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(23, 100);
-			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(32, 13);
-			this->label6->TabIndex = 20;
-			this->label6->Text = L"Ville :";
-			// 
-			// Ville_liv
-			// 
-			this->Ville_liv->Location = System::Drawing::Point(26, 117);
-			this->Ville_liv->Name = L"Ville_liv";
-			this->Ville_liv->Size = System::Drawing::Size(141, 20);
-			this->Ville_liv->TabIndex = 21;
-			// 
-			// Ville_fact
-			// 
-			this->Ville_fact->Location = System::Drawing::Point(28, 117);
-			this->Ville_fact->Name = L"Ville_fact";
-			this->Ville_fact->Size = System::Drawing::Size(141, 20);
-			this->Ville_fact->TabIndex = 22;
-			// 
-			// label8
-			// 
-			this->label8->AutoSize = true;
-			this->label8->Location = System::Drawing::Point(25, 101);
-			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(32, 13);
-			this->label8->TabIndex = 22;
-			this->label8->Text = L"Ville :";
+			this->richTextBox1->Location = System::Drawing::Point(13, 727);
+			this->richTextBox1->Name = L"richTextBox1";
+			this->richTextBox1->Size = System::Drawing::Size(522, 96);
+			this->richTextBox1->TabIndex = 19;
+			this->richTextBox1->Text = L"";
 			// 
 			// Formulaire_achat
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(654, 738);
+			this->ClientSize = System::Drawing::Size(654, 835);
+			this->Controls->Add(this->richTextBox1);
 			this->Controls->Add(this->LivPrev);
-			this->Controls->Add(this->dateEmi);
+			this->Controls->Add(this->datePaye);
 			this->Controls->Add(this->dateLiv);
 			this->Controls->Add(this->Récapitulatif);
 			this->Controls->Add(this->id_client);
@@ -741,7 +748,7 @@ private: System::Windows::Forms::Label^ label7;
 		Ville_liv->ReadOnly = true;
 		Fact_Txt->ReadOnly = true;
 		Ville_fact->ReadOnly = true;
-		dateLiv->Value = dateEmi->Value.AddDays(7);
+		dateLiv->Value = datePaye->Value.AddDays(7);
 
 		double TVA;
 		TVA = Convert::ToDouble(tot_txt->Text) - Convert::ToDouble(totHT_txt->Text);
@@ -750,6 +757,9 @@ private: System::Windows::Forms::Label^ label7;
 		if (remise_txt->Text == "0")
 		{
 			Remise->Text = "0";
+			remise_txt->Visible = false;
+			euroRemise->Visible = false;
+			remise_lbl->Visible = false;
 		}
 		else if (remise_txt->Text != "0")
 		{
@@ -775,50 +785,48 @@ private: System::Windows::Forms::Label^ label7;
 			Select_Liv_Combo->Enabled = true;
 		}
 	}
-private: System::Void Fact_Nouv_Btn_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-	if (Fact_Nouv_Btn->Checked)
-	{
-		Ville_fact->ReadOnly = false;
-		Fact_Txt->ReadOnly = false;
-		Select_Fact_Combo->Enabled = false;
+
+	private: System::Void Fact_Nouv_Btn_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (Fact_Nouv_Btn->Checked)
+		{
+			Ville_fact->ReadOnly = false;
+			Fact_Txt->ReadOnly = false;
+			Select_Fact_Combo->Enabled = false;
+		}
+		else
+		{
+			Ville_fact->ReadOnly = true;
+			Fact_Txt->ReadOnly = true;
+			Select_Fact_Combo->Enabled = true;
+		}
 	}
-	else
-	{
-		Ville_fact->ReadOnly = true;
-		Fact_Txt->ReadOnly = true;
-		Select_Fact_Combo->Enabled = true;
-	}
-}
-	   String^ adresse_de_liv;
-	   String^ adresse_de_fact;
-	   String^ type_addresse;
+	 
+	private:
+		System::String^ adresse_de_liv;
+		System::String^ adresse_de_fact;
+		System::String^ type_addresse;
+
 
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 
 	//Création des calendrier pour obtenir les date de Paiement et de Solde
-	DateTimePicker^ datePaye = gcnew DateTimePicker();
-	datePaye->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
-	datePaye->CustomFormat = L"yyyy-MM-dd";
+	DateTimePicker^ dateEmi = gcnew DateTimePicker();
+	dateEmi->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
+	dateEmi->CustomFormat = L"yyyy-MM-dd";
 	DateTimePicker^ dateSolde = gcnew DateTimePicker();
 	dateSolde->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
 	dateSolde->CustomFormat = L"yyyy-MM-dd";
 
-	datePaye->Value = dateEmi->Value.AddDays(1);
-	dateSolde->Value = dateEmi->Value.AddDays(3);
+	dateEmi->Value = datePaye->Value.AddDays(1);
+	dateSolde->Value = datePaye->Value.AddDays(3);
 
 	//Conncextion à la base
 	MYSQL* con;
 	MYSQL_RES* res;
-	//MYSQL* connex;
-	//MYSQL_RES* resul;
 	MYSQL_ROW row;
-	const char username[] = "root";
-	const char password[] = "toor";
 	con = mysql_init(NULL);
 	int qstate;
-	//int requete;
-	//String^ stock;
-	String^ query;
+	System::String^ query;
 
 	if (con == NULL)
 	{
@@ -830,36 +838,44 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		finish_with_error(con);
 	}
 
-	String^ Liv;
-	String^ Fact;
+	System::String^ Liv;
+	System::String^ Fact;
 
 
 	//Si les adresses de livraison et de facturation existe déjà
 	if (Liv_Existe_Btn->Checked == true && Fact_Exist_Btn->Checked == true)
 	{
-		query = gcnew String("CALL ajout_Commande('");
+		for (int n = 0; n < RecapData->RowCount; n++)
+		{
+			query = gcnew String("CALL update_Catalogue('");
+			query += RecapData->Rows[n]->Cells[2]->Value->ToString();
+			query += gcnew String("','");
+			query += RecapData->Rows[n]->Cells[3]->Value->ToString();
+			query += gcnew String("';");
+		}
+		query = "CALL ajout_Commande('";
 		query += totHT_txt->Text;
-		query += gcnew String("','");
+		query += "', '";
 		query += totTVA_txt->Text;
-		query += gcnew String("','");
+		query += "', '";
 		query += Remise->Text;
-		query += gcnew String("','");
+		query += "', '";
 		query += dateLiv->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
+		query += "', '";
 		query += dateEmi->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
+		query += "', '";
 		query += datePaye->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
+		query += "', '";
 		query += dateSolde->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
+		query += "', '";
 		query += adresse_de_liv; //Select_Liv_Combo->SelectedItem->ToString();
-		query += gcnew String("','");
+		query += "', '";
 		query += adresse_de_fact; //Select_Fact_Combo->SelectedItem->ToString();
-		query += gcnew String("','");
+		query += "', '";
 		query += id_client->Text;
-		query += gcnew String("','");
+		query += "', '";
 		query += Metho_achat->SelectedItem->ToString();
-		query += gcnew String("');");
+		query += "'); ";
 		/*for (int n = 0; n < RecapData->RowCount; n++)
 		{
 			query = gcnew String("CALL update_Catalogue('");
@@ -872,109 +888,69 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	//Si l'utilisateur rentre une nouvelle adresse de livraison
 	else if (Liv_Nouv_Btn->Checked == true)
 	{
-		bool jsp = false;
-		for each (String^ item in Select_Fact_Combo->Items)
-		{
-			if (Liv_Txt->Text == item)
-			{
-				jsp = true;
-			}
-		}
-		if (!jsp)
-		{
-			Liv = "livraison";
-			
-		}
-		else
-		{
-			Liv = "livraison et facturation";
-		}
-		query = gcnew String("CALL ajout_Commande('");
-		query += totHT_txt->Text;
-		query += gcnew String("','");
-		query += totTVA_txt->Text;
-		query += gcnew String("','");
-		query += Remise->Text;
-		query += gcnew String("','");
-		query += dateLiv->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
-		query += dateEmi->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
-		query += datePaye->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
-		query += dateSolde->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
-		query += adresse_de_liv;
-		query += gcnew String("','");
-		query += adresse_de_fact;
-		query += gcnew String("','");
-		query += id_client->Text;
-		query += gcnew String("','");
-		query += Metho_achat->SelectedItem->ToString();
-		query += ("'); CALL ajoutUpdate_Adresse_client('");
-		query += id_client->Text;
-		query += gcnew String("','");
+
+		query += ("CALL ajout_Adresse_client(NULL,'");
 		query += Liv_Txt->Text;
-		query += gcnew String("','");
+		query += "', '";
 		query += Ville_liv->Text;
-		query += gcnew String("','");
-		query += Liv;
-		query += gcnew String("');");
+		query += "', 'livraison'); CALL ajout_Commande('";
+		query += totHT_txt->Text;
+		query += "', '";
+		query += totTVA_txt->Text;
+		query += "', '";
+		query += Remise->Text;
+		query += "', '";
+		query += dateLiv->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += dateEmi->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += datePaye->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += dateSolde->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += adresse_de_liv;
+		query += "', '";
+		query += adresse_de_fact;
+		query += "', '";
+		query += id_client->Text;
+		query += "', '";
+		query += Metho_achat->SelectedItem->ToString();
+		query += "');";
+		
 	}
-	//Si le client rentre une nouvelle adresse de facturation
 	else if (Fact_Nouv_Btn->Checked == true)
 	{
-		bool jsp = false;
-		for each (String ^ item in Select_Liv_Combo->Items)
-		{
-			if (Fact_Txt->Text == item)
-			{
-				jsp = true;
-			}
-		}
-		if (!jsp)
-		{
-			Fact = "facturation";
-
-		}
-		else
-		{
-			Fact = "livraison et facturation";
-		}
-		query = gcnew String("CALL ajout_Commande('");
-		query += totHT_txt->Text;
-		query += gcnew String("','");
-		query += totTVA_txt->Text;
-		query += gcnew String("','");
-		query += Remise->Text;
-		query += gcnew String("','");
-		query += dateLiv->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
-		query += dateEmi->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
-		query += datePaye->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
-		query += dateSolde->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
-		query += adresse_de_liv;
-		query += gcnew String("','");
+		
+		query += "CALL ajout_Adresse_client(NULL,'";
 		query += adresse_de_fact;
-		query += gcnew String("','");
-		query += id_client->Text;
-		query += gcnew String("','");
-		query += Metho_achat->SelectedItem->ToString();
-		query += gcnew String("');CALL ajoutUpdate_Adresse_client('");
-		query += id_client->Text;
-		query += gcnew String("','");
-		query += adresse_de_fact;
-		query += gcnew String("','");
+		query += "', '";
 		query += Ville_fact->Text;
-		query += gcnew String("','");
-		query += Fact;
-		query += gcnew String("');");
+		query += "', 'facturation'); CALL ajout_Commande('";
+		query += totHT_txt->Text;
+		query += "', '";
+		query += totTVA_txt->Text;
+		query += "', '";
+		query += Remise->Text;
+		query += "', '";
+		query += dateLiv->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += dateEmi->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += datePaye->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += dateSolde->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += adresse_de_liv;
+		query += "', '";
+		query += adresse_de_fact;
+		query += "', '";
+		query += id_client->Text;
+		query += "', '";
+		query += Metho_achat->SelectedItem->ToString();
+		query += "'); ";
 	}
 
-	/*else if (Fact_Nouv_Btn->Checked == true && Liv_Nouv_Btn->Checked == true)
+	else if (Fact_Nouv_Btn->Checked == true && Liv_Nouv_Btn->Checked == true)
 	{
 		if (Fact_Txt->Text != Select_Liv_Combo->Items->ToString())
 		{
@@ -993,47 +969,61 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 			Liv = "livraison et facturation";
 		}
 
-		query = gcnew String("CALL ajout_Commande('patate','");
-		query += totHT_txt->Text;
-		query += gcnew String("','");
-		query += totTVA_txt->Text;
-		query += gcnew String("','");
-		query += Remise->Text;
-		query += gcnew String("','");
-		query += dateLiv->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
-		query += dateEmi->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
-		query += datePaye->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
-		query += dateSolde->Value.Date.ToString("yyyy/MM/dd");
-		query += gcnew String("','");
-		query += adresse_de_liv;//ID Adresse Liv
-		query += gcnew String("','");
-		query += adresse_de_fact;//ID Adresse Fact
-		query += gcnew String("','");
-		query += id_client->Text;
-		query += gcnew String("','");
-		query += id_paye->Text;
-		query += gcnew String("'); CALL ajout_Adresse_client('");
-		query += id_client->Text;
-		query += gcnew String("','");
-		query += adresse_de_liv;
-		query += gcnew String("','");
-		query += ville->SelectedValue;
-		query += gcnew String("','");
-		query += Liv;
-		query += gcnew String("');");/* CALL ajout_Adresse_client('");
-		query += id_client->Text;
-		query += gcnew String("','");
-		query += adresse_de_fact;
-		query += gcnew String("','");
-		query += ville->SelectedValue;
-		query += gcnew String("','");
-		query += Fact;
-		query += gcnew String("');");
-	}*/
+		
 
+		if (Liv_Txt->Text == Fact_Txt->Text && Ville_liv->Text == Ville_fact->Text) {
+			query = ("CALL ajout_Adresse_client(NULL,'");
+			query += Liv_Txt->Text;
+			query += "', '";
+			query += Ville_liv->Text;
+			query += "', 'livraison et facturation'); CALL ajout_Commande('";
+		}
+		else {
+			query = ("CALL ajout_Adresse_client(NULL,'");
+			query += Liv_Txt->Text;
+			query += "', '";
+			query += Ville_liv->Text;
+			query += "', 'livraison'); ";
+
+			query = ("CALL ajout_Adresse_client(NULL,'");
+			query += Fact_Txt->Text;
+			query += "', '";
+			query += Ville_fact->Text;
+			query += "', 'facturation'); ";
+		}
+
+		query += "CALL ajout_Adresse_client(NULL,'";
+		query += adresse_de_fact;
+		query += "', '";
+		query += Ville_fact->Text;
+		query += "', 'facturation'); CALL ajout_Commande('";
+		query += totHT_txt->Text;
+		query += "', '";
+		query += totTVA_txt->Text;
+		query += "', '";
+		query += Remise->Text;
+		query += "', '";
+		query += dateLiv->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += dateEmi->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += datePaye->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += dateSolde->Value.Date.ToString("yyyy/MM/dd");
+		query += "', '";
+		query += adresse_de_liv;
+		query += "', '";
+		query += adresse_de_fact;
+		query += "', '";
+		query += id_client->Text;
+		query += "', '";
+		query += Metho_achat->SelectedItem->ToString();
+		query += "'); ";
+
+	}
+
+
+	// STOCk 
 	/*for (int n = 0; n < RecapData->RowCount; n++)
 	{
 		query = gcnew String("CALL update_Catalogue('");
@@ -1052,17 +1042,11 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		ch, sizeInBytes,
 		wch, sizeInBytes);
 
-	/*pin_ptr<const wchar_t> w = PtrToStringChars(stock);
-	size_t Chars = 0;
-	size_t  Bytes = ((stock->Length + 1) * 2);
-	errno_t erro = 0;
-	char* chaine = (char*)malloc(Bytes);
-	erro = wcstombs_s(&Chars,
-		chaine, Bytes,
-		w, Bytes);*/
 
 	std::cout << ch << std::endl << std::endl;
-	//std::cout << chaine << std::endl << std::endl;
+
+
+	richTextBox1->Text = query;
 
 	//Execution de la requête
 	qstate = mysql_query(con, ch);
@@ -1070,13 +1054,6 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	{
 		res = mysql_store_result(con);
 	}
-
-	/*requete = mysql_query(connex, chaine);
-	if (!requete)
-	{
-		resul = mysql_store_result(connex);
-	}*/
-
 	
 	//Création d'une DataTable pour stocké les donnée à envoyer dans Facture.h	
 	DataTable^ transfert = gcnew DataTable();
@@ -1095,14 +1072,16 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	this->facture = gcnew Client::Facture(transfert, tot_txt->Text, nb_txt->Text, nom->Text, prenom->Text, id_client->Text, Metho_achat->SelectedItem->ToString(), adresse_de_liv, adresse_de_fact, dateEmi->Value, dateLiv->Value, totHT_txt->Text, Metho_achat->SelectedItem->ToString());
 	this->facture->Show();
 }
-private: System::Void Select_Liv_Combo_Validated(System::Object^ sender, System::EventArgs^ e) {
-	adresse_de_liv = ((Control^)sender)->Text;
-}
 
-private: System::Void Select_Fact_Combo_Validated(System::Object^ sender, System::EventArgs^ e) {
-	adresse_de_fact = ((Control^)sender)->Text;
-}
-private: System::Void Precedent_Click(System::Object^ sender, System::EventArgs^ e) {
-}
+	private: System::Void Select_Liv_Combo_Validated(System::Object^ sender, System::EventArgs^ e) {
+		adresse_de_liv = ((Control^)sender)->Text;
+	}
+
+	private: System::Void Select_Fact_Combo_Validated(System::Object^ sender, System::EventArgs^ e) {
+		adresse_de_fact = ((Control^)sender)->Text;
+	}
+
+	private: System::Void Precedent_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
 };
 }
