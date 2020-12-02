@@ -13,7 +13,7 @@ namespace Client {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Description résumée de MyForm
+	/// Description rÃ©sumÃ©e de MyForm
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
@@ -128,7 +128,7 @@ namespace Client {
 
 	protected:
 		/// <summary>
-		/// Nettoyage des ressources utilisées.
+		/// Nettoyage des ressources utilisÃ©es.
 		/// </summary>
 		~MyForm()
 		{
@@ -175,14 +175,14 @@ namespace Client {
 
 	private:
 		/// <summary>
-		/// Variable nécessaire au concepteur.
+		/// Variable nÃ©cessaire au concepteur.
 		/// </summary>
 
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Méthode requise pour la prise en charge du concepteur - ne modifiez pas
-		/// le contenu de cette méthode avec l'éditeur de code.
+		/// MÃ©thode requise pour la prise en charge du concepteur - ne modifiez pas
+		/// le contenu de cette mÃ©thode avec l'Ã©diteur de code.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -351,7 +351,7 @@ namespace Client {
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(16, 18);
 			this->label3->TabIndex = 9;
-			this->label3->Text = L"€";
+			this->label3->Text = L"Â€";
 			// 
 			// HT
 			// 
@@ -384,7 +384,7 @@ namespace Client {
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(16, 18);
 			this->label5->TabIndex = 11;
-			this->label5->Text = L"€";
+			this->label5->Text = L"Â€";
 			// 
 			// remise
 			// 
@@ -407,7 +407,7 @@ namespace Client {
 			this->TTCremise->Name = L"TTCremise";
 			this->TTCremise->Size = System::Drawing::Size(176, 18);
 			this->TTCremise->TabIndex = 14;
-			this->TTCremise->Text = L"Total TTC après remise : ";
+			this->TTCremise->Text = L"Total TTC aprÃ¨s remise : ";
 			this->TTCremise->Visible = false;
 			// 
 			// remise_txt
@@ -430,7 +430,7 @@ namespace Client {
 			this->euroRemise->Name = L"euroRemise";
 			this->euroRemise->Size = System::Drawing::Size(16, 18);
 			this->euroRemise->TabIndex = 16;
-			this->euroRemise->Text = L"€";
+			this->euroRemise->Text = L"Â€";
 			this->euroRemise->Visible = false;
 			// 
 			// MyForm
@@ -513,7 +513,7 @@ namespace Client {
 		}
 		else if (Convert::ToInt32(nb_txt->Text) <= 0)
 		{
-			MessageBox::Show("Vous ne pouvez pas demander des quantitées négatives ", "Info", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			MessageBox::Show("Vous ne pouvez pas demander des quantitÃ©es nÃ©gatives ", "Info", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		else
 		{
