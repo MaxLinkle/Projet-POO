@@ -11,9 +11,9 @@ namespace Client {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	
+
 	/// <summary>
-	/// Description rÃ©sumÃ©e de MyForm
+	/// Description résumée de MyForm
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
@@ -128,7 +128,7 @@ namespace Client {
 
 	protected:
 		/// <summary>
-		/// Nettoyage des ressources utilisÃ©es.
+		/// Nettoyage des ressources utilisées.
 		/// </summary>
 		~MyForm()
 		{
@@ -175,14 +175,14 @@ namespace Client {
 
 	private:
 		/// <summary>
-		/// Variable nÃ©cessaire au concepteur.
+		/// Variable nécessaire au concepteur.
 		/// </summary>
 
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// MÃ©thode requise pour la prise en charge du concepteur - ne modifiez pas
-		/// le contenu de cette mÃ©thode avec l'Ã©diteur de code.
+		/// Méthode requise pour la prise en charge du concepteur - ne modifiez pas
+		/// le contenu de cette méthode avec l'éditeur de code.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -351,7 +351,7 @@ namespace Client {
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(16, 18);
 			this->label3->TabIndex = 9;
-			this->label3->Text = L"Â€";
+			this->label3->Text = L"€";
 			// 
 			// HT
 			// 
@@ -384,7 +384,7 @@ namespace Client {
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(16, 18);
 			this->label5->TabIndex = 11;
-			this->label5->Text = L"Â€";
+			this->label5->Text = L"€";
 			// 
 			// remise
 			// 
@@ -407,7 +407,7 @@ namespace Client {
 			this->TTCremise->Name = L"TTCremise";
 			this->TTCremise->Size = System::Drawing::Size(176, 18);
 			this->TTCremise->TabIndex = 14;
-			this->TTCremise->Text = L"Total TTC aprÃ¨s remise : ";
+			this->TTCremise->Text = L"Total TTC après remise : ";
 			this->TTCremise->Visible = false;
 			// 
 			// remise_txt
@@ -419,7 +419,6 @@ namespace Client {
 			this->remise_txt->ReadOnly = true;
 			this->remise_txt->Size = System::Drawing::Size(70, 24);
 			this->remise_txt->TabIndex = 15;
-			this->remise_txt->Visible = false;
 			// 
 			// euroRemise
 			// 
@@ -430,7 +429,7 @@ namespace Client {
 			this->euroRemise->Name = L"euroRemise";
 			this->euroRemise->Size = System::Drawing::Size(16, 18);
 			this->euroRemise->TabIndex = 16;
-			this->euroRemise->Text = L"Â€";
+			this->euroRemise->Text = L"€";
 			this->euroRemise->Visible = false;
 			// 
 			// MyForm
@@ -513,12 +512,12 @@ namespace Client {
 		}
 		else if (Convert::ToInt32(nb_txt->Text) <= 0)
 		{
-			MessageBox::Show("Vous ne pouvez pas demander des quantitÃ©es nÃ©gatives ", "Info", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			MessageBox::Show("Vous ne pouvez pas demander des quantitées négatives ", "Info", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		else
 		{
 			this->Hide();
-			this->formu = gcnew Client::Formulaire_achat(nb_txt->Text, total_txt->Text, HT->Text, id, transfert, remise_txt->Text, dateAnniv->Value, dateAchat->Value);
+			this->formu = gcnew Client::Formulaire_achat(nb_txt->Text, total_txt->Text, HT->Text, id, transfert, remise_txt->Text);
 			this->formu->Show();
 
 		}
@@ -549,24 +548,25 @@ namespace Client {
 				totHT += Convert::ToDouble(dataGridView1->Rows[n]->Cells["TVA"]->Value) * (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value));
 
 			}
-			if ((dateActuel->Value.Day == dateActuel->Value.Day) && (dateAnniv->Value.Month == dateAnniv->Value.Month))
-			{
-				Reduc = (total - (total * 0.1));
-				remise_txt->Text = Reduc.ToString();
-			}
-			else if ((dateActuel->Value.Day == dateAchat->Value.Day) && (dateActuel->Value.Month == dateAchat->Value.Month))
-			{
-				Reduc = (total - (total * 0.05));
-				remise_txt->Text = Reduc.ToString();
-			}
-			else
-			{
-				Reduc = 0;
-				remise_txt->Text = Reduc.ToString();
-			}
+			
 			total_txt->Text = total.ToString();
 			nb_txt->Text = totAr.ToString();
 			HT->Text = totHT.ToString();
+			
+		}
+		if ((dateActuel->Value.Day == dateAnniv->Value.Day) && (dateAnniv->Value.Month == dateActuel->Value.Month))
+		{
+			Reduc = (total - (total * 0.1));
+			remise_txt->Text = Reduc.ToString();
+		}
+		else if ((dateActuel->Value.Day == dateAchat->Value.Day) && (dateActuel->Value.Month == dateAchat->Value.Month))
+		{
+			Reduc = (total - (total * 0.05));
+			remise_txt->Text = Reduc.ToString();
+		}else
+		{
+			Reduc = 0;
+			remise_txt->Text = Reduc.ToString();
 		}
 	}
 	};

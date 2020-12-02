@@ -16,6 +16,17 @@ namespace Client {
 	/// </summary>
 	public ref class Facture : public System::Windows::Forms::Form
 	{
+	System::String^ id_commande;
+	String^ Remise;
+	private: System::Windows::Forms::TextBox^ remise;
+	private: System::Windows::Forms::Label^ label7;
+	private: System::Windows::Forms::Label^ totRemise;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Nom;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Quantite;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ total;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ HT;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ TVA;
+
 	private: Label^ id_paye = gcnew Label();
 	public:
 		Facture(void)
@@ -26,23 +37,12 @@ namespace Client {
 			//
 		}
 	public:
-		Facture(DataTable^ transfert, String^ total, String^ nb, String^ nom, String^ prenom, String^ id, String^ metho, String^ adresse_de_liv, String^ adresse_de_fact, DateTime dateEmiss, DateTime dateLivr, String^ TVA, String^ id_paiement)
+		Facture(String^ i_id_commande)
 		{
 			InitializeComponent();
-			recap->DataSource = transfert;
-			recap->Columns[3]->Visible = false;
-			tot_txt->Text = total;
-			nb_txt->Text = nb;
-			nom_txt->Text = nom;
-			prenom_txt->Text = prenom;
-			id_client->Text = id;
-			metho_txt->Text = metho;
-			addLiv_txt->Text = adresse_de_liv;
-			addFact_txt->Text = adresse_de_fact;
-			dateEmi->Value = dateEmiss;
-			dateLiv->Value = dateLivr;
-			totHT_txt->Text = TVA;
-			id_paye->Text = id_paiement;
+			id_commande = i_id_commande;
+			ConnexionBase();
+			
 			
 			//
 			//TODO: ajoutez ici le code du constructeur
@@ -61,13 +61,90 @@ namespace Client {
 			}
 		}
 
+		
 		void finish_with_error(MYSQL* con)
 		{
 			std::cout << "Error: " << mysql_error(con);
 			mysql_close(con);
 			exit(1);
 		}
+		void ConnexionBase()
+		{
+			MYSQL* con;
+			MYSQL_RES* res;
+			MYSQL_ROW row;
+			const char username[] = "root";
+			const char password[] = "toor";
+			con = mysql_init(NULL);
+			int qstate;
+			String^ query;
+			if (con == NULL)
+			{
+				finish_with_error(con);
+				exit(1);
+			}
+			if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
+				finish_with_error(con);
+			}
 
+			query = ("SELECT * FROM Commande INNER JOIN Paiement ON Paiement.ID_paiement = Commande.ID_paiement INNER JOIN Adresse_client AS l ON l.ID_adresse_client = Commande.ID_adresse_livraison INNER JOIN Adresse_client AS f ON f.ID_adresse_client = Commande.ID_adresse_facturation WHERE Commande.ID_commande = '");
+			query += id_commande;
+			query += ("';SELECT * FROM Fournir INNER JOIN Catalogue ON Catalogue.ID_article = Fournir.ID_article WHERE Fournir.ID_commande = '");
+			query += id_commande;
+			query += ("';");
+
+			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+			size_t convertedChars = 0;
+			size_t  sizeInBytes = ((query->Length + 1) * 2);
+			errno_t err = 0;
+			char* ch = (char*)malloc(sizeInBytes);
+			err = wcstombs_s(&convertedChars,
+				ch, sizeInBytes,
+				wch, sizeInBytes);
+			qstate = mysql_query(con, ch);
+
+			std::cout << ch << std::endl; 
+			std::cout << qstate << std::endl;
+			std::cout << mysql_error(con) << std::endl;
+
+			if (!qstate)
+			{
+				res = mysql_store_result(con);
+				std::cout << res->row_count;
+				while (row = mysql_fetch_row(res))
+				{
+					Ref->Text = gcnew String(row[1]);
+					totHT_txt->Text = gcnew String(row[2]);
+					totTVA_txt->Text = gcnew String(row[3]);
+					Remise = gcnew String(row[4]);
+					dateLiv -> Value = DateTime::ParseExact(gcnew String(row[5]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
+					dateEmi->Value = DateTime::ParseExact(gcnew String(row[6]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
+					metho_txt->Text = gcnew String(row[14]);
+					addLiv_txt -> Text = gcnew String(row[16]);
+					addFact_txt -> Text = gcnew String(row[21]);
+				}
+				mysql_free_result(res);
+
+				mysql_next_result(con);
+				res = mysql_store_result(con);
+
+				while (row = mysql_fetch_row(res))
+				{
+					
+					int n = recap->Rows->Add();
+
+					double ht = atof(row[7]);
+					double tva = atof(row[8]);
+					double ttc = ht * ((tva / 100) + 1);
+
+					recap->Rows[n]->Cells[0]->Value = gcnew String(row[5]);
+					recap->Rows[n]->Cells[1]->Value = gcnew String(row[1]);
+					recap->Rows[n]->Cells[2]->Value = ttc;
+					recap->Rows[n]->Cells[3]->Value = gcnew String(row[7]);
+					recap->Rows[n]->Cells[4]->Value = gcnew String(row[8]);
+				}
+			}
+		}
 
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::Label^ label2;
@@ -75,14 +152,12 @@ namespace Client {
 	private: System::Windows::Forms::Label^ lbl_NombArt;
 	private: System::Windows::Forms::TextBox^ tot_txt;
 	private: System::Windows::Forms::Label^ lbl_tot;
-	private: System::Windows::Forms::TextBox^ id_client;
+	private: System::Windows::Forms::TextBox^ Ref;
 	private: System::Windows::Forms::TextBox^ prenom_txt;
-
 	private: System::Windows::Forms::TextBox^ nom_txt;
-
 	private: System::Windows::Forms::Label^ Prenom_Cli;
 	private: System::Windows::Forms::Label^ Nom_Cli;
-	private: System::Windows::Forms::Label^ Num_Cli;
+	private: System::Windows::Forms::Label^ reference;
 	private: System::Windows::Forms::Label^ lbl_addFact;
 	private: System::Windows::Forms::Label^ lbl_addLiv;
 	private: System::Windows::Forms::TextBox^ addFact_txt;
@@ -100,10 +175,6 @@ namespace Client {
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::Label^ label6;
 	private: System::Windows::Forms::DataGridView^ recap;
-
-
-
-
 
 	protected:
 
@@ -126,12 +197,12 @@ namespace Client {
 			this->lbl_NombArt = (gcnew System::Windows::Forms::Label());
 			this->tot_txt = (gcnew System::Windows::Forms::TextBox());
 			this->lbl_tot = (gcnew System::Windows::Forms::Label());
-			this->id_client = (gcnew System::Windows::Forms::TextBox());
+			this->Ref = (gcnew System::Windows::Forms::TextBox());
 			this->prenom_txt = (gcnew System::Windows::Forms::TextBox());
 			this->nom_txt = (gcnew System::Windows::Forms::TextBox());
 			this->Prenom_Cli = (gcnew System::Windows::Forms::Label());
 			this->Nom_Cli = (gcnew System::Windows::Forms::Label());
-			this->Num_Cli = (gcnew System::Windows::Forms::Label());
+			this->reference = (gcnew System::Windows::Forms::Label());
 			this->lbl_addFact = (gcnew System::Windows::Forms::Label());
 			this->lbl_addLiv = (gcnew System::Windows::Forms::Label());
 			this->addFact_txt = (gcnew System::Windows::Forms::TextBox());
@@ -149,6 +220,14 @@ namespace Client {
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->recap = (gcnew System::Windows::Forms::DataGridView());
+			this->Nom = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Quantite = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->total = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->HT = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->TVA = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->remise = (gcnew System::Windows::Forms::TextBox());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->totRemise = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->recap))->BeginInit();
 			this->SuspendLayout();
@@ -216,14 +295,14 @@ namespace Client {
 			this->lbl_tot->TabIndex = 23;
 			this->lbl_tot->Text = L"Total TTC : ";
 			// 
-			// id_client
+			// Ref
 			// 
-			this->id_client->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->id_client->Location = System::Drawing::Point(340, 42);
-			this->id_client->Name = L"id_client";
-			this->id_client->ReadOnly = true;
-			this->id_client->Size = System::Drawing::Size(45, 13);
-			this->id_client->TabIndex = 33;
+			this->Ref->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->Ref->Location = System::Drawing::Point(393, 42);
+			this->Ref->Name = L"Ref";
+			this->Ref->ReadOnly = true;
+			this->Ref->Size = System::Drawing::Size(90, 13);
+			this->Ref->TabIndex = 33;
 			// 
 			// prenom_txt
 			// 
@@ -265,16 +344,16 @@ namespace Client {
 			this->Nom_Cli->TabIndex = 29;
 			this->Nom_Cli->Text = L"Nom : ";
 			// 
-			// Num_Cli
+			// reference
 			// 
-			this->Num_Cli->AutoSize = true;
-			this->Num_Cli->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->reference->AutoSize = true;
+			this->reference->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Num_Cli->Location = System::Drawing::Point(248, 42);
-			this->Num_Cli->Name = L"Num_Cli";
-			this->Num_Cli->Size = System::Drawing::Size(98, 13);
-			this->Num_Cli->TabIndex = 28;
-			this->Num_Cli->Text = L"Numero Client : ";
+			this->reference->Location = System::Drawing::Point(248, 42);
+			this->reference->Name = L"reference";
+			this->reference->Size = System::Drawing::Size(139, 13);
+			this->reference->TabIndex = 28;
+			this->reference->Text = L"Référence Commande :";
 			// 
 			// lbl_addFact
 			// 
@@ -370,7 +449,7 @@ namespace Client {
 			this->dateEmi->DropDownAlign = System::Windows::Forms::LeftRightAlignment::Right;
 			this->dateEmi->Enabled = false;
 			this->dateEmi->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
-			this->dateEmi->Location = System::Drawing::Point(202, 262);
+			this->dateEmi->Location = System::Drawing::Point(202, 261);
 			this->dateEmi->Name = L"dateEmi";
 			this->dateEmi->Size = System::Drawing::Size(84, 20);
 			this->dateEmi->TabIndex = 42;
@@ -391,7 +470,7 @@ namespace Client {
 			this->label3->AutoSize = true;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label3->Location = System::Drawing::Point(337, 754);
+			this->label3->Location = System::Drawing::Point(277, 754);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(77, 18);
 			this->label3->TabIndex = 44;
@@ -402,7 +481,7 @@ namespace Client {
 			this->totHT_txt->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->totHT_txt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->totHT_txt->Location = System::Drawing::Point(409, 754);
+			this->totHT_txt->Location = System::Drawing::Point(349, 754);
 			this->totHT_txt->Name = L"totHT_txt";
 			this->totHT_txt->ReadOnly = true;
 			this->totHT_txt->Size = System::Drawing::Size(100, 17);
@@ -413,7 +492,7 @@ namespace Client {
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label4->Location = System::Drawing::Point(360, 784);
+			this->label4->Location = System::Drawing::Point(300, 784);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(43, 18);
 			this->label4->TabIndex = 46;
@@ -424,7 +503,7 @@ namespace Client {
 			this->totTVA_txt->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->totTVA_txt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->totTVA_txt->Location = System::Drawing::Point(409, 785);
+			this->totTVA_txt->Location = System::Drawing::Point(349, 785);
 			this->totTVA_txt->Name = L"totTVA_txt";
 			this->totTVA_txt->ReadOnly = true;
 			this->totTVA_txt->Size = System::Drawing::Size(100, 17);
@@ -433,7 +512,7 @@ namespace Client {
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(453, 756);
+			this->label5->Location = System::Drawing::Point(406, 757);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(13, 13);
 			this->label5->TabIndex = 48;
@@ -442,7 +521,7 @@ namespace Client {
 			// label6
 			// 
 			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(453, 788);
+			this->label6->Location = System::Drawing::Point(406, 789);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(13, 13);
 			this->label6->TabIndex = 49;
@@ -452,17 +531,88 @@ namespace Client {
 			// 
 			this->recap->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
 			this->recap->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->recap->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(5) {
+				this->Nom, this->Quantite,
+					this->total, this->HT, this->TVA
+			});
 			this->recap->Location = System::Drawing::Point(24, 316);
 			this->recap->Name = L"recap";
 			this->recap->ReadOnly = true;
 			this->recap->Size = System::Drawing::Size(675, 406);
 			this->recap->TabIndex = 50;
 			// 
+			// Nom
+			// 
+			this->Nom->HeaderText = L"Nom";
+			this->Nom->Name = L"Nom";
+			this->Nom->ReadOnly = true;
+			// 
+			// Quantite
+			// 
+			this->Quantite->HeaderText = L"Quantité";
+			this->Quantite->Name = L"Quantite";
+			this->Quantite->ReadOnly = true;
+			// 
+			// total
+			// 
+			this->total->HeaderText = L"Total";
+			this->total->Name = L"total";
+			this->total->ReadOnly = true;
+			// 
+			// HT
+			// 
+			this->HT->HeaderText = L"HT";
+			this->HT->Name = L"HT";
+			this->HT->ReadOnly = true;
+			this->HT->Visible = false;
+			// 
+			// TVA
+			// 
+			this->TVA->HeaderText = L"TVA";
+			this->TVA->Name = L"TVA";
+			this->TVA->ReadOnly = true;
+			this->TVA->Visible = false;
+			// 
+			// remise
+			// 
+			this->remise->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->remise->Location = System::Drawing::Point(609, 786);
+			this->remise->Name = L"remise";
+			this->remise->ReadOnly = true;
+			this->remise->Size = System::Drawing::Size(51, 13);
+			this->remise->TabIndex = 51;
+			this->remise->Visible = false;
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Location = System::Drawing::Point(666, 789);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(13, 13);
+			this->label7->TabIndex = 52;
+			this->label7->Text = L"€";
+			this->label7->Visible = false;
+			// 
+			// totRemise
+			// 
+			this->totRemise->AutoSize = true;
+			this->totRemise->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->totRemise->Location = System::Drawing::Point(433, 782);
+			this->totRemise->Name = L"totRemise";
+			this->totRemise->Size = System::Drawing::Size(170, 18);
+			this->totRemise->TabIndex = 53;
+			this->totRemise->Text = L" Total TTC avec remise :";
+			this->totRemise->Visible = false;
+			// 
 			// Facture
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(732, 847);
+			this->Controls->Add(this->totRemise);
+			this->Controls->Add(this->label7);
+			this->Controls->Add(this->remise);
 			this->Controls->Add(this->recap);
 			this->Controls->Add(this->label6);
 			this->Controls->Add(this->label5);
@@ -480,12 +630,12 @@ namespace Client {
 			this->Controls->Add(this->addFact_txt);
 			this->Controls->Add(this->lbl_addLiv);
 			this->Controls->Add(this->lbl_addFact);
-			this->Controls->Add(this->id_client);
+			this->Controls->Add(this->Ref);
 			this->Controls->Add(this->prenom_txt);
 			this->Controls->Add(this->nom_txt);
 			this->Controls->Add(this->Prenom_Cli);
 			this->Controls->Add(this->Nom_Cli);
-			this->Controls->Add(this->Num_Cli);
+			this->Controls->Add(this->reference);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->nb_txt);
 			this->Controls->Add(this->lbl_NombArt);
@@ -507,9 +657,22 @@ namespace Client {
 		Bitmap^ test = (gcnew System::Drawing::Bitmap("LOGO.png"));
 		this->pictureBox1->Image = test;
 
-		double TVA;
-		TVA = Convert::ToDouble(tot_txt->Text) - Convert::ToDouble(totHT_txt->Text);
-		totTVA_txt->Text = TVA.ToString();
+		double Tot;
+		Tot = Convert::ToDouble(totHT_txt->Text) + Convert::ToDouble(totTVA_txt->Text);
+		tot_txt->Text = Convert::ToString(Tot);
+
+		double Reduc;
+		Reduc = Convert::ToDouble(tot_txt->Text) - Convert::ToDouble(Remise);
+		remise->Text = Convert::ToString(Reduc);
+
+		if (remise->Text != tot_txt->Text)
+		{
+			label7->Visible = true;
+			remise->Visible = true;
+			totRemise->Visible = true;
+			
+		}
+		
 
 	}
 };
