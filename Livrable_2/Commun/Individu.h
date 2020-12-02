@@ -1,14 +1,15 @@
 #pragma once
 using namespace System;
+using namespace System::Collections;
 
-typedef ref struct Struct_Adresse Struct_Adresse_Cli;
+typedef ref struct Struct_Adresse Struct_Adresse;
+
 public ref struct Struct_Adresse {
 	String^ ID;
 	String^ Adresse;
 	String^ Ville;
+	String^ Pays;
 	String^ Type_adresse;
-	Struct_Adresse_Cli^* Suivant;
-
 };
 
 
@@ -16,9 +17,9 @@ public class MapIndi {
 public:
 
 	virtual String^ MapperIDtoAddr(String^ ID) { return nullptr; };
-	virtual String^ MapperID(Struct_Adresse_Cli^ Adr, String^ PNom, String^ PPrenom, String^ PDate) { return nullptr; };
+	virtual String^ MapperID(Struct_Adresse^ Adr, String^ PNom, String^ PPrenom, String^ PDate) { return nullptr; };
 	virtual String^ MapperIdent(String^ ID) { return nullptr; };
-
+	virtual String^ MapperIDSup(String^ ID) { return nullptr; };
 };
 
 public class MapCLi : public MapIndi {
@@ -33,23 +34,22 @@ public:
 		return Query;
 	}
 
-	String^ MapperID(Struct_Adresse_Cli^ Adr, String^ PNom, String^ PPrenom, String^ PDate) {
+	String^ MapperID(String^ PNom, String^ PPrenom, String^ PDate) {
 
 		String^ Query = "SELECT ID_adresse_client FROM Client NATURAL JOIN Adresse_client WHERE 1";
-		if (Adr == nullptr && PNom == "" && PPrenom == "" && PDate == "") {
+		if (PNom == "" || PPrenom == "" ) {
 			Query += "AND 0";
 		}
 		else {
-			Struct_Adresse_Cli^* current = &Adr;
-			while (current != nullptr) {
-				Query = "AND ID_adresse_client = '" + (*current)->ID + "'";
-				current =(*current)->Suivant;
-			}
+		
 			if (PNom != "") {
 				Query = "AND nom = '" + PNom + "'";
 			}
 			if (PPrenom != "") {
 				Query = "AND prenom = '" + PPrenom + "'";
+			}
+			if (PDate != "NULL") {
+				Query = "AND date_naissance = '" + PDate + "'";
 			}
 		}
 		Query += ";";
@@ -70,23 +70,24 @@ public:
 		return Query;
 	}
 
-	String^ MapperID(Struct_Adresse_Cli^ Adr, String^ PNom, String^ PPrenom, String^ PDate) {
+	String^ MapperID(String^ PNom, String^ PPrenom, String^ PDate) {
 
 		String^ Query = "SELECT ID_adresse_personnel FROM Personnel NATURAL JOIN Adresse_personnel WHERE 1";
-		if (Adr == nullptr && PNom == "" && PPrenom == "" && PDate == "") {
+		if (PNom == "" && PPrenom == "" && PDate == "") {
 
 			Query += "AND 0";
 
 		}
 		else {
-			if (Adr != nullptr) {
-				Query = "AND ID_adresse_personnel = '" + Adr->ID + "'";
-			}
+			
 			if (PNom != "") {
 				Query = "AND nom = '" + PNom + "'";
 			}
 			if (PPrenom != "") {
 				Query = "AND prenom = '" + PPrenom + "'";
+			}
+			if (PDate != "") {
+				Query = "AND date_embauche = '" + PDate + "'";
 			}
 		}
 		Query += ";";
@@ -95,7 +96,19 @@ public:
 
 	String^ MapperIdent(String^ ID) {
 
-		String^ Query = "SELECT nom,prenom,date_naissance, FROM Personnel WHERE 0 ";
+		String^ Query = "SELECT nom,prenom,date_naissance FROM Personnel WHERE 0 ";
+		if (ID != "") {
+
+			Query += "OR ID_Personnel = '" + ID + "'";
+
+		}
+		Query += ";";
+		return Query;
+	}
+
+	String^ MapperIDSup(String^ ID) {
+
+		String^ Query = "SELECT ID_superieur FROM Personnel WHERE 0 ";
 		if (ID != "") {
 
 			Query += "OR ID_Personnel = '" + ID + "'";
@@ -111,15 +124,16 @@ public:
 
 
 
-public ref class Individu {
+public ref class Individu abstract{
 
-protected: 
+protected:
 	MapIndi* svc_Mappage;
 	String^ ID;
 	String^ Nom;
 	String^ Prenom;
 	String^ Date;
-	Struct_Adresse^ Adresse;
+	ArrayList ^ Adresse;
+	
 public:
 	Individu(String^ PID) {
 		ID = PID;
@@ -127,38 +141,55 @@ public:
 		Prenom = "";
 		Date = "";
 	}
-	Individu(String^ PNom, String^ PPrenom, String^ PDate, Struct_Adresse_Cli^ Adr) {
+	Individu(String^ PNom, String^ PPrenom, String^ PDate, ArrayList ^ Adr) {
 		ID = "";
 		Nom = PNom;
 		Prenom = PPrenom;
 		Date = PDate;
 		Adresse = Adr;
-		
 	}
 	~Individu() {
 		delete svc_Mappage;
 	}
 
+	ArrayList^ GetAdresse(){ return Adresse; }
+	virtual String^ GetDPA() { return nullptr; }
+	virtual String^ GetIdSup() { return nullptr; }
+	virtual String^ GetSup(){ return nullptr; }
+	String^ GetId() { return ID; }
+	String^ GetNom() { return Nom; }
+	String^ GetPrenom() { return Prenom; }
+	String^ GetDate() { return Date; }
+
+	virtual bool IsClient() = 0;
 };
 
-public ref class Client : public Individu {
-public :
+public ref class CLClient : public Individu {
+private:
+	String^ Date_Premier_Achat;
 
-	Client(Struct_Adresse_Cli^ Adr ,String^ PNom, String^ PPrenom, String^ PDate) :Individu(PNom, PPrenom, PDate, Adr) {
-		
+public:
+	String^ GetDPA() override { return Date_Premier_Achat; }
+	CLClient(ArrayList^ Adr, String^ PNom, String^ PPrenom, String^ PDate) :Individu(PNom, PPrenom, PDate, Adr) {
 		svc_Mappage = new MapCLi();
 	}
-	
-	Client(String^ PID) :Individu(PID) {}
+
+	CLClient(String^ PID) :Individu(PID) {}
+
+	bool IsClient() override { return true; }
 
 };
 
 
 public ref class Personnel : public Individu {
-public :
-	Personnel(Struct_Adresse_Cli^ Adr, String^ PNom, String^ PPrenom, String^ PDate) :Individu(PNom, PPrenom, PDate,Adr) { svc_Mappage = new MapCLi(); }
-	Personnel(String^ PID):Individu(PID){}
-	
+private:
+	String^ ID_Sup;
+public:
+	String^ GetIdSup() override { return ID_Sup; }
+	String^ GetSup() override { return svc_Mappage->MapperIdent(ID); }
+	Personnel(ArrayList^ Adr, String^ PNom, String^ PPrenom, String^ PDate) :Individu(PNom, PPrenom, PDate, Adr) { svc_Mappage = new MapCLi(); }
+	Personnel(String^ PID) :Individu(PID) {}
+	bool IsClient() override { return true; }
 };
 
 

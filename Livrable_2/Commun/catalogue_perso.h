@@ -11,7 +11,7 @@ namespace Perso {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	/// <summary>
+	/// <summary> 
 	/// Zusammenfassung für Form1
 	/// </summary>
 	public ref class Catalogue_Perso : public System::Windows::Forms::Form

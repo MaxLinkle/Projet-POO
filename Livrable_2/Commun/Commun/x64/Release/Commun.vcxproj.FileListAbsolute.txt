@@ -1,0 +1,4 @@
+C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Commun\x64\Release\Commun.vcxprojAssemblyReference.cache
+C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Commun\x64\Release\Commun.exe
+C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Commun\x64\Release\Commun.Recherche.resources
+C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Commun\x64\Release\Commun.vcxproj.GenerateResource.cache

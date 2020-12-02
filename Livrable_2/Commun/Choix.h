@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-#include "Client.h"
+#include "Connection_Client.h"
 #include "PersonnelCO.h"
 
 namespace NS_Choix {
@@ -11,7 +11,7 @@ namespace NS_Choix {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-
+	 
 	/// <summary>
 	/// Zusammenfassung für Form1
 	/// </summary>
@@ -40,7 +40,7 @@ namespace NS_Choix {
 
 	private:
 		System::ComponentModel::Container^ components;
-		NS_Client::Client^ Inter_Client;
+		//NS_Client::Client^ Inter_Client;
 		NS_Personnel::Personnel^ Inter_Personnel;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 
@@ -116,9 +116,9 @@ namespace NS_Choix {
 	}
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	
-		this->Hide();
-		this->Inter_Client = gcnew NS_Client::Client(this);
-		this->Inter_Client->Show();
+		//this->Hide();
+		///this->Inter_Client = gcnew NS_Client::Client(this);
+		//this->Inter_Client->Show();
 	
 	}
 	private: System::Void Choix_Load(System::Object^ sender, System::EventArgs^ e) {

@@ -21,7 +21,7 @@ namespace Perso {
 			ConnectDatabase();
 			InitializeComponent();
 		}
-
+		
 	protected:
 		/// <summary>
 		/// Verwendete Ressourcen bereinigen.

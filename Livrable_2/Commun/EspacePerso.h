@@ -3,6 +3,7 @@
 #include "UserControle.h"
 #include "SC.h"
 #include "Recherche.h"
+#include "catalogue_perso.h"
 namespace NS_EspacePersonnel {
 
 	using namespace System;
@@ -40,7 +41,7 @@ namespace NS_EspacePersonnel {
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::TextBox^ TextNomSup;
 	private: System::Windows::Forms::TextBox^ TextPrenomSup;
-	public:delegate Struct_Adresse_Cli^ Addrgetter();
+	public: delegate ArrayList^ Addrgetter();
 	private : Addrgetter^ func;
 
 	private: System::Windows::Forms::Label^ label4;
@@ -349,7 +350,7 @@ namespace NS_EspacePersonnel {
 			   this->Stat->TabIndex = 11;
 			   this->Stat->Text = L"Statistique";
 			   this->Stat->UseVisualStyleBackColor = true;
-			   this->Stat->Click += gcnew System::EventHandler(this, &EspPerso::button2_Click);
+			   //this->Stat->Click += gcnew System::EventHandler(this, &EspPerso::Stat_Click);
 			   // 
 			   // EspPerso
 			   // 
@@ -463,7 +464,7 @@ namespace NS_EspacePersonnel {
 
 	private: 
 	System::Void Recherche(System::Object^ sender, System::EventArgs^ e) {
-		Individu^* Steve = nullptr;
+		Individu^ Steve = nullptr;
 
 		if(Rb_Client->Checked)
 		{
@@ -471,7 +472,7 @@ namespace NS_EspacePersonnel {
 			if (CheckDate->Checked) {
 				PDate = Date->Value.ToString(Date->CustomFormat);
 			}
-			(*Steve) = gcnew Client(func(), textBox1->Text, textBox2->Text,PDate);
+			Steve = gcnew CLClient(func(), textBox1->Text, textBox2->Text,PDate);
 
 		}
 		else 
@@ -479,13 +480,13 @@ namespace NS_EspacePersonnel {
 			
 			String^ PDate = Date->Value.ToString(Date->CustomFormat);
 			
-			(*Steve) = gcnew Personnel(func(), textBox1->Text, textBox2->Text, PDate);
+			Steve = gcnew Personnel(func(), textBox1->Text, textBox2->Text, PDate);
 
 
 		}
 		this->Hide();
-		FormRecherche^ PageSuivante = gcnew FormRecherche(this,Steve);
-		
+		CLRecherche^ PageSuivante = gcnew CLRecherche(this,Steve);
+		PageSuivante->Show();
 
 	}
 
@@ -563,9 +564,9 @@ private: System::Void checkBox1_CheckedChanged(System::Object^ sender, System::E
 }
 
 
-	   Struct_Adresse_Cli^ AddrClient() {
-		   Struct_Adresse_Cli^ Adr = nullptr;
-		   Struct_Adresse_Cli^* current = &Adr;
+	   ArrayList^ AddrClient() {
+		   ArrayList^ Adr = nullptr;
+		   Struct_Adresse^ cont = nullptr;
 		   for each (DataGridViewRow^ row in dataGridView1->Rows) {
 			   bool Valide = true;
 			   for each (DataGridViewCell^ cell in row->Cells) {
@@ -577,25 +578,21 @@ private: System::Void checkBox1_CheckedChanged(System::Object^ sender, System::E
 			   }
 			   if (Valide) {
 				   if (Adr == nullptr) {
-					   Adr = gcnew Struct_Adresse_Cli;
-					   Adr->ID = "";
-					   Adr->Adresse = row->Cells[0]->Value->ToString();
-					   Adr->Ville = row->Cells[1]->Value->ToString();
-					   Adr->Type_adresse = row->Cells[2]->Value->ToString();
-					   Adr->Suivant = nullptr;
-					   current = &Adr;
+					   cont = gcnew Struct_Adresse;
+					   cont->ID = "";
+					   cont->Adresse = row->Cells[0]->Value->ToString();
+					   cont->Ville = row->Cells[1]->Value->ToString();
+					   cont->Type_adresse = row->Cells[2]->Value->ToString();
+					   Adr = gcnew ArrayList();
+					   Adr->Add(cont);
 				   }
 				   else {
-					   while ((*current)->Suivant != nullptr) {
-						   current = (*current)->Suivant;
-					   }
-					   *((*current)->Suivant) = gcnew Struct_Adresse_Cli;
-					   current = (*current)->Suivant;
-					   (*current)->ID = "";
-					   (*current)->Adresse = row->Cells[0]->Value->ToString();
-					   (*current)->Ville = row->Cells[1]->Value->ToString();
-					   (*current)->Type_adresse = row->Cells[2]->Value->ToString();
-					   (*current)->Suivant = nullptr;
+					   cont = gcnew Struct_Adresse;
+					   cont->ID = "";
+					   cont->Adresse = row->Cells[0]->Value->ToString();
+					   cont->Ville = row->Cells[1]->Value->ToString();
+					   cont->Type_adresse = row->Cells[2]->Value->ToString();
+					   Adr->Add(cont);
 				   }
 			   }
 
@@ -604,9 +601,9 @@ private: System::Void checkBox1_CheckedChanged(System::Object^ sender, System::E
 		   return Adr;
 	   }
 
-	   Struct_Adresse_Cli^ AddrPersonnel() {
-		   Struct_Adresse_Cli^ Adr = nullptr;
-		   Struct_Adresse_Cli^* current = &Adr;
+	   ArrayList^ AddrPersonnel() {
+		   ArrayList^ Adr = nullptr;
+		   Struct_Adresse^ cont = nullptr;
 		   for each (DataGridViewRow ^ row in dataGridView1->Rows) {
 			   bool Valide = true;
 			   for each (DataGridViewCell ^ cell in row->Cells) {
@@ -618,25 +615,21 @@ private: System::Void checkBox1_CheckedChanged(System::Object^ sender, System::E
 			   }
 			   if (Valide) {
 				   if (Adr == nullptr) {
-					   Adr = gcnew Struct_Adresse_Cli;
-					   Adr->ID = "";
-					   Adr->Adresse = row->Cells[0]->Value->ToString();
-					   Adr->Ville = row->Cells[1]->Value->ToString();
-					   Adr->Type_adresse = "";
-					   Adr->Suivant = nullptr;
-					   current = &Adr;
+					   cont = gcnew Struct_Adresse;
+					   cont->ID = "";
+					   cont->Adresse = row->Cells[0]->Value->ToString();
+					   cont->Ville = row->Cells[1]->Value->ToString();
+					   cont->Type_adresse = "";
+					   Adr = gcnew ArrayList();
+					   Adr->Add(cont);
 				   }
 				   else {
-					   while ((*current)->Suivant != nullptr) {
-						   current = (*current)->Suivant;
-					   }
-					   *((*current)->Suivant) = gcnew Struct_Adresse_Cli;
-					   current = (*current)->Suivant;
-					   (*current)->ID = "";
-					   (*current)->Adresse = row->Cells[0]->Value->ToString();
-					   (*current)->Ville = row->Cells[1]->Value->ToString();
-					   (*current)->Type_adresse = "";
-					   (*current)->Suivant = nullptr;
+					   cont = gcnew Struct_Adresse;
+					   cont->ID = "";
+					   cont->Adresse = row->Cells[0]->Value->ToString();
+					   cont->Ville = row->Cells[1]->Value->ToString();
+					   cont->Type_adresse = "";
+					   Adr->Add(cont);
 				   }
 			   }
 
