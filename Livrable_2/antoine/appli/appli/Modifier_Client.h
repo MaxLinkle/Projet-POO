@@ -28,8 +28,8 @@ namespace Client {
 
 
 
-	private: System::Windows::Forms::TextBox^ textBox_ville;
-	private: System::Windows::Forms::TextBox^ textBox_adresse;
+
+
 
 	private: System::Windows::Forms::Button^ button2;
 	private: System::Windows::Forms::Label^ label3;
@@ -59,7 +59,7 @@ namespace Client {
 
 
 	private: System::Windows::Forms::DataGridView^ dataGridView1;
-	private: System::Windows::Forms::Button^ button_ajout;
+
 
 
 
@@ -69,9 +69,9 @@ namespace Client {
 
 
 
-	private: System::Windows::Forms::CheckBox^ checkBox_livr;
 
-	private: System::Windows::Forms::CheckBox^ checkBox_fact;
+
+
 
 
 
@@ -107,8 +107,6 @@ namespace Client {
 		
 		void InitializeComponent(void)
 		{
-			this->textBox_ville = (gcnew System::Windows::Forms::TextBox());
-			this->textBox_adresse = (gcnew System::Windows::Forms::TextBox());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
@@ -117,35 +115,18 @@ namespace Client {
 			this->textBox_prenom = (gcnew System::Windows::Forms::TextBox());
 			this->textBox_nom = (gcnew System::Windows::Forms::TextBox());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
-			this->button_ajout = (gcnew System::Windows::Forms::Button());
+			this->data_adresse = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->data_ville = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->data_livr = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
+			this->data_fact = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
+			this->data_supr = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			this->data_upda = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			this->data_id = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
-			this->checkBox_livr = (gcnew System::Windows::Forms::CheckBox());
-			this->checkBox_fact = (gcnew System::Windows::Forms::CheckBox());
 			this->richTextBox2 = (gcnew System::Windows::Forms::RichTextBox());
 			this->textBox_retour = (gcnew System::Windows::Forms::TextBox());
-			this->data_id = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->data_upda = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
-			this->data_supr = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
-			this->data_fact = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			this->data_livr = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			this->data_ville = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->data_adresse = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
-			// 
-			// textBox_ville
-			// 
-			this->textBox_ville->Location = System::Drawing::Point(538, 234);
-			this->textBox_ville->Name = L"textBox_ville";
-			this->textBox_ville->Size = System::Drawing::Size(100, 20);
-			this->textBox_ville->TabIndex = 24;
-			// 
-			// textBox_adresse
-			// 
-			this->textBox_adresse->Location = System::Drawing::Point(409, 234);
-			this->textBox_adresse->Name = L"textBox_adresse";
-			this->textBox_adresse->Size = System::Drawing::Size(100, 20);
-			this->textBox_adresse->TabIndex = 23;
 			// 
 			// button2
 			// 
@@ -219,15 +200,45 @@ namespace Client {
 			this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Modifier_Client::dataGridView1_CellContentClick);
 			this->dataGridView1->UserAddedRow += gcnew System::Windows::Forms::DataGridViewRowEventHandler(this, &Modifier_Client::dataGridView1_UserAddedRow);
 			// 
-			// button_ajout
+			// data_adresse
 			// 
-			this->button_ajout->Location = System::Drawing::Point(831, 234);
-			this->button_ajout->Name = L"button_ajout";
-			this->button_ajout->Size = System::Drawing::Size(75, 23);
-			this->button_ajout->TabIndex = 34;
-			this->button_ajout->Text = L"ajouter";
-			this->button_ajout->UseVisualStyleBackColor = true;
-			this->button_ajout->Click += gcnew System::EventHandler(this, &Modifier_Client::button_ajout_Click);
+			this->data_adresse->HeaderText = L"adresse";
+			this->data_adresse->Name = L"data_adresse";
+			// 
+			// data_ville
+			// 
+			this->data_ville->HeaderText = L"ville";
+			this->data_ville->Name = L"data_ville";
+			// 
+			// data_livr
+			// 
+			this->data_livr->FalseValue = L"0";
+			this->data_livr->HeaderText = L"livraison";
+			this->data_livr->Name = L"data_livr";
+			this->data_livr->TrueValue = L"1";
+			// 
+			// data_fact
+			// 
+			this->data_fact->FalseValue = L"0";
+			this->data_fact->HeaderText = L"facturation";
+			this->data_fact->Name = L"data_fact";
+			this->data_fact->TrueValue = L"1";
+			// 
+			// data_supr
+			// 
+			this->data_supr->HeaderText = L"";
+			this->data_supr->Name = L"data_supr";
+			// 
+			// data_upda
+			// 
+			this->data_upda->HeaderText = L"";
+			this->data_upda->Name = L"data_upda";
+			// 
+			// data_id
+			// 
+			this->data_id->HeaderText = L"id";
+			this->data_id->Name = L"data_id";
+			this->data_id->Visible = false;
 			// 
 			// richTextBox1
 			// 
@@ -236,26 +247,6 @@ namespace Client {
 			this->richTextBox1->Size = System::Drawing::Size(335, 96);
 			this->richTextBox1->TabIndex = 35;
 			this->richTextBox1->Text = L"";
-			// 
-			// checkBox_livr
-			// 
-			this->checkBox_livr->AutoSize = true;
-			this->checkBox_livr->Location = System::Drawing::Point(687, 223);
-			this->checkBox_livr->Name = L"checkBox_livr";
-			this->checkBox_livr->Size = System::Drawing::Size(119, 17);
-			this->checkBox_livr->TabIndex = 36;
-			this->checkBox_livr->Text = L"adresse de livraison";
-			this->checkBox_livr->UseVisualStyleBackColor = true;
-			// 
-			// checkBox_fact
-			// 
-			this->checkBox_fact->AutoSize = true;
-			this->checkBox_fact->Location = System::Drawing::Point(687, 246);
-			this->checkBox_fact->Name = L"checkBox_fact";
-			this->checkBox_fact->Size = System::Drawing::Size(131, 17);
-			this->checkBox_fact->TabIndex = 37;
-			this->checkBox_fact->Text = L"adresse de facturation";
-			this->checkBox_fact->UseVisualStyleBackColor = true;
 			// 
 			// richTextBox2
 			// 
@@ -272,46 +263,6 @@ namespace Client {
 			this->textBox_retour->Size = System::Drawing::Size(100, 20);
 			this->textBox_retour->TabIndex = 39;
 			// 
-			// data_id
-			// 
-			this->data_id->HeaderText = L"id";
-			this->data_id->Name = L"data_id";
-			this->data_id->Visible = false;
-			// 
-			// data_upda
-			// 
-			this->data_upda->HeaderText = L"";
-			this->data_upda->Name = L"data_upda";
-			// 
-			// data_supr
-			// 
-			this->data_supr->HeaderText = L"";
-			this->data_supr->Name = L"data_supr";
-			// 
-			// data_fact
-			// 
-			this->data_fact->FalseValue = L"0";
-			this->data_fact->HeaderText = L"facturation";
-			this->data_fact->Name = L"data_fact";
-			this->data_fact->TrueValue = L"1";
-			// 
-			// data_livr
-			// 
-			this->data_livr->FalseValue = L"0";
-			this->data_livr->HeaderText = L"livraison";
-			this->data_livr->Name = L"data_livr";
-			this->data_livr->TrueValue = L"1";
-			// 
-			// data_ville
-			// 
-			this->data_ville->HeaderText = L"ville";
-			this->data_ville->Name = L"data_ville";
-			// 
-			// data_adresse
-			// 
-			this->data_adresse->HeaderText = L"adresse";
-			this->data_adresse->Name = L"data_adresse";
-			// 
 			// Modifier_Client
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -319,13 +270,8 @@ namespace Client {
 			this->ClientSize = System::Drawing::Size(1291, 383);
 			this->Controls->Add(this->textBox_retour);
 			this->Controls->Add(this->richTextBox2);
-			this->Controls->Add(this->checkBox_fact);
-			this->Controls->Add(this->checkBox_livr);
 			this->Controls->Add(this->richTextBox1);
-			this->Controls->Add(this->button_ajout);
 			this->Controls->Add(this->dataGridView1);
-			this->Controls->Add(this->textBox_ville);
-			this->Controls->Add(this->textBox_adresse);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
@@ -428,10 +374,6 @@ namespace Client {
 			}
 		}
 
-	private: System::Void button_submit_Click(System::Object^ sender, System::EventArgs^ e) {
-		//this->load_query();
-	}
-
 	private: System::Void Modifier_Client_Load(System::Object^ sender, System::EventArgs^ e) {
 		this->load_query();
 	}
@@ -440,66 +382,7 @@ namespace Client {
 		this->Close();
 		Precedent->Show();
 	}
-	private: System::Void button_ajout_Click(System::Object^ sender, System::EventArgs^ e) {
-		//ConnectDatabase();
-
-		if (textBox_adresse->Text != "" && textBox_ville->Text != "" && (checkBox_fact->Checked == true || checkBox_livr->Checked == true)) {
-			System::String^ parametre;
-			//parametre = textBox_id->Text;
-			parametre += id;
-			parametre += "', '";
-			parametre += textBox_adresse->Text;
-			parametre += "', '";
-			parametre += textBox_ville->Text;
-
-			if (checkBox_livr->Checked == true && checkBox_fact->Checked == true) {
-				parametre += "', 'livraison et facturation');";
-			}
-			else if (checkBox_livr->Checked == true) {
-				parametre += "', 'livraison'); ";
-			}
-			else if (checkBox_fact->Checked == true) {
-				parametre += "', 'facturation'); ";
-			}
-
-			System::String^ query;
-			query = "START TRANSACTION; CALL ajout_Adresse_client('";
-			query += parametre;
-			query += " CALL verification_Adresse_client('";
-			//query += textBox_id->Text;
-			query += id;
-			query += "'); COMMIT;";
-
-			richTextBox1->Text = query;
-
-			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
-			size_t convertedChars = 0;
-			size_t  sizeInBytes = ((query->Length + 1) * 2);
-			errno_t err = 0;
-
-			char* ch = (char*)malloc(sizeInBytes);
-			err = wcstombs_s(&convertedChars,
-				ch, sizeInBytes,
-				wch, sizeInBytes);
-
-			bool qstate;
-
-			qstate = mysql_query(con, ch);
-			if (qstate) {
-				textBox_retour->Text = "Erreur";
-			}
-			else {
-				textBox_retour->Text = "requete effectuer";
-			}
-
-
-			this->load_query();
-
-		}
-		else {
-			textBox_retour->Text = "Vous n'ete pas rentré dans la condition";
-		}
-	}
+	
 	
 	private: System::Void dataGridView1_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
 		int i = e->RowIndex;

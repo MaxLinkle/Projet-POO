@@ -162,6 +162,7 @@
     <ClInclude Include="Facture_Client.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Statistique.h" />
     <ClInclude Include="Modifier_Client.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -169,7 +170,6 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
