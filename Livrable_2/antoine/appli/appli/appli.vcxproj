@@ -147,6 +147,9 @@
     <ResourceCompile Include="app.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="catalogue_perso.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Connection_Client.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -190,6 +193,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="catalogue_perso.resx">
+      <DependentUpon>catalogue_perso.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Connection_Client.resx">
       <DependentUpon>Connection_Client.h</DependentUpon>
     </EmbeddedResource>

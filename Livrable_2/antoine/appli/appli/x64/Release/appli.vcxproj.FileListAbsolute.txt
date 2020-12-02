@@ -5,3 +5,4 @@ D:\SCOLAIRE\CESI\2eme année\projet\Programme_objet\appli\appli\x64\Release\appl
 D:\SCOLAIRE\CESI\2eme année\projet\Programme_objet\appli\appli\x64\Release\appli.Creation_Client.resources
 D:\SCOLAIRE\CESI\2eme année\projet\Programme_objet\appli\appli\x64\Release\appli.Page_Client.resources
 D:\SCOLAIRE\CESI\2eme année\projet\Programme_objet\appli\appli\x64\Release\appli.Modifier_Client.resources
+D:\SCOLAIRE\CESI\2eme année\projet\Programme_objet\appli\appli\x64\Release\appli.catalogue_perso.resources

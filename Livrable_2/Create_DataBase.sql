@@ -120,7 +120,7 @@ CREATE TABLE Fournir (
 DROP TABLE IF EXISTS Adresse_personnel ;
 CREATE TABLE Adresse_personnel (
   ID_adresse_personnel INT AUTO_INCREMENT NOT NULL,
-  adresse_personnel VARCHAR(50),
+  adresse_personnel VARCHAR(50) NOT NULL,
   ID_personnel INT NOT NULL,
   ID_ville INT NOT NULL,
 
@@ -133,7 +133,7 @@ CREATE TABLE Adresse_personnel (
 DROP TABLE IF EXISTS Adresse_client ;
 CREATE TABLE Adresse_client (
   ID_adresse_client INT AUTO_INCREMENT NOT NULL,
-  adresse_client VARCHAR(50),
+  adresse_client VARCHAR(50) NOT NULL,
   ID_client INT,
   ID_ville INT NOT NULL,
   ID_type_adresse INT NOT NULL,

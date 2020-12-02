@@ -44,6 +44,9 @@
     <ClInclude Include="Modifier_Client.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="catalogue_perso.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CppCLR_WinformsProjekt.cpp">

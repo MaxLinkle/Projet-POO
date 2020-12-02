@@ -58,23 +58,23 @@ namespace Client {
 			this->textBox_date = (gcnew System::Windows::Forms::TextBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
-			// 
+			//
 			// textBox_nom
-			// 
+			//
 			this->textBox_nom->Location = System::Drawing::Point(15, 56);
 			this->textBox_nom->Name = L"textBox_nom";
 			this->textBox_nom->Size = System::Drawing::Size(100, 20);
 			this->textBox_nom->TabIndex = 0;
-			// 
+			//
 			// textBox_prenom
-			// 
+			//
 			this->textBox_prenom->Location = System::Drawing::Point(140, 56);
 			this->textBox_prenom->Name = L"textBox_prenom";
 			this->textBox_prenom->Size = System::Drawing::Size(100, 20);
 			this->textBox_prenom->TabIndex = 1;
-			// 
+			//
 			// button1
-			// 
+			//
 			this->button1->Location = System::Drawing::Point(415, 56);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(96, 23);
@@ -82,37 +82,37 @@ namespace Client {
 			this->button1->Text = L"Ce Connecter";
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &Connection_Client::button1_Click);
-			// 
+			//
 			// label1
-			// 
+			//
 			this->label1->AutoSize = true;
 			this->label1->Location = System::Drawing::Point(12, 40);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(29, 13);
 			this->label1->TabIndex = 3;
 			this->label1->Text = L"Nom";
-			// 
+			//
 			// label2
-			// 
+			//
 			this->label2->AutoSize = true;
 			this->label2->Location = System::Drawing::Point(137, 40);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(43, 13);
 			this->label2->TabIndex = 4;
 			this->label2->Text = L"Prenom";
-			// 
+			//
 			// button2
-			// 
+			//
 			this->button2->Location = System::Drawing::Point(415, 106);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(96, 23);
 			this->button2->TabIndex = 5;
-			this->button2->Text = L"Crée un compte";
+			this->button2->Text = L"Crï¿½e un compte";
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &Connection_Client::button2_Click);
-			// 
+			//
 			// button3
-			// 
+			//
 			this->button3->Location = System::Drawing::Point(10, 10);
 			this->button3->Name = L"button3";
 			this->button3->Size = System::Drawing::Size(25, 25);
@@ -120,25 +120,25 @@ namespace Client {
 			this->button3->Text = L"<";
 			this->button3->UseVisualStyleBackColor = true;
 			this->button3->Click += gcnew System::EventHandler(this, &Connection_Client::but_Retour_Connection_Click);
-			// 
+			//
 			// textBox_date
-			// 
+			//
 			this->textBox_date->Location = System::Drawing::Point(262, 56);
 			this->textBox_date->Name = L"textBox_date";
 			this->textBox_date->Size = System::Drawing::Size(100, 20);
 			this->textBox_date->TabIndex = 9;
-			// 
+			//
 			// label3
-			// 
+			//
 			this->label3->AutoSize = true;
 			this->label3->Location = System::Drawing::Point(262, 40);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(30, 13);
 			this->label3->TabIndex = 10;
 			this->label3->Text = L"Date";
-			// 
+			//
 			// Connection_Client
-			// 
+			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(565, 143);
@@ -177,7 +177,7 @@ namespace Client {
 				//label2->Text = "Connection a la base";
 			}
 		}
-	
+
 		private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
 			this->Hide();
 			Client::Creation_Client^ Creation = gcnew Client::Creation_Client(this);
@@ -188,7 +188,7 @@ namespace Client {
 			//fermeture = false;
 			this->Close();
 		}
-	
+
 		private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 
 			if (textBox_nom->Text != "" && textBox_prenom->Text != "") {
@@ -224,19 +224,21 @@ namespace Client {
 				qstate = mysql_query(con, ch);
 				if (!qstate) {
 					res = mysql_store_result(con);
-					while (row = mysql_fetch_row(res)) {
-						id = gcnew String(row[0]);
+
+					if (res != NULL) {
+						if (res->row_count == 1) {
+							row = mysql_fetch_row(res);
+							this->Hide();
+							System::String^ id = gcnew String(row[0]);
+							Client::Page_Client^ Page = gcnew Client::Page_Client(this, id);
+							Page->Show();
+						}
+					}
+					else {
+						// probleme de connetion
 					}
 				}
-
-
-
-				this->Hide();
-				Client::Page_Client^ Page = gcnew Client::Page_Client(this, id);
-				Page->Show();
 			}
 		}
-	
-		
 	};
 }
