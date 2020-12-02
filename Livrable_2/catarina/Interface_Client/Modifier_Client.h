@@ -319,7 +319,7 @@ namespace Client {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1291, 383);
+			this->ClientSize = System::Drawing::Size(1149, 383);
 			this->Controls->Add(this->textBox_retour);
 			this->Controls->Add(this->richTextBox2);
 			this->Controls->Add(this->checkBox_fact);

@@ -1,11 +1,9 @@
 #pragma once
 #include <mysql.h>
 #include <iostream>
-//#include <string>
-//#include <msclr\marshal_cppstd.h>
 #include"Formulaire_achat.h"
 
-namespace Client {
+namespace Client{
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -34,11 +32,6 @@ namespace Client {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Max;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ TVA;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ IDarticle;
-
-
-
-
-
 
 
 
@@ -176,19 +169,6 @@ private: System::Windows::Forms::TextBox^ HT;
 private: System::Windows::Forms::Label^ label4;
 private: System::Windows::Forms::Label^ label5;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 	private: Client::Facture^ facture;
 
 	protected:
@@ -210,6 +190,13 @@ private: System::Windows::Forms::Label^ label5;
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->acheter = (gcnew System::Windows::Forms::Button());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+			this->Check = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
+			this->Nom = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Prix = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Quantite = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Max = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->TVA = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->IDarticle = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->nb_txt = (gcnew System::Windows::Forms::TextBox());
@@ -222,13 +209,6 @@ private: System::Windows::Forms::Label^ label5;
 			this->TTCremise = (gcnew System::Windows::Forms::Label());
 			this->remise_txt = (gcnew System::Windows::Forms::TextBox());
 			this->euroRemise = (gcnew System::Windows::Forms::Label());
-			this->Check = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			this->Nom = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Prix = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Quantite = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Max = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->TVA = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->IDarticle = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -272,6 +252,53 @@ private: System::Windows::Forms::Label^ label5;
 			this->dataGridView1->Size = System::Drawing::Size(593, 397);
 			this->dataGridView1->TabIndex = 4;
 			this->dataGridView1->CellValidated += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MyForm::dataGridView1_CellValidated);
+			// 
+			// Check
+			// 
+			this->Check->HeaderText = L"";
+			this->Check->Name = L"Check";
+			this->Check->Width = 50;
+			// 
+			// Nom
+			// 
+			this->Nom->HeaderText = L"Nom";
+			this->Nom->Name = L"Nom";
+			this->Nom->ReadOnly = true;
+			this->Nom->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+			this->Nom->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
+			this->Nom->Width = 300;
+			// 
+			// Prix
+			// 
+			this->Prix->HeaderText = L"Prix TTC";
+			this->Prix->Name = L"Prix";
+			this->Prix->ReadOnly = true;
+			// 
+			// Quantite
+			// 
+			this->Quantite->HeaderText = L"Quantite";
+			this->Quantite->Name = L"Quantite";
+			// 
+			// Max
+			// 
+			this->Max->HeaderText = L"Quantite Max";
+			this->Max->Name = L"Max";
+			this->Max->ReadOnly = true;
+			this->Max->Visible = false;
+			// 
+			// TVA
+			// 
+			this->TVA->HeaderText = L"TVA";
+			this->TVA->Name = L"TVA";
+			this->TVA->ReadOnly = true;
+			this->TVA->Visible = false;
+			// 
+			// IDarticle
+			// 
+			this->IDarticle->HeaderText = L"IDarticle";
+			this->IDarticle->Name = L"IDarticle";
+			this->IDarticle->ReadOnly = true;
+			this->IDarticle->Visible = false;
 			// 
 			// label1
 			// 
@@ -406,53 +433,6 @@ private: System::Windows::Forms::Label^ label5;
 			this->euroRemise->Text = L"€";
 			this->euroRemise->Visible = false;
 			// 
-			// Check
-			// 
-			this->Check->HeaderText = L"";
-			this->Check->Name = L"Check";
-			this->Check->Width = 50;
-			// 
-			// Nom
-			// 
-			this->Nom->HeaderText = L"Nom";
-			this->Nom->Name = L"Nom";
-			this->Nom->ReadOnly = true;
-			this->Nom->Resizable = System::Windows::Forms::DataGridViewTriState::True;
-			this->Nom->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
-			this->Nom->Width = 300;
-			// 
-			// Prix
-			// 
-			this->Prix->HeaderText = L"Prix TTC";
-			this->Prix->Name = L"Prix";
-			this->Prix->ReadOnly = true;
-			// 
-			// Quantite
-			// 
-			this->Quantite->HeaderText = L"Quantite";
-			this->Quantite->Name = L"Quantite";
-			// 
-			// Max
-			// 
-			this->Max->HeaderText = L"Quantite Max";
-			this->Max->Name = L"Max";
-			this->Max->ReadOnly = true;
-			this->Max->Visible = false;
-			// 
-			// TVA
-			// 
-			this->TVA->HeaderText = L"TVA";
-			this->TVA->Name = L"TVA";
-			this->TVA->ReadOnly = true;
-			this->TVA->Visible = false;
-			// 
-			// IDarticle
-			// 
-			this->IDarticle->HeaderText = L"IDarticle";
-			this->IDarticle->Name = L"IDarticle";
-			this->IDarticle->ReadOnly = true;
-			this->IDarticle->Visible = false;
-			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -569,25 +549,26 @@ private: System::Void dataGridView1_CellValidated(System::Object^ sender, System
 			totAr += Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value);
 			totHT += Convert::ToDouble(dataGridView1->Rows[n]->Cells["TVA"]->Value) * (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value));
 
-			if ((dateActuel->Value.Day == dateActuel->Value.Month) && (dateAnniv->Value.Day == dateAnniv->Value.Month))
-			{
-				Reduc = (total - (total * 0.1));
-			}
-			else if ((dateActuel->Value.Day == dateAchat->Value.Day) && (dateActuel->Value.Month == dateAchat->Value.Month))
-			{
-				Reduc = (total - (total * 0.05));
-			}
-			else if ((dateActuel->Value.Day != dateAchat->Value.Day) && (dateActuel->Value.Month != dateAchat->Value.Month))
-			{
-				Reduc = 0;
-			}
+		}
+		if ((dateActuel->Value.Day == dateActuel->Value.Month) && (dateAnniv->Value.Day == dateAnniv->Value.Month))
+		{
+			Reduc = (total - (total * 0.1));
+			remise_txt->Text = Reduc.ToString();
+		}
+		else if ((dateActuel->Value.Day == dateAchat->Value.Day) && (dateActuel->Value.Month == dateAchat->Value.Month))
+		{
+			Reduc = (total - (total * 0.05));
+			remise_txt->Text = Reduc.ToString();
+		}
+		else
+		{
+			Reduc = 0;
+			remise_txt->Text = Reduc.ToString();
 		}
 		total_txt->Text = total.ToString();
 		nb_txt->Text = totAr.ToString();
 		HT->Text = totHT.ToString();
-		remise_txt->Text = Reduc.ToString();
-
-		
+		//remise_txt->Text = Reduc.ToString();
 	}
 }
 };
