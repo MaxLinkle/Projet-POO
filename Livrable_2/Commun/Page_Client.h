@@ -1,4 +1,5 @@
 #pragma once
+#include "SC.h"
 #include "Modifier_Client.h"
 #include "Catalogue_Client.h"
 #include "Historique.h"
@@ -13,12 +14,12 @@ namespace Client {
 	using namespace System::Drawing;
 
 
-	public ref class Page_Client : public System::Windows::Forms::Form
+	public ref class Page_Client : public NS_SuperC::SuperC // public System::Windows::Forms::Form
 	{
 	public:
-		Page_Client(Form^ InpPrecedent, System::String^ i_id) {
+		Page_Client(Form^ InpPrecedent, System::String^ i_id): SuperC(inpPrecedent) {
 			id = i_id;
-			Precedent = InpPrecedent;
+			// Precedent = InpPrecedent;
 			InitializeComponent();
 		}
 
@@ -44,19 +45,19 @@ namespace Client {
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button4 = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
-			// 
+			//
 			// button3
-			// 
-			this->button3->Location = System::Drawing::Point(10, 10);
-			this->button3->Name = L"button3";
-			this->button3->Size = System::Drawing::Size(25, 25);
-			this->button3->TabIndex = 8;
-			this->button3->Text = L"<";
-			this->button3->UseVisualStyleBackColor = true;
-			this->button3->Click += gcnew System::EventHandler(this, &Page_Client::but_Retour_Page_Cli_Click);
-			// 
+			//
+			// this->button3->Location = System::Drawing::Point(10, 10);
+			// this->button3->Name = L"button3";
+			// this->button3->Size = System::Drawing::Size(25, 25);
+			// this->button3->TabIndex = 8;
+			// this->button3->Text = L"<";
+			// this->button3->UseVisualStyleBackColor = true;
+			// this->button3->Click += gcnew System::EventHandler(this, &Page_Client::but_Retour_Page_Cli_Click);
+			//
 			// button1
-			// 
+			//
 			this->button1->Location = System::Drawing::Point(85, 32);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(131, 23);
@@ -64,19 +65,19 @@ namespace Client {
 			this->button1->Text = L"Catalogue";
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &Page_Client::button1_Click);
-			// 
+			//
 			// button2
-			// 
+			//
 			this->button2->Location = System::Drawing::Point(85, 71);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(131, 23);
 			this->button2->TabIndex = 10;
-			this->button2->Text = L"Facture précédente";
+			this->button2->Text = L"Facture prï¿½cï¿½dente";
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &Page_Client::button2_Click);
-			// 
+			//
 			// button4
-			// 
+			//
 			this->button4->Location = System::Drawing::Point(85, 110);
 			this->button4->Name = L"button4";
 			this->button4->Size = System::Drawing::Size(131, 23);
@@ -84,9 +85,9 @@ namespace Client {
 			this->button4->Text = L"Modifier le compte";
 			this->button4->UseVisualStyleBackColor = true;
 			this->button4->Click += gcnew System::EventHandler(this, &Page_Client::button4_Click);
-			// 
+			//
 			// Page_Client
-			// 
+			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(304, 160);
@@ -106,31 +107,31 @@ namespace Client {
 
 
 
- 
-	private: System::Void but_Retour_Page_Cli_Click(System::Object^ sender, System::EventArgs^ e) {
-		//fermeture = false;
-		this->Close();
-		Precedent->Show();
-	}
+ // return
+	// private: System::Void but_Retour_Page_Cli_Click(System::Object^ sender, System::EventArgs^ e) {
+	// 	//fermeture = false;
+	// 	this->Close();
+	// 	Precedent->Show();
+	// }
 
+	// modifier compte
 	private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Hide();
 		Client::Modifier_Client^ Page = gcnew Client::Modifier_Client(this, id);
 		Page->Show();
 	}
+
+	// Catalogue
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Hide();
 		MyForm^ Page = gcnew MyForm(this, this, id);
 		Page->Show();
 	}
-	
+
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Hide();
-		Client::Historique^ Page = gcnew Client::Historique(id);
-		Page->Show();	
-	}
-	
-	private: System::Void Page_Client_Load(System::Object^ sender, System::EventArgs^ e) {
+		Client::Historique^ Page = gcnew Client::Historique(this, id);
+		Page->Show();
 	}
 };
 }

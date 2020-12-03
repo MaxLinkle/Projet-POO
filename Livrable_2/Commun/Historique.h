@@ -1,6 +1,7 @@
 #pragma once
 #include <mysql.h>
-#include <iostream>
+#include <vcclr.h>
+// #include <iostream>
 #include"Facture.h"
 
 namespace Client {
@@ -13,9 +14,9 @@ namespace Client {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Description résumée de Facture
+	/// Description rÃ©sumÃ©e de Facture
 	/// </summary>
-	public ref class Historique : public System::Windows::Forms::Form
+	public ref class Historique : public NS_SuperC::SuperC // public System::Windows::Forms::Form
 	{
 		System::String^ nom;
 		System::String^ prenom;
@@ -30,10 +31,10 @@ namespace Client {
 
 	private: Label^ id_Client = gcnew Label;
 	public:
-		Historique(String^ id)
+		Historique(Form^ inpPrecedent, String^ id): SuperC(inpPrecedent)
 		{
 			InitializeComponent();
-			//std::cout << "Début de connexion\n";
+			//std::cout << "DÃ©but de connexion\n";
 			id_Client->Text = id;
 			ConnexionBase();
 			//
@@ -50,7 +51,7 @@ namespace Client {
 
 		void ConnexionBase()
 		{
-			//std::cout << "Début de connexion\n";
+			//std::cout << "DÃ©but de connexion\n";
 			MYSQL* con;
 			MYSQL_RES* res;
 			MYSQL_ROW row;
@@ -121,7 +122,7 @@ namespace Client {
 
 	protected:
 		/// <summary>
-		/// Nettoyage des ressources utilisées.
+		/// Nettoyage des ressources utilisÃ©es.
 		/// </summary>
 		~Historique()
 		{
@@ -139,14 +140,14 @@ namespace Client {
 
 	private:
 		/// <summary>
-		/// Variable nécessaire au concepteur.
+		/// Variable nÃ©cessaire au concepteur.
 		/// </summary>
 		System::ComponentModel::IContainer^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Méthode requise pour la prise en charge du concepteur - ne modifiez pas
-		/// le contenu de cette méthode avec l'éditeur de code.
+		/// MÃ©thode requise pour la prise en charge du concepteur - ne modifiez pas
+		/// le contenu de cette mÃ©thode avec l'Ã©diteur de code.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -163,27 +164,27 @@ namespace Client {
 			this->ID = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
-			// 
+			//
 			// Precedent
-			// 
+			//
 			this->Precedent->Location = System::Drawing::Point(12, 12);
 			this->Precedent->Name = L"Precedent";
 			this->Precedent->Size = System::Drawing::Size(25, 25);
 			this->Precedent->TabIndex = 1;
 			this->Precedent->Text = L"<";
 			this->Precedent->UseVisualStyleBackColor = true;
-			// 
+			//
 			// Suivant
-			// 
+			//
 			this->Suivant->Location = System::Drawing::Point(44, 12);
 			this->Suivant->Name = L"Suivant";
 			this->Suivant->Size = System::Drawing::Size(25, 25);
 			this->Suivant->TabIndex = 2;
 			this->Suivant->Text = L">";
 			this->Suivant->UseVisualStyleBackColor = true;
-			// 
+			//
 			// dataGridView1
-			// 
+			//
 			this->dataGridView1->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
 			this->dataGridView1->AllowUserToAddRows = false;
 			this->dataGridView1->AllowUserToDeleteRows = false;
@@ -199,65 +200,65 @@ namespace Client {
 			this->dataGridView1->Size = System::Drawing::Size(777, 397);
 			this->dataGridView1->TabIndex = 3;
 			this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Historique::dataGridView1_CellContentClick);
-			// 
+			//
 			// Date_Emission
-			// 
+			//
 			this->Date_Emission->HeaderText = L"Date_Emission";
 			this->Date_Emission->Name = L"Date_Emission";
 			this->Date_Emission->ReadOnly = true;
 			this->Date_Emission->Resizable = System::Windows::Forms::DataGridViewTriState::True;
 			this->Date_Emission->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
-			// 
+			//
 			// Reference
-			// 
+			//
 			this->Reference->HeaderText = L"Reference";
 			this->Reference->Name = L"Reference";
 			this->Reference->ReadOnly = true;
 			this->Reference->Resizable = System::Windows::Forms::DataGridViewTriState::True;
 			this->Reference->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
-			// 
+			//
 			// prix_ht
-			// 
+			//
 			this->prix_ht->HeaderText = L"Prix HT";
 			this->prix_ht->Name = L"prix_ht";
 			this->prix_ht->ReadOnly = true;
-			// 
+			//
 			// prix_tva
-			// 
+			//
 			this->prix_tva->HeaderText = L"Prix TVA";
 			this->prix_tva->Name = L"prix_tva";
 			this->prix_tva->ReadOnly = true;
-			// 
+			//
 			// remise
-			// 
+			//
 			this->remise->HeaderText = L"Remise";
 			this->remise->Name = L"remise";
 			this->remise->ReadOnly = true;
-			// 
+			//
 			// Date_Livraison
-			// 
+			//
 			this->Date_Livraison->HeaderText = L"Date_Livraison";
 			this->Date_Livraison->Name = L"Date_Livraison";
 			this->Date_Livraison->ReadOnly = true;
 			this->Date_Livraison->Resizable = System::Windows::Forms::DataGridViewTriState::True;
 			this->Date_Livraison->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
-			// 
+			//
 			// facture
-			// 
+			//
 			this->facture->HeaderText = L"Facture";
 			this->facture->Name = L"facture";
 			this->facture->Text = L"Voir Facture";
 			this->facture->UseColumnTextForButtonValue = true;
-			// 
+			//
 			// ID
-			// 
+			//
 			this->ID->HeaderText = L"ID";
 			this->ID->Name = L"ID";
 			this->ID->ReadOnly = true;
 			this->ID->Visible = false;
-			// 
+			//
 			// Historique
-			// 
+			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(820, 491);

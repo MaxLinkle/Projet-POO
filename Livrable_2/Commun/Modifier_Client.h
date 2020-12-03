@@ -1,4 +1,5 @@
 #pragma once
+#include "SC.h"
 //#include "Creation_Client.h"
 #include <mysql.h>
 #include <vcclr.h>
@@ -13,12 +14,12 @@ namespace Client {
 	using namespace System::Drawing;
 
 
-	public ref class Modifier_Client : public System::Windows::Forms::Form // ,public Client::Creation_Client //, public NS_SuperC::SuperC
+	public ref class Modifier_Client : public NS_SuperC::SuperC // public System::Windows::Forms::Form
 	{
 	public:
-		Modifier_Client(Form^ InpPrecedent, System::String^ i_id) {
+		Modifier_Client(Form^ InpPrecedent, System::String^ i_id): SuperC(inpPrecedent) {
 			id = i_id;
-			Precedent = InpPrecedent;
+			// Precedent = InpPrecedent;
 			ConnectDatabase();
 			InitializeComponent();
 		}
@@ -37,7 +38,7 @@ namespace Client {
 
 	private: System::String^ id;
 
-	private: System::Windows::Forms::Form^ Precedent;
+	// private: System::Windows::Forms::Form^ Precedent;
 
 	private:
 		MYSQL* con;
@@ -69,7 +70,7 @@ namespace Client {
 
 #pragma region Windows Form Designer generated code
 
-		
+
 		void InitializeComponent(void)
 		{
 			this->button2 = (gcnew System::Windows::Forms::Button());
@@ -90,20 +91,20 @@ namespace Client {
 			this->ancienne_adresse = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
-			// 
+			//
 			// button2
-			// 
-			this->button2->Location = System::Drawing::Point(16, 15);
-			this->button2->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(33, 31);
-			this->button2->TabIndex = 21;
-			this->button2->Text = L"<";
-			this->button2->UseVisualStyleBackColor = true;
-			this->button2->Click += gcnew System::EventHandler(this, &Modifier_Client::button2_Click);
-			// 
+			//
+			// this->button2->Location = System::Drawing::Point(16, 15);
+			// this->button2->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			// this->button2->Name = L"button2";
+			// this->button2->Size = System::Drawing::Size(33, 31);
+			// this->button2->TabIndex = 21;
+			// this->button2->Text = L"<";
+			// this->button2->UseVisualStyleBackColor = true;
+			// this->button2->Click += gcnew System::EventHandler(this, &Modifier_Client::button2_Click);
+			//
 			// label3
-			// 
+			//
 			this->label3->AutoSize = true;
 			this->label3->Location = System::Drawing::Point(375, 71);
 			this->label3->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
@@ -111,9 +112,9 @@ namespace Client {
 			this->label3->Size = System::Drawing::Size(38, 17);
 			this->label3->TabIndex = 20;
 			this->label3->Text = L"Date";
-			// 
+			//
 			// label2
-			// 
+			//
 			this->label2->AutoSize = true;
 			this->label2->Location = System::Drawing::Point(203, 71);
 			this->label2->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
@@ -121,9 +122,9 @@ namespace Client {
 			this->label2->Size = System::Drawing::Size(57, 17);
 			this->label2->TabIndex = 19;
 			this->label2->Text = L"Prenom";
-			// 
+			//
 			// label1
-			// 
+			//
 			this->label1->AutoSize = true;
 			this->label1->Location = System::Drawing::Point(27, 71);
 			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
@@ -131,33 +132,33 @@ namespace Client {
 			this->label1->Size = System::Drawing::Size(37, 17);
 			this->label1->TabIndex = 18;
 			this->label1->Text = L"Nom";
-			// 
+			//
 			// textBox_date
-			// 
+			//
 			this->textBox_date->Location = System::Drawing::Point(379, 91);
 			this->textBox_date->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
 			this->textBox_date->Name = L"textBox_date";
 			this->textBox_date->Size = System::Drawing::Size(132, 22);
 			this->textBox_date->TabIndex = 17;
-			// 
+			//
 			// textBox_prenom
-			// 
+			//
 			this->textBox_prenom->Location = System::Drawing::Point(207, 91);
 			this->textBox_prenom->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
 			this->textBox_prenom->Name = L"textBox_prenom";
 			this->textBox_prenom->Size = System::Drawing::Size(132, 22);
 			this->textBox_prenom->TabIndex = 16;
-			// 
+			//
 			// textBox_nom
-			// 
+			//
 			this->textBox_nom->Location = System::Drawing::Point(31, 91);
 			this->textBox_nom->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
 			this->textBox_nom->Name = L"textBox_nom";
 			this->textBox_nom->Size = System::Drawing::Size(132, 22);
 			this->textBox_nom->TabIndex = 15;
-			// 
+			//
 			// dataGridView1
-			// 
+			//
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(8) {
 				this->data_adresse,
@@ -171,71 +172,71 @@ namespace Client {
 			this->dataGridView1->TabIndex = 33;
 			this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Modifier_Client::dataGridView1_CellContentClick);
 			this->dataGridView1->UserAddedRow += gcnew System::Windows::Forms::DataGridViewRowEventHandler(this, &Modifier_Client::dataGridView1_UserAddedRow);
-			// 
+			//
 			// data_adresse
-			// 
+			//
 			this->data_adresse->HeaderText = L"adresse";
 			this->data_adresse->MinimumWidth = 6;
 			this->data_adresse->Name = L"data_adresse";
 			this->data_adresse->Width = 125;
-			// 
+			//
 			// data_ville
-			// 
+			//
 			this->data_ville->HeaderText = L"ville";
 			this->data_ville->MinimumWidth = 6;
 			this->data_ville->Name = L"data_ville";
 			this->data_ville->Width = 125;
-			// 
+			//
 			// data_livr
-			// 
+			//
 			this->data_livr->FalseValue = L"0";
 			this->data_livr->HeaderText = L"livraison";
 			this->data_livr->MinimumWidth = 6;
 			this->data_livr->Name = L"data_livr";
 			this->data_livr->TrueValue = L"1";
 			this->data_livr->Width = 125;
-			// 
+			//
 			// data_fact
-			// 
+			//
 			this->data_fact->FalseValue = L"0";
 			this->data_fact->HeaderText = L"facturation";
 			this->data_fact->MinimumWidth = 6;
 			this->data_fact->Name = L"data_fact";
 			this->data_fact->TrueValue = L"1";
 			this->data_fact->Width = 125;
-			// 
+			//
 			// data_supr
-			// 
+			//
 			this->data_supr->HeaderText = L"";
 			this->data_supr->MinimumWidth = 6;
 			this->data_supr->Name = L"data_supr";
 			this->data_supr->Width = 125;
-			// 
+			//
 			// data_upda
-			// 
+			//
 			this->data_upda->HeaderText = L"";
 			this->data_upda->MinimumWidth = 6;
 			this->data_upda->Name = L"data_upda";
 			this->data_upda->Width = 125;
-			// 
+			//
 			// data_id
-			// 
+			//
 			this->data_id->HeaderText = L"id";
 			this->data_id->MinimumWidth = 6;
 			this->data_id->Name = L"data_id";
 			this->data_id->Visible = false;
 			this->data_id->Width = 125;
-			// 
+			//
 			// ancienne_adresse
-			// 
+			//
 			this->ancienne_adresse->HeaderText = L"data_old_adr";
 			this->ancienne_adresse->MinimumWidth = 6;
 			this->ancienne_adresse->Name = L"ancienne_adresse";
 			this->ancienne_adresse->Visible = false;
 			this->ancienne_adresse->Width = 125;
-			// 
+			//
 			// Modifier_Client
-			// 
+			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1721, 471);
@@ -340,27 +341,27 @@ namespace Client {
 				}
 			}
 			else {
-				//textBox_retour->Text = "erreur de requète";
+				//textBox_retour->Text = "erreur de requï¿½te";
 			}
 		}
 
 	private: System::Void Modifier_Client_Load(System::Object^ sender, System::EventArgs^ e) {
 		this->load_query();
 	}
-	
-	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
-		this->Close();
-		Precedent->Show();
-	}
-	
-	
+
+	// private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+	// 	this->Close();
+	// 	Precedent->Show();
+	// }
+
+
 	private: System::Void dataGridView1_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
 		int i = e->RowIndex;
 		int j = e->ColumnIndex;
 
 
 		System::String^ query;
-		
+
 		if (j == 4 && dataGridView1->Rows[i]->Cells[4]->Value->ToString() == "suprimer") {
 			query = "START TRANSACTION; CALL delete_Adresse_client('";
 			query += dataGridView1->Rows[i]->Cells[6]->Value->ToString();
@@ -383,7 +384,7 @@ namespace Client {
 				exit = dataGridView1->Rows[i]->Cells[2]->Value->ToString();
 				exit += "   ";
 				exit += dataGridView1->Rows[i]->Cells[3]->Value->ToString();
-				
+
 
 				if ((dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[2]->Value->ToString() == "True") && (dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[3]->Value->ToString() == "True")) {
 					query += "', 'livraison et facturation');";

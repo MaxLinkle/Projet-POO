@@ -1,6 +1,7 @@
 #pragma once
 #include <mysql.h>
 #include<vcclr.h>
+#include "SC.h"
 
 namespace Client {
 
@@ -12,9 +13,9 @@ namespace Client {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Description résumée de Facture
+	/// Description rï¿½sumï¿½e de Facture
 	/// </summary>
-	public ref class Facture : public System::Windows::Forms::Form
+	public ref class Facture : public NS_SuperC::SuperC // public System::Windows::Forms::Form
 	{
 	System::String^ id_commande;
 	String^ Remise;
@@ -46,8 +47,8 @@ namespace Client {
 			prenom_txt->Text = i_prenom;
 			id_commande = i_id_commande;
 			ConnexionBase();
-			
-			
+
+
 			//
 			//TODO: ajoutez ici le code du constructeur
 			//
@@ -55,7 +56,7 @@ namespace Client {
 
 	protected:
 		/// <summary>
-		/// Nettoyage des ressources utilisées.
+		/// Nettoyage des ressources utilisï¿½es.
 		/// </summary>
 		~Facture()
 		{
@@ -65,7 +66,7 @@ namespace Client {
 			}
 		}
 
-		
+
 		void finish_with_error(MYSQL* con)
 		{
 			std::cout << "Error: " << mysql_error(con);
@@ -107,7 +108,7 @@ namespace Client {
 				wch, sizeInBytes);
 			qstate = mysql_query(con, ch);
 
-			std::cout << ch << std::endl; 
+			std::cout << ch << std::endl;
 			std::cout << qstate << std::endl;
 			std::cout << mysql_error(con) << std::endl;
 
@@ -134,7 +135,7 @@ namespace Client {
 
 				while (row = mysql_fetch_row(res))
 				{
-					
+
 					int n = recap->Rows->Add();
 
 					double ht = atof(row[7]);
@@ -187,14 +188,14 @@ namespace Client {
 
 	private:
 		/// <summary>
-		/// Variable nécessaire au concepteur.
+		/// Variable nï¿½cessaire au concepteur.
 		/// </summary>
 		System::ComponentModel::IContainer ^components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Méthode requise pour la prise en charge du concepteur - ne modifiez pas
-		/// le contenu de cette méthode avec l'éditeur de code.
+		/// Mï¿½thode requise pour la prise en charge du concepteur - ne modifiez pas
+		/// le contenu de cette mï¿½thode avec l'ï¿½diteur de code.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -237,9 +238,9 @@ namespace Client {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->recap))->BeginInit();
 			this->SuspendLayout();
-			// 
+			//
 			// pictureBox1
-			// 
+			//
 			this->pictureBox1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->pictureBox1->Location = System::Drawing::Point(54, 39);
 			this->pictureBox1->Name = L"pictureBox1";
@@ -247,18 +248,18 @@ namespace Client {
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox1->TabIndex = 2;
 			this->pictureBox1->TabStop = false;
-			// 
+			//
 			// label2
-			// 
+			//
 			this->label2->AutoSize = true;
 			this->label2->Location = System::Drawing::Point(659, 759);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(13, 13);
 			this->label2->TabIndex = 27;
-			this->label2->Text = L"€";
-			// 
+			this->label2->Text = L"ï¿½";
+			//
 			// tot_txt
-			// 
+			//
 			this->tot_txt->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->tot_txt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -267,9 +268,9 @@ namespace Client {
 			this->tot_txt->ReadOnly = true;
 			this->tot_txt->Size = System::Drawing::Size(63, 17);
 			this->tot_txt->TabIndex = 24;
-			// 
+			//
 			// lbl_tot
-			// 
+			//
 			this->lbl_tot->AutoSize = true;
 			this->lbl_tot->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -278,36 +279,36 @@ namespace Client {
 			this->lbl_tot->Size = System::Drawing::Size(86, 18);
 			this->lbl_tot->TabIndex = 23;
 			this->lbl_tot->Text = L"Total TTC : ";
-			// 
+			//
 			// Ref
-			// 
+			//
 			this->Ref->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->Ref->Location = System::Drawing::Point(393, 42);
 			this->Ref->Name = L"Ref";
 			this->Ref->ReadOnly = true;
 			this->Ref->Size = System::Drawing::Size(90, 13);
 			this->Ref->TabIndex = 33;
-			// 
+			//
 			// prenom_txt
-			// 
+			//
 			this->prenom_txt->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->prenom_txt->Location = System::Drawing::Point(303, 94);
 			this->prenom_txt->Name = L"prenom_txt";
 			this->prenom_txt->ReadOnly = true;
 			this->prenom_txt->Size = System::Drawing::Size(100, 13);
 			this->prenom_txt->TabIndex = 32;
-			// 
+			//
 			// nom_txt
-			// 
+			//
 			this->nom_txt->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->nom_txt->Location = System::Drawing::Point(286, 68);
 			this->nom_txt->Name = L"nom_txt";
 			this->nom_txt->ReadOnly = true;
 			this->nom_txt->Size = System::Drawing::Size(100, 13);
 			this->nom_txt->TabIndex = 31;
-			// 
+			//
 			// Prenom_Cli
-			// 
+			//
 			this->Prenom_Cli->AutoSize = true;
 			this->Prenom_Cli->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -315,10 +316,10 @@ namespace Client {
 			this->Prenom_Cli->Name = L"Prenom_Cli";
 			this->Prenom_Cli->Size = System::Drawing::Size(61, 13);
 			this->Prenom_Cli->TabIndex = 30;
-			this->Prenom_Cli->Text = L"Prénom : ";
-			// 
+			this->Prenom_Cli->Text = L"Prï¿½nom : ";
+			//
 			// Nom_Cli
-			// 
+			//
 			this->Nom_Cli->AutoSize = true;
 			this->Nom_Cli->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -327,9 +328,9 @@ namespace Client {
 			this->Nom_Cli->Size = System::Drawing::Size(44, 13);
 			this->Nom_Cli->TabIndex = 29;
 			this->Nom_Cli->Text = L"Nom : ";
-			// 
+			//
 			// reference
-			// 
+			//
 			this->reference->AutoSize = true;
 			this->reference->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -337,10 +338,10 @@ namespace Client {
 			this->reference->Name = L"reference";
 			this->reference->Size = System::Drawing::Size(139, 13);
 			this->reference->TabIndex = 28;
-			this->reference->Text = L"Référence Commande :";
-			// 
+			this->reference->Text = L"Rï¿½fï¿½rence Commande :";
+			//
 			// lbl_addFact
-			// 
+			//
 			this->lbl_addFact->AutoSize = true;
 			this->lbl_addFact->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -349,9 +350,9 @@ namespace Client {
 			this->lbl_addFact->Size = System::Drawing::Size(138, 13);
 			this->lbl_addFact->TabIndex = 34;
 			this->lbl_addFact->Text = L"Adresse de Facturation";
-			// 
+			//
 			// lbl_addLiv
-			// 
+			//
 			this->lbl_addLiv->AutoSize = true;
 			this->lbl_addLiv->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -360,9 +361,9 @@ namespace Client {
 			this->lbl_addLiv->Size = System::Drawing::Size(125, 13);
 			this->lbl_addLiv->TabIndex = 35;
 			this->lbl_addLiv->Text = L"Adresse de Livraison";
-			// 
+			//
 			// addFact_txt
-			// 
+			//
 			this->addFact_txt->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->addFact_txt->Location = System::Drawing::Point(251, 181);
 			this->addFact_txt->Multiline = true;
@@ -370,9 +371,9 @@ namespace Client {
 			this->addFact_txt->ReadOnly = true;
 			this->addFact_txt->Size = System::Drawing::Size(172, 51);
 			this->addFact_txt->TabIndex = 36;
-			// 
+			//
 			// addLiv_txt
-			// 
+			//
 			this->addLiv_txt->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->addLiv_txt->Location = System::Drawing::Point(492, 58);
 			this->addLiv_txt->Multiline = true;
@@ -380,9 +381,9 @@ namespace Client {
 			this->addLiv_txt->ReadOnly = true;
 			this->addLiv_txt->Size = System::Drawing::Size(172, 51);
 			this->addLiv_txt->TabIndex = 37;
-			// 
+			//
 			// label1
-			// 
+			//
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -391,18 +392,18 @@ namespace Client {
 			this->label1->Size = System::Drawing::Size(138, 13);
 			this->label1->TabIndex = 38;
 			this->label1->Text = L"Methode de Paiement :";
-			// 
+			//
 			// metho_txt
-			// 
+			//
 			this->metho_txt->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->metho_txt->Location = System::Drawing::Point(492, 181);
 			this->metho_txt->Name = L"metho_txt";
 			this->metho_txt->ReadOnly = true;
 			this->metho_txt->Size = System::Drawing::Size(168, 13);
 			this->metho_txt->TabIndex = 39;
-			// 
+			//
 			// dateLiv
-			// 
+			//
 			this->dateLiv->AccessibleRole = System::Windows::Forms::AccessibleRole::None;
 			this->dateLiv->CalendarForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->dateLiv->CustomFormat = L"yyyy-MM-dd";
@@ -413,9 +414,9 @@ namespace Client {
 			this->dateLiv->Name = L"dateLiv";
 			this->dateLiv->Size = System::Drawing::Size(92, 20);
 			this->dateLiv->TabIndex = 40;
-			// 
+			//
 			// LivPrev
-			// 
+			//
 			this->LivPrev->AutoSize = true;
 			this->LivPrev->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -423,10 +424,10 @@ namespace Client {
 			this->LivPrev->Name = L"LivPrev";
 			this->LivPrev->Size = System::Drawing::Size(159, 13);
 			this->LivPrev->TabIndex = 41;
-			this->LivPrev->Text = L"Date de Livraison estimé : ";
-			// 
+			this->LivPrev->Text = L"Date de Livraison estimï¿½ : ";
+			//
 			// dateEmi
-			// 
+			//
 			this->dateEmi->AccessibleRole = System::Windows::Forms::AccessibleRole::None;
 			this->dateEmi->CalendarForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->dateEmi->CustomFormat = L"yyyy-MM-dd";
@@ -437,9 +438,9 @@ namespace Client {
 			this->dateEmi->Name = L"dateEmi";
 			this->dateEmi->Size = System::Drawing::Size(84, 20);
 			this->dateEmi->TabIndex = 42;
-			// 
+			//
 			// date_emi
-			// 
+			//
 			this->date_emi->AutoSize = true;
 			this->date_emi->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -448,9 +449,9 @@ namespace Client {
 			this->date_emi->Size = System::Drawing::Size(93, 13);
 			this->date_emi->TabIndex = 43;
 			this->date_emi->Text = L"Date Emision : ";
-			// 
+			//
 			// label3
-			// 
+			//
 			this->label3->AutoSize = true;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -459,9 +460,9 @@ namespace Client {
 			this->label3->Size = System::Drawing::Size(77, 18);
 			this->label3->TabIndex = 44;
 			this->label3->Text = L"Total HT : ";
-			// 
+			//
 			// totHT_txt
-			// 
+			//
 			this->totHT_txt->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->totHT_txt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -470,9 +471,9 @@ namespace Client {
 			this->totHT_txt->ReadOnly = true;
 			this->totHT_txt->Size = System::Drawing::Size(100, 17);
 			this->totHT_txt->TabIndex = 45;
-			// 
+			//
 			// label4
-			// 
+			//
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -481,9 +482,9 @@ namespace Client {
 			this->label4->Size = System::Drawing::Size(43, 18);
 			this->label4->TabIndex = 46;
 			this->label4->Text = L"TVA :";
-			// 
+			//
 			// totTVA_txt
-			// 
+			//
 			this->totTVA_txt->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->totTVA_txt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -492,27 +493,27 @@ namespace Client {
 			this->totTVA_txt->ReadOnly = true;
 			this->totTVA_txt->Size = System::Drawing::Size(100, 17);
 			this->totTVA_txt->TabIndex = 47;
-			// 
+			//
 			// label5
-			// 
+			//
 			this->label5->AutoSize = true;
 			this->label5->Location = System::Drawing::Point(406, 757);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(13, 13);
 			this->label5->TabIndex = 48;
-			this->label5->Text = L"€";
-			// 
+			this->label5->Text = L"ï¿½";
+			//
 			// label6
-			// 
+			//
 			this->label6->AutoSize = true;
 			this->label6->Location = System::Drawing::Point(406, 789);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(13, 13);
 			this->label6->TabIndex = 49;
-			this->label6->Text = L"€";
-			// 
+			this->label6->Text = L"ï¿½";
+			//
 			// recap
-			// 
+			//
 			this->recap->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
 			this->recap->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->recap->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(5) {
@@ -524,41 +525,41 @@ namespace Client {
 			this->recap->ReadOnly = true;
 			this->recap->Size = System::Drawing::Size(675, 406);
 			this->recap->TabIndex = 50;
-			// 
+			//
 			// Nom
-			// 
+			//
 			this->Nom->HeaderText = L"Nom";
 			this->Nom->Name = L"Nom";
 			this->Nom->ReadOnly = true;
-			// 
+			//
 			// Quantite
-			// 
-			this->Quantite->HeaderText = L"Quantité";
+			//
+			this->Quantite->HeaderText = L"Quantitï¿½";
 			this->Quantite->Name = L"Quantite";
 			this->Quantite->ReadOnly = true;
-			// 
+			//
 			// total
-			// 
+			//
 			this->total->HeaderText = L"Total";
 			this->total->Name = L"total";
 			this->total->ReadOnly = true;
-			// 
+			//
 			// HT
-			// 
+			//
 			this->HT->HeaderText = L"HT";
 			this->HT->Name = L"HT";
 			this->HT->ReadOnly = true;
 			this->HT->Visible = false;
-			// 
+			//
 			// TVA
-			// 
+			//
 			this->TVA->HeaderText = L"TVA";
 			this->TVA->Name = L"TVA";
 			this->TVA->ReadOnly = true;
 			this->TVA->Visible = false;
-			// 
+			//
 			// remise
-			// 
+			//
 			this->remise->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->remise->Location = System::Drawing::Point(609, 786);
 			this->remise->Name = L"remise";
@@ -566,19 +567,19 @@ namespace Client {
 			this->remise->Size = System::Drawing::Size(51, 13);
 			this->remise->TabIndex = 51;
 			this->remise->Visible = false;
-			// 
+			//
 			// label7
-			// 
+			//
 			this->label7->AutoSize = true;
 			this->label7->Location = System::Drawing::Point(666, 789);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(13, 13);
 			this->label7->TabIndex = 52;
-			this->label7->Text = L"€";
+			this->label7->Text = L"ï¿½";
 			this->label7->Visible = false;
-			// 
+			//
 			// totRemise
-			// 
+			//
 			this->totRemise->AutoSize = true;
 			this->totRemise->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -588,9 +589,9 @@ namespace Client {
 			this->totRemise->TabIndex = 53;
 			this->totRemise->Text = L" Total TTC avec remise :";
 			this->totRemise->Visible = false;
-			// 
+			//
 			// continuer
-			// 
+			//
 			this->continuer->Location = System::Drawing::Point(624, 832);
 			this->continuer->Name = L"continuer";
 			this->continuer->Size = System::Drawing::Size(75, 23);
@@ -598,9 +599,9 @@ namespace Client {
 			this->continuer->Text = L"Ok";
 			this->continuer->UseVisualStyleBackColor = true;
 			this->continuer->Click += gcnew System::EventHandler(this, &Facture::continuer_Click);
-			// 
+			//
 			// Facture
-			// 
+			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(732, 867);
@@ -646,7 +647,7 @@ namespace Client {
 		}
 #pragma endregion
 	private: System::Void Facture_Load(System::Object^ sender, System::EventArgs^ e) {
-	
+
 		Bitmap^ test = (gcnew System::Drawing::Bitmap("LOGO.png"));
 		this->pictureBox1->Image = test;
 
@@ -663,8 +664,8 @@ namespace Client {
 			label7->Visible = true;
 			remise->Visible = true;
 			totRemise->Visible = true;
-			
-		}	
+
+		}
 	}
 
 	private: System::Void continuer_Click(System::Object^ sender, System::EventArgs^ e) {
