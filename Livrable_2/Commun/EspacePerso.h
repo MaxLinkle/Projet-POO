@@ -13,7 +13,7 @@ namespace NS_EspacePersonnel {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace NS_Recherche;
-	using namespace NS_SuperC
+	using namespace NS_SuperC;
 	delegate System::Void PRecherche(System::Object^ sender, System::EventArgs^ e);
 	
 
@@ -380,7 +380,6 @@ namespace NS_EspacePersonnel {
 #pragma endregion
 
 	private: System::Void Closing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-		prece->Close();
 	}
 
 
@@ -465,7 +464,7 @@ namespace NS_EspacePersonnel {
 
 	private: 
 	System::Void Recherche(System::Object^ sender, System::EventArgs^ e) {
-		Individu^ Steve = nullptr;
+		Individu^ Steve;
 
 		if(Rb_Client->Checked)
 		{
@@ -473,7 +472,7 @@ namespace NS_EspacePersonnel {
 			if (CheckDate->Checked) {
 				PDate = Date->Value.ToString(Date->CustomFormat);
 			}
-			Steve = gcnew CLClient(func(), textBox1->Text, textBox2->Text,PDate);
+			Steve = gcnew CLClient(func(), textBox1->Text, textBox2->Text, PDate);
 
 		}
 		else 
@@ -498,12 +497,12 @@ namespace NS_EspacePersonnel {
 		String^ Query = "SELECT  AjoutIndividus(" + Client + ",'" + textBox1->Text + "','" + textBox2->Text + "','" + Date->Value.ToString(Date->CustomFormat) + "','"+ TextNomSup->Text +"','"+ TextPrenomSup->Text +"');";
 		MYSQL_RES* result;
 		MYSQL_ROW Qrow;
-		/*Executer query*/
+		result = executerQuery(Query);
 		Qrow = mysql_fetch_row(result);
-
-
+		
+		mysql_free_result(result);
 		for each (DataGridViewRow^ row in dataGridView1->Rows) {
-
+			
 			if (Client == "1") {
 
 				Query = "CALL ajout_Adresse_client(" + Convert::ToString(Qrow[0]) + ",'" + row->Cells[0]->Value->ToString() + "','" + row->Cells[1]->Value->ToString() + "','" + row->Cells[2]->Value->ToString() + "');";
@@ -515,9 +514,9 @@ namespace NS_EspacePersonnel {
 
 			}
 
+			executerNonQuery(Query);
 
-
-
+			
 		}
 	}
 
@@ -566,76 +565,67 @@ private: System::Void checkBox1_CheckedChanged(System::Object^ sender, System::E
 
 
 	   ArrayList^ AddrClient() {
-		   ArrayList^ Adr = nullptr;
+		   ArrayList^ Adr = gcnew ArrayList();
 		   Struct_Adresse^ cont = nullptr;
+
 		   for each (DataGridViewRow^ row in dataGridView1->Rows) {
+			   
 			   bool Valide = true;
+
 			   for each (DataGridViewCell^ cell in row->Cells) {
 
-				   if (cell->Value->ToString()) {
+				   if (cell->Value == nullptr) {
+					   Valide = false;
+				   }
+				   else if (cell->Value->ToString() == "") {
 					   Valide = false;
 				   }
 
 			   }
 			   if (Valide) {
-				   if (Adr == nullptr) {
-					   cont = gcnew Struct_Adresse;
-					   cont->ID = "";
-					   cont->Adresse = row->Cells[0]->Value->ToString();
-					   cont->Ville = row->Cells[1]->Value->ToString();
-					   cont->Type_adresse = row->Cells[2]->Value->ToString();
-					   Adr = gcnew ArrayList();
-					   Adr->Add(cont);
-				   }
-				   else {
 					   cont = gcnew Struct_Adresse;
 					   cont->ID = "";
 					   cont->Adresse = row->Cells[0]->Value->ToString();
 					   cont->Ville = row->Cells[1]->Value->ToString();
 					   cont->Type_adresse = row->Cells[2]->Value->ToString();
 					   Adr->Add(cont);
-				   }
 			   }
-
 		   }
-
 		   return Adr;
 	   }
 
 	   ArrayList^ AddrPersonnel() {
-		   ArrayList^ Adr = nullptr;
-		   Struct_Adresse^ cont = nullptr;
-		   for each (DataGridViewRow ^ row in dataGridView1->Rows) {
-			   bool Valide = true;
-			   for each (DataGridViewCell ^ cell in row->Cells) {
+		   ArrayList^ Adr = gcnew ArrayList();
+		   Struct_Adresse^ cont;
 
-				   if (cell->Value->ToString()) {
-					   Valide = false;
-				   }
+		   
+		   
+			   for each (DataGridViewRow ^ row in dataGridView1->Rows) {
+				   bool Valide = true;
 
-			   }
-			   if (Valide) {
-				   if (Adr == nullptr) {
-					   cont = gcnew Struct_Adresse;
-					   cont->ID = "";
-					   cont->Adresse = row->Cells[0]->Value->ToString();
-					   cont->Ville = row->Cells[1]->Value->ToString();
-					   cont->Type_adresse = "";
-					   Adr = gcnew ArrayList();
-					   Adr->Add(cont);
+				   for each (DataGridViewCell ^ cell in row->Cells) {
+					   if (cell->Value == nullptr){
+						 Valide = false;
+					 }
+					   else if (cell->Value->ToString() == "" ) {
+						   Valide = false;
+					   }
+
 				   }
-				   else {
+				   if (Valide) {
+
 					   cont = gcnew Struct_Adresse;
 					   cont->ID = "";
 					   cont->Adresse = row->Cells[0]->Value->ToString();
 					   cont->Ville = row->Cells[1]->Value->ToString();
 					   cont->Type_adresse = "";
 					   Adr->Add(cont);
+
 				   }
+			   
 			   }
-
-		   }
-
+		   
+	   
 		   return Adr;
 	   }
 
