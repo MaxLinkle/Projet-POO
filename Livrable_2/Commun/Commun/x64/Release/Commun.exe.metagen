@@ -46,6 +46,7 @@ Class Individu: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
     SetID(String): PrivateScope, Public, HideBySig
     MapId(): PrivateScope, Public, HideBySig
     MapCredential(): PrivateScope, Public, HideBySig
+    MapAdrese(): PrivateScope, Public, HideBySig
     IsClient(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
     Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
 Class CLClient: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit

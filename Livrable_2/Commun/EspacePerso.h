@@ -592,6 +592,11 @@ namespace NS_EspacePersonnel {
 private: System::Void EspPerso_Load(System::Object^ sender, System::EventArgs^ e) {
 	func = gcnew Addrgetter(this, &EspPerso::AddrClient);
 
+
+	executerNonQuery("CALL delete_Commande();CALL delete_Adresse_client_deref()");
+
+	
+
 	Rb_Client_CheckedChanged(this,gcnew EventArgs());
 	Rb_Client->Checked = true;
 	textBox1->Text = "";

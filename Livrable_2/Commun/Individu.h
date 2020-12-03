@@ -155,6 +155,7 @@ public:
 	ArrayList^ GetAdresse(){ return Adresse; }
 	virtual String^ GetDPA() { return nullptr; }
 	virtual String^ GetIdSup() { return nullptr; }
+	virtual String^ GetSup() { return nullptr; }
 	String^ GetId() { return ID; }
 	String^ GetNom() { return Nom; }
 	String^ GetPrenom() { return Prenom; }
@@ -163,6 +164,7 @@ public:
 	void SetID(String^ PID) { ID = PID; }
 
 	String^ MapId() { return svc_Mappage->MapperID(Nom , Prenom , Date);  }
+	virtual String^ MapSup() { return nullptr; }
 	String^ MapCredential() { return svc_Mappage->MapperIdent(ID) ; }
 	String^ MapAdrese() { return svc_Mappage->MapperIDtoAddr(ID); }
 
@@ -192,6 +194,7 @@ private:
 public:
 	String^ GetIdSup() override { return ID_Sup; }
 	String^ GetSup() override { return svc_Mappage->MapperIdent(ID_Sup); }
+	String^ MapSup() override { return svc_Mappage->MapperIDSup(ID); }
 	Personnel(ArrayList^ Adr, String^ PNom, String^ PPrenom, String^ PDate) :Individu(PNom, PPrenom, PDate, Adr) { svc_Mappage = new MapPer(); }
 	Personnel(String^ PID) :Individu(PID) {}
 	bool IsClient() override { return false; }

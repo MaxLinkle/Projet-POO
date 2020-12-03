@@ -1,4 +1,2 @@
 ﻿  CppCLR_WinformsProjekt.cpp
-C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Individu.h(194,10): warning C4490: 'override' : utilisation incorrecte du spécificateur de substitution ; 'Personnel::GetSup' ne correspond pas à une méthode de classe ref de base
-C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Individu.h(194,10): message : 'new' ou 'override' sont autorisés uniquement lorsqu'une méthode de base correspondante existe à partir d'une classe ref
-LINK : fatal error LNK1104: impossible d'ouvrir le fichier 'C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Commun\x64\Release\Commun.exe'
+  Commun.vcxproj -> C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Commun\x64\Release\Commun.exe
