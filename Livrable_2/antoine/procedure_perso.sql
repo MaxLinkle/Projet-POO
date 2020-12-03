@@ -407,7 +407,7 @@ BEGIN
 END |
 
 
-DELIMITER |
+-- DELIMITER |
 DROP PROCEDURE IF EXISTS delete_Commande |
 CREATE PROCEDURE delete_Commande ()
 BEGIN
@@ -433,6 +433,9 @@ BEGIN
     ROLLBACK;
   END;
 
-  
+  DELETE FROM Adresse_client
+  INNER JOIN Commande ON Commande.ID_adresse_livraison = NULL
+  INNER JOIN Commande ON Commande.ID_adresse_facturation = NULL
+  WHERE Adresse_client.ID_client = NULL
 END |
 DELIMITER ;
