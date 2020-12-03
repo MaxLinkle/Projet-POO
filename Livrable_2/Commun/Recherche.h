@@ -715,7 +715,11 @@ namespace NS_Recherche {
 		}
 		else{
 
-			System::String^ query = "SELECT nom, prenom FROM Personnel";
+			System::String^ query = "SELECT ID_personnel FROM Personnel WHERE Personnel.nom = '";
+			query += Nom_superieur->Text;
+			query += "' AND Personnel.prenom = '";
+			query += Prenom_Superieur->Text;
+			query += "';";
 
 			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
 			size_t convertedChars = 0;
@@ -728,57 +732,63 @@ namespace NS_Recherche {
 				wch, sizeInBytes);
 
 			bool qstate = mysql_query(con, ch);
-			res = mysql_store_result(con);
-
-			while(row = mysql_fetch_row(res)){
-				
-			}
-
-			query = "CALL update_Perso('";
-			query += Nom->Text;
-			query += "', '";
-			query += Prenom->Text;
-			query += "', '";
-			query += Date_embauche->Text;
-			query += "', ";
-			query += Convert::ToInt32(Id_client->Text);
-			query += "', ";
-			query += Convert::ToInt32(Id_superieur->Text);
-			query += ");";
-
-			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
-			size_t convertedChars = 0;
-			size_t  sizeInBytes = ((query->Length + 1) * 2);
-			errno_t err = 0;
-
-			char* ch = (char*)malloc(sizeInBytes);
-			err = wcstombs_s(&convertedChars,
-				ch, sizeInBytes,
-				wch, sizeInBytes);
-
-			bool qstate;
-
-			qstate = mysql_query(con, ch);
-			if(!qstate){
-				Nom->BackColor = System::Drawing::Color::LightGreen;
-				Prenom->BackColor = System::Drawing::Color::LightGreen;
-				Date_embauche->BackColor = System::Drawing::Color::LightGreen;
-				Nom_superieur->BackColor = System::Drawing::Color::LightGreen;
-				Prenom_Superieur->BackColor = System::Drawing::Color::LightGreen;
-				Date_embauche->ForeColor = System::Drawing::Color::Black;
-			}
-			else{
-				Nom->BackColor = System::Drawing::Color::White;
-				Prenom->BackColor = System::Drawing::Color::White;
-				Date_embauche->BackColor = System::Drawing::Color::White;
-				Nom_superieur->BackColor = System::Drawing::Color::White;
-				Prenom_Superieur->BackColor = System::Drawing::Color::White;
-				Date_embauche->ForeColor = System::Drawing::Color::Black;
-				if(Date_embauche->Text == ""){
-					Date_embauche->BackColor = System::Drawing::Color::IndianRed;
+			
+			if (!qstate) {
+				res = mysql_store_result(con);
+				if (res->row_count == 0) {
+					Nom_superieur->ForeColor = System::Drawing::Color::Red;
+					Prenom_Superieur->ForeColor = System::Drawing::Color::Red;
 				}
-				else{
-					Date_embauche->ForeColor = System::Drawing::Color::Red;
+				else {
+					row = mysql_fetch_row(res)
+
+					query = "CALL update_Perso('";
+					query += Nom->Text;
+					query += "', '";
+					query += Prenom->Text;
+					query += "', '";
+					query += Date_embauche->Text;
+					query += "', ";
+					query += Convert::ToInt32(Id_client->Text);
+					query += "', ";
+					query += gcnew String(row[0]);
+					query += ");";
+
+					pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+					size_t convertedChars = 0;
+					size_t  sizeInBytes = ((query->Length + 1) * 2);
+					errno_t err = 0;
+
+					char* ch = (char*)malloc(sizeInBytes);
+					err = wcstombs_s(&convertedChars,
+						ch, sizeInBytes,
+						wch, sizeInBytes);
+
+					bool qstate;
+
+					qstate = mysql_query(con, ch);
+					if (!qstate) {
+						Nom->BackColor = System::Drawing::Color::LightGreen;
+						Prenom->BackColor = System::Drawing::Color::LightGreen;
+						Date_embauche->BackColor = System::Drawing::Color::LightGreen;
+						Nom_superieur->BackColor = System::Drawing::Color::LightGreen;
+						Prenom_Superieur->BackColor = System::Drawing::Color::LightGreen;
+						Date_embauche->ForeColor = System::Drawing::Color::Black;
+					}
+					else {
+						Nom->BackColor = System::Drawing::Color::White;
+						Prenom->BackColor = System::Drawing::Color::White;
+						Date_embauche->BackColor = System::Drawing::Color::White;
+						Nom_superieur->BackColor = System::Drawing::Color::White;
+						Prenom_Superieur->BackColor = System::Drawing::Color::White;
+						Date_embauche->ForeColor = System::Drawing::Color::Black;
+						if (Date_embauche->Text == "") {
+							Date_embauche->BackColor = System::Drawing::Color::IndianRed;
+						}
+						else {
+							Date_embauche->ForeColor = System::Drawing::Color::Red;
+						}
+					}
 				}
 			}
 		}
