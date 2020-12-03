@@ -1,3 +1,4 @@
+  Commun.Modifier_Client.resources - Embedded, ContainedInManifestFile, 
   Commun.Recherche.resources - Embedded, ContainedInManifestFile, 
 ImageRuntimeVersion: v4.0.30319
 Assembly Commun, Version=1.0.*, Culture=Langue indifférente (Pays indifférent): 
@@ -14,18 +15,6 @@ Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=
 	hash=None, flags=None
 Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
 	hash=None, flags=None
-Class Client.Creation_Client: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
-  :System.Windows.Forms.Form
-    Void .ctor(System.Windows.Forms.Form): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
-Class Client.Modifier_Client: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
-  :System.Windows.Forms.Form
-    Void .ctor(System.Windows.Forms.Form, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
-Class Client.Page_Client: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
-  :System.Windows.Forms.Form
-    Void .ctor(System.Windows.Forms.Form, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
-Class Client.Connection_Client: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
-  :System.Windows.Forms.Form
-    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
 Class Struct_Adresse: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Fields:
@@ -54,6 +43,9 @@ Class Individu: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
     GetNom(): PrivateScope, Public, HideBySig
     GetPrenom(): PrivateScope, Public, HideBySig
     GetDate(): PrivateScope, Public, HideBySig
+    SetID(String): PrivateScope, Public, HideBySig
+    MapId(): PrivateScope, Public, HideBySig
+    MapCredential(): PrivateScope, Public, HideBySig
     IsClient(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
     Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
 Class CLClient: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit

@@ -1,6 +1,7 @@
 #pragma once
-#include <mysql.h>
-#include <vcclr.h>
+//#include <mysql.h>
+//#include <vcclr.h>
+#include "SC.h"
 #include "Creation_Client.h"
 #include "Page_Client.h"
 
@@ -12,21 +13,19 @@ namespace Client {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace NS_SuperC;
 
-
-	public ref class Connection_Client : public System::Windows::Forms::Form
+	public ref class Connection_Client :  public NS_SuperC::SuperC
 	{
 	public:
-		Connection_Client(void) {
+		Connection_Client(Form^ inpPrecedent): SuperC(inpPrecedent) {
 			ConnectDatabase();
 			InitializeComponent();
 		}
 
+
 	private: System::Windows::Forms::TextBox^ textBox_nom;
 	private: System::Windows::Forms::TextBox^ textBox_prenom;
-	public:
-
-	public:
 
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::Label^ label1;
@@ -41,7 +40,7 @@ namespace Client {
 		MYSQL* con;
 		MYSQL_RES* res;
 		MYSQL_ROW row;
-
+		
 		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code

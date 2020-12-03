@@ -76,6 +76,9 @@ namespace NS_Recherche {
 	private: System::Windows::Forms::Label^ label6;
 
 	private: System::Windows::Forms::Label^ label7;
+	private: System::Windows::Forms::Button^ Supprimer;
+	private: System::Windows::Forms::Button^ Sauvegarder;
+
 	private: System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
@@ -110,6 +113,8 @@ namespace NS_Recherche {
 			   this->label5 = (gcnew System::Windows::Forms::Label());
 			   this->label6 = (gcnew System::Windows::Forms::Label());
 			   this->label7 = (gcnew System::Windows::Forms::Label());
+			   this->Supprimer = (gcnew System::Windows::Forms::Button());
+			   this->Sauvegarder = (gcnew System::Windows::Forms::Button());
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			   this->SuspendLayout();
 			   // 
@@ -176,7 +181,6 @@ namespace NS_Recherche {
 			   this->Nom_superieur->Name = L"Nom_superieur";
 			   this->Nom_superieur->Size = System::Drawing::Size(132, 22);
 			   this->Nom_superieur->TabIndex = 7;
-			   this->Nom_superieur->Text = L"Nom";
 			   // 
 			   // Prenom_Superieur
 			   // 
@@ -184,7 +188,6 @@ namespace NS_Recherche {
 			   this->Prenom_Superieur->Name = L"Prenom_Superieur";
 			   this->Prenom_Superieur->Size = System::Drawing::Size(150, 22);
 			   this->Prenom_Superieur->TabIndex = 15;
-			   this->Prenom_Superieur->Text = L"Prenom";
 			   // 
 			   // Id_client
 			   // 
@@ -329,11 +332,33 @@ namespace NS_Recherche {
 			   this->label7->TabIndex = 16;
 			   this->label7->Text = L"Prenom Superieur";
 			   // 
+			   // Supprimer
+			   // 
+			   this->Supprimer->Location = System::Drawing::Point(735, 108);
+			   this->Supprimer->Name = L"Supprimer";
+			   this->Supprimer->Size = System::Drawing::Size(140, 23);
+			   this->Supprimer->TabIndex = 17;
+			   this->Supprimer->Text = L"Supprimer";
+			   this->Supprimer->UseVisualStyleBackColor = true;
+			   this->Supprimer->Click += gcnew System::EventHandler(this, &CLRecherche::Supprimer_Click);
+			   // 
+			   // Sauvegarder
+			   // 
+			   this->Sauvegarder->Location = System::Drawing::Point(735, 174);
+			   this->Sauvegarder->Name = L"Sauvegarder";
+			   this->Sauvegarder->Size = System::Drawing::Size(140, 23);
+			   this->Sauvegarder->TabIndex = 18;
+			   this->Sauvegarder->Text = L"Sauvegarder";
+			   this->Sauvegarder->UseVisualStyleBackColor = true;
+			   this->Sauvegarder->Click += gcnew System::EventHandler(this, &CLRecherche::Sauvegarder_Click);
+			   // 
 			   // CLRecherche
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			   this->ClientSize = System::Drawing::Size(1427, 534);
+			   this->Controls->Add(this->Supprimer);
+			   this->Controls->Add(this->Sauvegarder);
 			   this->Controls->Add(this->label7);
 			   this->Controls->Add(this->Prenom_Superieur);
 			   this->Controls->Add(this->label6);
@@ -400,6 +425,8 @@ namespace NS_Recherche {
 			this->Prenom_Superieur->Visible = false;
 			this->label1->Visible = false;
 			this->label5->Visible = false;
+			this->label7->Visible = false;
+			this->Supprimer->Visible = false;
 			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(8) {
 				   this->Id_adresse,
 					   this->Adresse, this->Ville, this->Pays, this->Adresse_livraison, this->Adresse_facturation, this->Update, this->Delete
@@ -452,6 +479,7 @@ namespace NS_Recherche {
 			Prenom->Text = SteveInter->GetPrenom();
 			Date_embauche->Text = SteveInter->GetDate();
 			Id_client->Text = SteveInter->GetId();
+
 
 			int i = 0;
 
@@ -568,6 +596,36 @@ namespace NS_Recherche {
 	}
 
 
-	};
+	private: System::Void Supprimer_Click(System::Object^ sender, System::EventArgs^ e) {
+		System::String^ query;
+
+		query = "CALL Suppr_Perso(";
+		query += Convert::ToInt32(SteveInter->GetId());
+		query += ");";
+
+		pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+		size_t convertedChars = 0;
+		size_t  sizeInBytes = ((query->Length + 1) * 2);
+		errno_t err = 0;
+
+		char* ch = (char*)malloc(sizeInBytes);
+		err = wcstombs_s(&convertedChars,
+			ch, sizeInBytes,
+			wch, sizeInBytes);
+
+		bool qstate;
+
+		qstate = mysql_query(con, ch);
+
+		this->Close();
+		Precedent->Show();
+	}
+
+	private: System::Void Sauvegarder_Click(System::Object^ sender, System::EventArgs^ e) {
+		if(SteveInter->IsClient()){
+			
+		}
+	}
+};
 	
 }

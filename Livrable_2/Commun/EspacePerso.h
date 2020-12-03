@@ -395,6 +395,7 @@ namespace NS_EspacePersonnel {
 		//this->Creer->Click -= g;
 		//g = gcnew EventHandler(this, &EspPerso::CreerClient);
 		//this->Creer->Click += g;
+
 		TextNomSup->Text = "";
 		TextPrenomSup->Text = "";
 		func = gcnew Addrgetter(this, &EspPerso::AddrClient);
@@ -482,28 +483,67 @@ namespace NS_EspacePersonnel {
 			
 			Steve = gcnew Personnel(func(), textBox1->Text, textBox2->Text, PDate);
 
+		
 
 		}
-		this->Hide();
-		CLRecherche^ PageSuivante = gcnew CLRecherche(this,Steve);
-		PageSuivante->Show();
+
+		MYSQL_RES* Test = executerQuery(Steve->MapId());
+
+		if (Test->row_count > 0) {
+			MYSQL_ROW row = mysql_fetch_row(Test);
+			Steve->SetID(gcnew String(row[0]));
+			this->Hide();
+			CLRecherche^ PageSuivante = gcnew CLRecherche(this, Steve);
+			PageSuivante->Show();
+		}
+		else {
+
+			EspPerso_Load(this, gcnew EventArgs);
+		}
+		
 
 	}
 
 
 	System::Void CreerIndi(System::Object^ sender, System::EventArgs^ e) {
 
-		this->Text = "";
-
+	
+		StartTransactionSC();
 		String^ Client = (Rb_Client->Checked) ? "1" : "0";
-		String^ Query = "SELECT  AjoutIndividus(" + Client + ",'" + textBox1->Text + "','" + textBox2->Text + "','" + Date->Value.ToString(Date->CustomFormat) + "','" + TextNomSup->Text + "','" + TextPrenomSup->Text + "');";
+		String^ PDate;
+		if (Client == "1" && !(CheckDate->Checked)) {
+
+			PDate = "null";
+
+		}
+		else {
+			PDate = "'"+Date->Value.ToString(Date->CustomFormat)+"'";
+
+		}
+
+		String^ Query = "SELECT  AjoutIndividus(" + Client + ",'" + textBox1->Text + "','" + textBox2->Text + "'," + PDate + ",'" + TextNomSup->Text + "','" + TextPrenomSup->Text + "');";
+		String^ QueryTest = "CALL VerifIndividus(" + Client + ",'" + textBox1->Text + "','" + textBox2->Text + "'," + PDate+ ",'" + TextNomSup->Text + "','" + TextPrenomSup->Text + "');";
 		MYSQL_RES* result;
+		MYSQL_RES* test;
 		MYSQL_ROW Qrow;
 		result = executerQuery(Query);
+
 		if (result != NULL) {
 			Qrow = mysql_fetch_row(result);
 			String^ ID = gcnew String(Qrow[0]);
 			mysql_free_result(result);
+			result = executerQuery(QueryTest);
+			this->Text = QueryTest;
+
+			if (result->row_count > 0) {
+				CommitSC();
+			}
+			else {
+				RollbackSC();
+				errorProvider1->SetError(Actualiser, "Envoie Echouer");
+				return;
+			}
+
 			for each (DataGridViewRow ^ row in dataGridView1->Rows) {
 
 				bool Valide = true;
@@ -520,31 +560,42 @@ namespace NS_EspacePersonnel {
 				}
 
 				if (Valide) {
-					
+					StartTransactionSC();
 					if (Client == "1") {
 
 						Query = "CALL ajout_Adresse_client(" + ID + ",'" + row->Cells[0]->Value->ToString() + "','" + row->Cells[1]->Value->ToString() + "','" + row->Cells[2]->Value->ToString() + "');";
-						
+						QueryTest = "SELECT * FROM (SELECT * FROM Ville NATURAL JOIN Adresse_client ) AS T2 NATURAL JOIN Type_adresse WHERE ID_client = " + ID + " AND adresse_client = '" + row->Cells[0]->Value->ToString() + "' AND  ville ='"+row->Cells[1]->Value->ToString()+"' AND type_adresse ='"+ row->Cells[2]->Value->ToString()+ "';";
 					}
 					else {
 
 						Query = "CALL Ajouter_Adresse_Perso(" + ID + ",'" + row->Cells[1]->Value->ToString() + "','" + row->Cells[0]->Value->ToString() + "');";
+						QueryTest = "SELECT * FROM  Ville NATURAL JOIN Adresse_personnel WHERE ID_personnel = " + ID + " AND adresse_personnel = '" + row->Cells[0]->Value->ToString() + "' AND  ville ='" + row->Cells[1]->Value->ToString() + "';";
 
 					}
 
 
 					executerNonQuery(Query);
-					this->Text = Query;
+					test = executerQuery(QueryTest);
+					
+					if (test->row_count > 0) { CommitSC(); this->Text = Convert::ToString(test->row_count);
+					}
+					else { RollbackSC(); errorProvider1->SetError(Actualiser, "Envoie Echouer"); return; }
 
 
 				}
 			}
 		}
 		else { errorProvider1->SetError(Actualiser, "Envoie Echouer"); }
+		EspPerso_Load(this, gcnew EventArgs());
 	}
 
 private: System::Void EspPerso_Load(System::Object^ sender, System::EventArgs^ e) {
 	func = gcnew Addrgetter(this, &EspPerso::AddrClient);
+
+	Rb_Client_CheckedChanged(this,gcnew EventArgs());
+	Rb_Client->Checked = true;
+	textBox1->Text = "";
+	textBox2->Text = "";
 	dataGridView1->AllowUserToAddRows = true;
 	dataGridView1->AllowUserToDeleteRows = true;
 	dataGridView1->Rows->Clear();
