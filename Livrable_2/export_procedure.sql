@@ -457,8 +457,10 @@ BEGIN
 END |
 DELIMITER ;
 
+
 DELIMITER  |
-CREATE DEFINER=`admin`@`%` PROCEDURE `update_Perso`(IN i_nom VARCHAR(50), IN i_prenom VARCHAR(50), IN i_date_embauche DATE, IN i_id_perso INT, IN i_id_superieur INT)
+DROP PROCEDURE IF EXISTS `update_Perso` |
+CREATE DEFINER=`admin`@`%` PROCEDURE `update_Perso`(IN i_id_personnel INT, IN i_nom VARCHAR(50), IN i_prenom VARCHAR(50), IN i_date_embauche DATE, IN i_id_perso INT, IN i_id_superieur INT)
 BEGIN
   UPDATE Personnel
     SET Personnel.nom = i_nom, Personnel.prenom = i_prenom, Personnel.date_embauche = i_date_embauche, Personnel.ID_superieur = i_id_superieur
