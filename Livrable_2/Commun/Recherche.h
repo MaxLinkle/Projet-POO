@@ -650,7 +650,7 @@ namespace NS_Recherche {
 		bool qstate;
 
 		qstate = mysql_query(con, ch);
-
+		 
 		this->Close();
 		Precedent->Show();
 	}
