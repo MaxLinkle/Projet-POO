@@ -174,7 +174,7 @@ namespace NS_SuperC {
 protected:
 	 MYSQL_RES* executerQuery(char* query) {
 		 
-		 while(mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) { }
+		 while(mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) { }
 
 		 int state = mysql_query(database, query);
 		  //mysql_error(database) ;
@@ -211,7 +211,7 @@ protected:
 	 bool executerNonQuery(String^ QueryS) {
 		 char * query = ToStringQuery(QueryS);
 
-		 while (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {}
+		 while (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {}
 
 		 int state = mysql_query(database, query);
 		 //mysql_error(database) ;
@@ -220,7 +220,7 @@ protected:
 
 	 bool executerNonQuery(char* query) {
 
-		 while (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {}
+		 while (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {}
 
 		 int state = mysql_query(database, query);
 		 //mysql_error(database) ;

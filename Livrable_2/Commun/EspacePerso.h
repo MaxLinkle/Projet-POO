@@ -493,31 +493,54 @@ namespace NS_EspacePersonnel {
 
 	System::Void CreerIndi(System::Object^ sender, System::EventArgs^ e) {
 
-		String^ Client = (Rb_Client->Checked)? "1" : "0";
-		String^ Query = "SELECT  AjoutIndividus(" + Client + ",'" + textBox1->Text + "','" + textBox2->Text + "','" + Date->Value.ToString(Date->CustomFormat) + "','"+ TextNomSup->Text +"','"+ TextPrenomSup->Text +"');";
+		this->Text = "";
+
+		String^ Client = (Rb_Client->Checked) ? "1" : "0";
+		String^ Query = "SELECT  AjoutIndividus(" + Client + ",'" + textBox1->Text + "','" + textBox2->Text + "','" + Date->Value.ToString(Date->CustomFormat) + "','" + TextNomSup->Text + "','" + TextPrenomSup->Text + "');";
 		MYSQL_RES* result;
 		MYSQL_ROW Qrow;
 		result = executerQuery(Query);
-		Qrow = mysql_fetch_row(result);
-		
-		mysql_free_result(result);
-		for each (DataGridViewRow^ row in dataGridView1->Rows) {
-			
-			if (Client == "1") {
+		if (result != NULL) {
+			Qrow = mysql_fetch_row(result);
+			String^ ID = gcnew String(Qrow[0]);
+			mysql_free_result(result);
+			for each (DataGridViewRow ^ row in dataGridView1->Rows) {
 
-				Query = "CALL ajout_Adresse_client(" + Convert::ToString(Qrow[0]) + ",'" + row->Cells[0]->Value->ToString() + "','" + row->Cells[1]->Value->ToString() + "','" + row->Cells[2]->Value->ToString() + "');";
+				bool Valide = true;
 
+				for each (DataGridViewCell ^ cell in row->Cells) {
+
+					if (cell->Value == nullptr) {
+						Valide = false;
+					}
+					else if (cell->Value->ToString() == "") {
+						Valide = false;
+					}
+
+				}
+
+				if (Valide) {
+					
+					if (Client == "1") {
+
+						Query = "CALL ajout_Adresse_client(" + ID + ",'" + row->Cells[0]->Value->ToString() + "','" + row->Cells[1]->Value->ToString() + "','" + row->Cells[2]->Value->ToString() + "');";
+						
+					}
+					else {
+
+						Query = "CALL Ajouter_Adresse_Perso(" + ID + ",'" + row->Cells[1]->Value->ToString() + "','" + row->Cells[0]->Value->ToString() + "');";
+
+					}
+
+
+					executerNonQuery(Query);
+					this->Text = Query;
+
+
+				}
 			}
-			else {
-
-				Query = "CALL Ajouter_Adresse_Perso(" + Convert::ToString(Qrow[0]) + ",'" + row->Cells[0]->Value->ToString() + "','" + row->Cells[1]->Value->ToString() +"');";
-
-			}
-
-			executerNonQuery(Query);
-
-			
 		}
+		else { errorProvider1->SetError(Actualiser, "Envoie Echouer"); }
 	}
 
 private: System::Void EspPerso_Load(System::Object^ sender, System::EventArgs^ e) {
