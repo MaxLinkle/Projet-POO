@@ -434,8 +434,14 @@ BEGIN
   END;
 
   DELETE FROM Adresse_client
-  INNER JOIN Commande ON Commande.ID_adresse_livraison = NULL
-  INNER JOIN Commande ON Commande.ID_adresse_facturation = NULL
-  WHERE Adresse_client.ID_client = NULL
+  WHERE (
+    ISNULL(Adresse_client.ID_client)
+    AND (
+      NOT (
+        (ID_adresse_client IN (SELECT DISTINCT ID_adresse_livraison FROM Commande))
+        OR (ID_adresse_client IN (SELECT DISTINCT ID_adresse_facturation FROM Commande))
+      )
+    )
+  );
 END |
 DELIMITER ;
