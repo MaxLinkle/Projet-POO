@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-#include "Connection_Client.h"
+//#include "Connection_Client.h"
 #include "PersonnelCO.h"
 
 namespace NS_Choix {

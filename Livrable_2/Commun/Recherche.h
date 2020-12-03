@@ -58,6 +58,7 @@ namespace NS_Recherche {
 	private: System::Windows::Forms::TextBox^ Nom_superieur;
 	private: System::Windows::Forms::TextBox^ Prenom_Superieur;
 	private: System::Windows::Forms::TextBox^ Id_client;
+	private: System::Windows::Forms::TextBox^ Id_superieur;
 
 	private: System::Windows::Forms::DataGridView^ dataGridView1;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Id_adresse;
@@ -76,6 +77,9 @@ namespace NS_Recherche {
 	private: System::Windows::Forms::Label^ label6;
 
 	private: System::Windows::Forms::Label^ label7;
+	private: System::Windows::Forms::Button^ Supprimer;
+	private: System::Windows::Forms::Button^ Sauvegarder;
+
 	private: System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
@@ -94,6 +98,7 @@ namespace NS_Recherche {
 			   this->Nom_superieur = (gcnew System::Windows::Forms::TextBox());
 			   this->Prenom_Superieur = (gcnew System::Windows::Forms::TextBox());
 			   this->Id_client = (gcnew System::Windows::Forms::TextBox());
+			   this->Id_superieur = (gcnew System::Windows::Forms::TextBox());
 			   this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
 			   this->Id_adresse = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			   this->Adresse = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
@@ -110,6 +115,8 @@ namespace NS_Recherche {
 			   this->label5 = (gcnew System::Windows::Forms::Label());
 			   this->label6 = (gcnew System::Windows::Forms::Label());
 			   this->label7 = (gcnew System::Windows::Forms::Label());
+			   this->Supprimer = (gcnew System::Windows::Forms::Button());
+			   this->Sauvegarder = (gcnew System::Windows::Forms::Button());
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			   this->SuspendLayout();
 			   // 
@@ -176,7 +183,6 @@ namespace NS_Recherche {
 			   this->Nom_superieur->Name = L"Nom_superieur";
 			   this->Nom_superieur->Size = System::Drawing::Size(132, 22);
 			   this->Nom_superieur->TabIndex = 7;
-			   this->Nom_superieur->Text = L"Nom";
 			   // 
 			   // Prenom_Superieur
 			   // 
@@ -184,7 +190,6 @@ namespace NS_Recherche {
 			   this->Prenom_Superieur->Name = L"Prenom_Superieur";
 			   this->Prenom_Superieur->Size = System::Drawing::Size(150, 22);
 			   this->Prenom_Superieur->TabIndex = 15;
-			   this->Prenom_Superieur->Text = L"Prenom";
 			   // 
 			   // Id_client
 			   // 
@@ -194,6 +199,15 @@ namespace NS_Recherche {
 			   this->Id_client->TabIndex = 8;
 			   this->Id_client->Text = L"Id_client";
 			   this->Id_client->Visible = false;
+			   // 
+			   // Id_superieur
+			   // 
+			   this->Id_superieur->Location = System::Drawing::Point(0, 0);
+			   this->Id_superieur->Name = L"Id_superieur";
+			   this->Id_superieur->Size = System::Drawing::Size(100, 22);
+			   this->Id_superieur->TabIndex = 8;
+			   this->Id_superieur->Text = L"Id_superieur";
+			   this->Id_superieur->Visible = false;
 			   // 
 			   // dataGridView1
 			   // 
@@ -329,11 +343,33 @@ namespace NS_Recherche {
 			   this->label7->TabIndex = 16;
 			   this->label7->Text = L"Prenom Superieur";
 			   // 
+			   // Supprimer
+			   // 
+			   this->Supprimer->Location = System::Drawing::Point(735, 108);
+			   this->Supprimer->Name = L"Supprimer";
+			   this->Supprimer->Size = System::Drawing::Size(140, 23);
+			   this->Supprimer->TabIndex = 17;
+			   this->Supprimer->Text = L"Supprimer";
+			   this->Supprimer->UseVisualStyleBackColor = true;
+			   this->Supprimer->Click += gcnew System::EventHandler(this, &CLRecherche::Supprimer_Click);
+			   // 
+			   // Sauvegarder
+			   // 
+			   this->Sauvegarder->Location = System::Drawing::Point(735, 174);
+			   this->Sauvegarder->Name = L"Sauvegarder";
+			   this->Sauvegarder->Size = System::Drawing::Size(140, 23);
+			   this->Sauvegarder->TabIndex = 18;
+			   this->Sauvegarder->Text = L"Sauvegarder";
+			   this->Sauvegarder->UseVisualStyleBackColor = true;
+			   this->Sauvegarder->Click += gcnew System::EventHandler(this, &CLRecherche::Sauvegarder_Click);
+			   // 
 			   // CLRecherche
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			   this->ClientSize = System::Drawing::Size(1427, 534);
+			   this->Controls->Add(this->Supprimer);
+			   this->Controls->Add(this->Sauvegarder);
 			   this->Controls->Add(this->label7);
 			   this->Controls->Add(this->Prenom_Superieur);
 			   this->Controls->Add(this->label6);
@@ -350,6 +386,8 @@ namespace NS_Recherche {
 			   this->Controls->Add(this->Date_premier_achat);
 			   this->Controls->Add(this->Date_embauche);
 			   this->Controls->Add(this->Nom_superieur);
+			   this->Controls->Add(this->Id_client);
+			   this->Controls->Add(this->Id_superieur);
 			   this->Margin = System::Windows::Forms::Padding(4);
 			   this->Name = L"CLRecherche";
 			   this->Text = L"Recherche";
@@ -360,35 +398,36 @@ namespace NS_Recherche {
 
 		   }
 #pragma endregion
-	void finish_with_error(MYSQL* con)
-		{
-			//std::cout << "Error: " << mysql_error(con);
-			mysql_close(con);
-			exit(1);
-		}
+	//void finish_with_error(MYSQL* con)
+	//	{
+	//		//std::cout << "Error: " << mysql_error(con);
+	//		mysql_close(con);
+	//		exit(1);
+	//	}
 
-	void ConnectDatabase() {
-			con = mysql_init(NULL);
-			if (con == NULL) {
-				//label1->Text = "Base inexistante";
-			}
-			else {
-				//label1->Text = "Base existante";
-			}
+	//void ConnectDatabase() {
+	//		con = mysql_init(NULL);
+	//		if (con == NULL) {
+	//			//label1->Text = "Base inexistante";
+	//		}
+	//		else {
+	//			//label1->Text = "Base existante";
+	//		}
 
-			if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
-				//if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, 0) == NULL) {
-					//label2->Text = "Erreur de connection a la base";
-			}
-			else {
-				//label2->Text = "Connection a la base";
-			}
-		}
+	//		if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
+	//			//if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, 0) == NULL) {
+	//				//label2->Text = "Erreur de connection a la base";
+	//		}
+	//		else {
+	//			//label2->Text = "Connection a la base";
+	//		}
+	//	}
 
 	private: System::Void Button_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Close();
 		Precedent->Show();
 	}
+
 	private: System::Void Recherche_Load(System::Object^ sender, System::EventArgs^ e) {
 		dataGridView1->Columns->Clear();
 
@@ -399,6 +438,8 @@ namespace NS_Recherche {
 			this->Prenom_Superieur->Visible = false;
 			this->label1->Visible = false;
 			this->label5->Visible = false;
+			this->label7->Visible = false;
+			this->Supprimer->Visible = false;
 			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(8) {
 				   this->Id_adresse,
 					   this->Adresse, this->Ville, this->Pays, this->Adresse_livraison, this->Adresse_facturation, this->Update, this->Delete
@@ -439,6 +480,7 @@ namespace NS_Recherche {
 			this->Date_premier_achat->Visible = false;
 			this->label3->Visible = false;
 			this->label6->Visible = false;
+			this->label7->Visible = false;
 			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(6) {
 				   this->Id_adresse,
 					   this->Adresse, this->Ville, this->Pays, this->Update, this->Delete
@@ -450,15 +492,37 @@ namespace NS_Recherche {
 			Prenom->Text = SteveInter->GetPrenom();
 			Date_embauche->Text = SteveInter->GetDate();
 			Id_client->Text = SteveInter->GetId();
+			Id_superieur->Text = SteveInter->GetIdSup();
 
+			System::String^ query = SteveInter->GetSup();
+
+			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+			size_t convertedChars = 0;
+			size_t  sizeInBytes = ((query->Length + 1) * 2);
+			errno_t err = 0;
+
+			char* ch = (char*)malloc(sizeInBytes);
+			err = wcstombs_s(&convertedChars,
+				ch, sizeInBytes,
+				wch, sizeInBytes);
+
+			bool qstate;
+
+			qstate = mysql_query(con, ch);
+			res = mysql_store_result(con);
+			row = mysql_fetch_row(res);
+
+			Nom_superieur->Text = gcnew String(row[0]);
+			Prenom_Superieur->Text = gcnew String(row[1]);
+			
 			int i = 0;
 
 			for each(Struct_Adresse^ current in SteveInter->GetAdresse()){
 				dataGridView1->Rows[i]->Cells[0]->Value = current->ID;
 				dataGridView1->Rows[i]->Cells[1]->Value = current->Adresse;
 				dataGridView1->Rows[i]->Cells[2]->Value = current->Ville;
-				dataGridView1->Rows[i]->Cells[3]->Value = "France";
-				//dataGridView1->Rows[i]->Cells[3]->Value = SteveInter->GetAdresse()->Pays; 
+				//dataGridView1->Rows[i]->Cells[3]->Value = "France";
+				dataGridView1->Rows[i]->Cells[3]->Value = current->Pays; 
 				dataGridView1->Rows[i]->Cells[6]->Value = "supprimer";
 				dataGridView1->Rows[i]->Cells[7]->Value = "sauvegarder";
 				i++;
@@ -566,6 +630,169 @@ namespace NS_Recherche {
 	}
 
 
-	};
+	private: System::Void Supprimer_Click(System::Object^ sender, System::EventArgs^ e) {
+		System::String^ query;
+
+		query = "CALL Suppr_Perso(";
+		query += Convert::ToInt32(SteveInter->GetId());
+		query += ");";
+
+		pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+		size_t convertedChars = 0;
+		size_t  sizeInBytes = ((query->Length + 1) * 2);
+		errno_t err = 0;
+
+		char* ch = (char*)malloc(sizeInBytes);
+		err = wcstombs_s(&convertedChars,
+			ch, sizeInBytes,
+			wch, sizeInBytes);
+
+		bool qstate;
+
+		qstate = mysql_query(con, ch);
+		 
+		this->Close();
+		Precedent->Show();
+	}
+
+	private: System::Void Sauvegarder_Click(System::Object^ sender, System::EventArgs^ e) {
+		if(SteveInter->IsClient()){
+			System::String^ query;
+
+			query = "CALL update_Client('";
+			query += Nom->Text;
+			query += "', '";
+			query += Prenom->Text;
+			query += "', '";
+			query += Date_naissance->Text;
+			query += "', '";
+			query += Date_premier_achat->Text;
+			query += "', ";
+			query += Convert::ToInt32(Id_client->Text);
+			query += ");";
+
+			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+			size_t convertedChars = 0;
+			size_t  sizeInBytes = ((query->Length + 1) * 2);
+			errno_t err = 0;
+
+			char* ch = (char*)malloc(sizeInBytes);
+			err = wcstombs_s(&convertedChars,
+				ch, sizeInBytes,
+				wch, sizeInBytes);
+
+			bool qstate;
+
+			qstate = mysql_query(con, ch);
+			if(!qstate){
+				Nom->BackColor = System::Drawing::Color::LightGreen;
+				Prenom->BackColor = System::Drawing::Color::LightGreen;
+				Date_naissance->BackColor = System::Drawing::Color::LightGreen;
+				Date_premier_achat->BackColor = System::Drawing::Color::LightGreen;
+				Date_naissance->ForeColor = System::Drawing::Color::Black;
+				Date_premier_achat->ForeColor = System::Drawing::Color::Black;
+			}
+			else{
+				Nom->BackColor = System::Drawing::Color::White;
+				Prenom->BackColor = System::Drawing::Color::White;
+				Date_naissance->BackColor = System::Drawing::Color::White;
+				Date_premier_achat->BackColor = System::Drawing::Color::White;
+				Date_naissance->ForeColor = System::Drawing::Color::Black;
+				Date_premier_achat->ForeColor = System::Drawing::Color::Black;
+				if(Date_naissance->Text == ""){
+					Date_naissance->BackColor = System::Drawing::Color::IndianRed;
+				}
+				else{
+					Date_naissance->ForeColor = System::Drawing::Color::Red;
+				}
+				if(Date_premier_achat->Text == ""){
+					Date_premier_achat->BackColor = System::Drawing::Color::IndianRed;
+				}
+				else{
+					Date_premier_achat->ForeColor = System::Drawing::Color::Red;
+				}	
+			}
+		}
+		else{
+
+			System::String^ query = "SELECT ID_personnel FROM Personnel WHERE Personnel.nom = '";
+			query += Nom_superieur->Text;
+			query += "' AND Personnel.prenom = '";
+			query += Prenom_Superieur->Text;
+			query += "';";
+
+			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+			size_t convertedChars = 0;
+			size_t  sizeInBytes = ((query->Length + 1) * 2);
+			errno_t err = 0;
+
+			char* ch = (char*)malloc(sizeInBytes);
+			err = wcstombs_s(&convertedChars,
+				ch, sizeInBytes,
+				wch, sizeInBytes);
+
+			bool qstate = mysql_query(con, ch);
+			
+			if (!qstate) {
+				res = mysql_store_result(con);
+				if (res->row_count == 0) {
+					Nom_superieur->ForeColor = System::Drawing::Color::Red;
+					Prenom_Superieur->ForeColor = System::Drawing::Color::Red;
+				}
+				else {
+					row = mysql_fetch_row(res)
+
+					query = "CALL update_Perso('";
+					query += Nom->Text;
+					query += "', '";
+					query += Prenom->Text;
+					query += "', '";
+					query += Date_embauche->Text;
+					query += "', ";
+					query += Convert::ToInt32(Id_client->Text);
+					query += "', ";
+					query += gcnew String(row[0]);
+					query += ");";
+
+					pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+					size_t convertedChars = 0;
+					size_t  sizeInBytes = ((query->Length + 1) * 2);
+					errno_t err = 0;
+
+					char* ch = (char*)malloc(sizeInBytes);
+					err = wcstombs_s(&convertedChars,
+						ch, sizeInBytes,
+						wch, sizeInBytes);
+
+					bool qstate;
+
+					qstate = mysql_query(con, ch);
+					if (!qstate) {
+						Nom->BackColor = System::Drawing::Color::LightGreen;
+						Prenom->BackColor = System::Drawing::Color::LightGreen;
+						Date_embauche->BackColor = System::Drawing::Color::LightGreen;
+						Nom_superieur->BackColor = System::Drawing::Color::LightGreen;
+						Prenom_Superieur->BackColor = System::Drawing::Color::LightGreen;
+						Date_embauche->ForeColor = System::Drawing::Color::Black;
+					}
+					else {
+						Nom->BackColor = System::Drawing::Color::White;
+						Prenom->BackColor = System::Drawing::Color::White;
+						Date_embauche->BackColor = System::Drawing::Color::White;
+						Nom_superieur->BackColor = System::Drawing::Color::White;
+						Prenom_Superieur->BackColor = System::Drawing::Color::White;
+						Date_embauche->ForeColor = System::Drawing::Color::Black;
+						if (Date_embauche->Text == "") {
+							Date_embauche->BackColor = System::Drawing::Color::IndianRed;
+						}
+						else {
+							Date_embauche->ForeColor = System::Drawing::Color::Red;
+						}
+					}
+				}
+			}
+		}
+	}
+};
 	
 }

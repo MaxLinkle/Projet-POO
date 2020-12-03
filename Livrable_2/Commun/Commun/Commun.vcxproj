@@ -215,6 +215,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\Modifier_Client.resx">
+      <DependentUpon>..\Modifier_Client.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="..\Recherche.resx">
       <DependentUpon>..\Recherche.h</DependentUpon>
     </EmbeddedResource>

@@ -17,7 +17,7 @@ public class MapIndi {
 public:
 
 	virtual String^ MapperIDtoAddr(String^ ID) { return nullptr; };
-	virtual String^ MapperID(Struct_Adresse^ Adr, String^ PNom, String^ PPrenom, String^ PDate) { return nullptr; };
+	virtual String^ MapperID( String^ PNom, String^ PPrenom, String^ PDate) { return nullptr; };
 	virtual String^ MapperIdent(String^ ID) { return nullptr; };
 	virtual String^ MapperIDSup(String^ ID) { return nullptr; };
 };
@@ -28,7 +28,7 @@ public:
 
 		String^ Query = "SELECT ID_adresse_client FROM Client NATURAL JOIN Adresse_client WHERE ";
 		if (ID != "") {
-			Query += "ID_Client = '" + ID + "'";
+			Query += " ID_Client = '" + ID + "'";
 		}
 		Query += ";";
 		return Query;
@@ -36,20 +36,20 @@ public:
 
 	String^ MapperID(String^ PNom, String^ PPrenom, String^ PDate) {
 
-		String^ Query = "SELECT ID_adresse_client FROM Client NATURAL JOIN Adresse_client WHERE 1";
+		String^ Query = "SELECT ID_client FROM Client WHERE 1 ";
 		if (PNom == "" || PPrenom == "" ) {
 			Query += "AND 0";
 		}
 		else {
 		
 			if (PNom != "") {
-				Query = "AND nom = '" + PNom + "'";
+				Query += " AND nom = '" + PNom + "'";
 			}
 			if (PPrenom != "") {
-				Query = "AND prenom = '" + PPrenom + "'";
+				Query += " AND prenom = '" + PPrenom + "'";
 			}
 			if (PDate != "NULL") {
-				Query = "AND date_naissance = '" + PDate + "'";
+				Query += " AND date_naissance = '" + PDate + "'";
 			}
 		}
 		Query += ";";
@@ -72,22 +72,22 @@ public:
 
 	String^ MapperID(String^ PNom, String^ PPrenom, String^ PDate) {
 
-		String^ Query = "SELECT ID_adresse_personnel FROM Personnel NATURAL JOIN Adresse_personnel WHERE 1";
+		String^ Query = "SELECT ID_Personnel FROM Personnel WHERE 1 ";
 		if (PNom == "" && PPrenom == "" && PDate == "") {
 
-			Query += "AND 0";
+			Query += " AND 0 ";
 
 		}
 		else {
 			
 			if (PNom != "") {
-				Query = "AND nom = '" + PNom + "'";
+				Query += " AND nom = '" + PNom + "'";
 			}
 			if (PPrenom != "") {
-				Query = "AND prenom = '" + PPrenom + "'";
+				Query += " AND prenom = '" + PPrenom + "'";
 			}
 			if (PDate != "") {
-				Query = "AND date_embauche = '" + PDate + "'";
+				Query += " AND date_embauche = '" + PDate + "'";
 			}
 		}
 		Query += ";";
@@ -99,7 +99,7 @@ public:
 		String^ Query = "SELECT nom,prenom,date_naissance FROM Personnel WHERE 0 ";
 		if (ID != "") {
 
-			Query += "OR ID_Personnel = '" + ID + "'";
+			Query += " OR ID_Personnel = '" + ID + "'";
 
 		}
 		Query += ";";
@@ -155,11 +155,18 @@ public:
 	ArrayList^ GetAdresse(){ return Adresse; }
 	virtual String^ GetDPA() { return nullptr; }
 	virtual String^ GetIdSup() { return nullptr; }
-	virtual String^ GetSup(){ return nullptr; }
+	virtual String^ GetSup() { return nullptr; }
 	String^ GetId() { return ID; }
 	String^ GetNom() { return Nom; }
 	String^ GetPrenom() { return Prenom; }
 	String^ GetDate() { return Date; }
+
+	void SetID(String^ PID) { ID = PID; }
+
+	String^ MapId() { return svc_Mappage->MapperID(Nom , Prenom , Date);  }
+	virtual String^ MapSup() { return nullptr; }
+	String^ MapCredential() { return svc_Mappage->MapperIdent(ID) ; }
+	String^ MapAdrese() { return svc_Mappage->MapperIDtoAddr(ID); }
 
 	virtual bool IsClient() = 0;
 };
@@ -186,10 +193,11 @@ private:
 	String^ ID_Sup;
 public:
 	String^ GetIdSup() override { return ID_Sup; }
-	String^ GetSup() override { return svc_Mappage->MapperIdent(ID); }
-	Personnel(ArrayList^ Adr, String^ PNom, String^ PPrenom, String^ PDate) :Individu(PNom, PPrenom, PDate, Adr) { svc_Mappage = new MapCLi(); }
+	String^ GetSup() override { return svc_Mappage->MapperIdent(ID_Sup); }
+	String^ MapSup() override { return svc_Mappage->MapperIDSup(ID); }
+	Personnel(ArrayList^ Adr, String^ PNom, String^ PPrenom, String^ PDate) :Individu(PNom, PPrenom, PDate, Adr) { svc_Mappage = new MapPer(); }
 	Personnel(String^ PID) :Individu(PID) {}
-	bool IsClient() override { return true; }
+	bool IsClient() override { return false; }
 };
 
 
