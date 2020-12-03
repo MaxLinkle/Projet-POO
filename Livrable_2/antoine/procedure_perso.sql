@@ -445,3 +445,28 @@ BEGIN
   );
 END |
 DELIMITER ;
+
+
+-- DELIMITER |
+DROP PROCEDURE IF EXISTS ajout_Date_achat |
+CREATE PROCEDURE ajout_Date_achat (IN i_id_client INT)
+BEGIN
+  DECLARE date_prem DATE;
+  DECLARE date_actuelle DATE;
+
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    ROLLBACK;
+  END;
+
+  SELECT Client.date_premier_achat INTO date_prem FROM Client WHERE Client.ID_client = i_id_client;
+
+  IF date_prem IS NULL
+  THEN
+    SELECT CURRENT_DATE INTO date_actuelle;
+
+    UPDATE Client
+      SET Client.date_premier_achat = date_actuelle
+    WHERE Client.ID_client = i_id_client;
+  END IF;
+END |
