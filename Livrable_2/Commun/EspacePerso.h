@@ -611,6 +611,7 @@ private: System::Void checkBox1_CheckedChanged(System::Object^ sender, System::E
 					   cont->Adresse = row->Cells[0]->Value->ToString();
 					   cont->Ville = row->Cells[1]->Value->ToString();
 					   cont->Type_adresse = row->Cells[2]->Value->ToString();
+				       cont->Pays = "France";
 					   Adr->Add(cont);
 			   }
 		   }
@@ -641,6 +642,7 @@ private: System::Void checkBox1_CheckedChanged(System::Object^ sender, System::E
 					   cont->ID = "";
 					   cont->Adresse = row->Cells[0]->Value->ToString();
 					   cont->Ville = row->Cells[1]->Value->ToString();
+					   cont->Pays = "France";
 					   cont->Type_adresse = "";
 					   Adr->Add(cont);
 

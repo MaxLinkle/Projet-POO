@@ -273,12 +273,17 @@ namespace Perso {
 					   dataGridView1->Rows[i]->Cells[5]->Value = gcnew String(row[5]);
 					   dataGridView1->Rows[i]->Cells[6]->Value = gcnew String(row[6]);
 					   dataGridView1->Rows[i]->Cells[7]->Value = gcnew String(row[7]);
+					   
+					   if( Convert::ToDouble(dataGridView1->Rows[i]->Cells[6]->Value->ToString()) < Convert::ToDouble(dataGridView1->Rows[i]->Cells[7]->Value->ToString()) ) {
 
-					   System::String^ mensonge;
-					   mensonge = "oui ";
-					   mensonge += gcnew String(row[8]);
+						   for each (DataGridViewCell ^ cell in dataGridView1->Rows[i]->Cells) {
 
-					   textBox1->Text = mensonge;
+							   cell->Style->BackColor = System::Drawing::Color::HotPink;
+
+						   }
+
+
+					   }
 
 
 					   if (gcnew String(row[8]) == "1") {

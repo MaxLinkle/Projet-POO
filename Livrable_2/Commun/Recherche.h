@@ -360,35 +360,36 @@ namespace NS_Recherche {
 
 		   }
 #pragma endregion
-	void finish_with_error(MYSQL* con)
-		{
-			//std::cout << "Error: " << mysql_error(con);
-			mysql_close(con);
-			exit(1);
-		}
+	//void finish_with_error(MYSQL* con)
+	//	{
+	//		//std::cout << "Error: " << mysql_error(con);
+	//		mysql_close(con);
+	//		exit(1);
+	//	}
 
-	void ConnectDatabase() {
-			con = mysql_init(NULL);
-			if (con == NULL) {
-				//label1->Text = "Base inexistante";
-			}
-			else {
-				//label1->Text = "Base existante";
-			}
+	//void ConnectDatabase() {
+	//		con = mysql_init(NULL);
+	//		if (con == NULL) {
+	//			//label1->Text = "Base inexistante";
+	//		}
+	//		else {
+	//			//label1->Text = "Base existante";
+	//		}
 
-			if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
-				//if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, 0) == NULL) {
-					//label2->Text = "Erreur de connection a la base";
-			}
-			else {
-				//label2->Text = "Connection a la base";
-			}
-		}
+	//		if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
+	//			//if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "Testnul", 3315, NULL, 0) == NULL) {
+	//				//label2->Text = "Erreur de connection a la base";
+	//		}
+	//		else {
+	//			//label2->Text = "Connection a la base";
+	//		}
+	//	}
 
 	private: System::Void Button_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Close();
 		Precedent->Show();
 	}
+
 	private: System::Void Recherche_Load(System::Object^ sender, System::EventArgs^ e) {
 		dataGridView1->Columns->Clear();
 
@@ -439,6 +440,7 @@ namespace NS_Recherche {
 			this->Date_premier_achat->Visible = false;
 			this->label3->Visible = false;
 			this->label6->Visible = false;
+			this->label7->Visible = false;
 			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(6) {
 				   this->Id_adresse,
 					   this->Adresse, this->Ville, this->Pays, this->Update, this->Delete
@@ -457,8 +459,8 @@ namespace NS_Recherche {
 				dataGridView1->Rows[i]->Cells[0]->Value = current->ID;
 				dataGridView1->Rows[i]->Cells[1]->Value = current->Adresse;
 				dataGridView1->Rows[i]->Cells[2]->Value = current->Ville;
-				dataGridView1->Rows[i]->Cells[3]->Value = "France";
-				//dataGridView1->Rows[i]->Cells[3]->Value = SteveInter->GetAdresse()->Pays; 
+				//dataGridView1->Rows[i]->Cells[3]->Value = "France";
+				dataGridView1->Rows[i]->Cells[3]->Value = current->Pays; 
 				dataGridView1->Rows[i]->Cells[6]->Value = "supprimer";
 				dataGridView1->Rows[i]->Cells[7]->Value = "sauvegarder";
 				i++;

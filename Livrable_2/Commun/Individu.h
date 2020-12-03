@@ -17,7 +17,7 @@ public class MapIndi {
 public:
 
 	virtual String^ MapperIDtoAddr(String^ ID) { return nullptr; };
-	virtual String^ MapperID(Struct_Adresse^ Adr, String^ PNom, String^ PPrenom, String^ PDate) { return nullptr; };
+	virtual String^ MapperID( String^ PNom, String^ PPrenom, String^ PDate) { return nullptr; };
 	virtual String^ MapperIdent(String^ ID) { return nullptr; };
 	virtual String^ MapperIDSup(String^ ID) { return nullptr; };
 };
@@ -160,6 +160,11 @@ public:
 	String^ GetNom() { return Nom; }
 	String^ GetPrenom() { return Prenom; }
 	String^ GetDate() { return Date; }
+
+	void SetID(String^ PID) { ID = PID; }
+
+	String^ MapId() { return svc_Mappage->MapperID(Nom , Prenom , Date);  }
+	String^ MapCredential() { return svc_Mappage->MapperIdent(ID) ; }
 
 	virtual bool IsClient() = 0;
 };
