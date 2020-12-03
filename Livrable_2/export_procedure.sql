@@ -1,6 +1,7 @@
 USE projet;
 
-DELIMITER $$
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `Ajouter_Adresse_Perso` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `Ajouter_Adresse_Perso`(IN IDPERSO INT, IN PVille VARCHAR(50),IN PAdresse VARCHAR(50))
 BEGIN
   DECLARE IDVil INT;
@@ -14,98 +15,24 @@ BEGIN
     UPDATE Adresse_personnel SET adresse_personnel = PAdresse , ID_ville = IDvil WHERE IDPerso = ID_personnel;
 
   END IF;
-
-
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
-CREATE DEFINER=`admin`@`%` PROCEDURE `Facture_fournir`(IN `i_id_commande` INT)
-    NO SQL
-SELECT * FROM Fournir
-INNER JOIN Catalogue ON Catalogue.ID_article = Fournir.ID_article
-WHERE i_id_commande = Fournir.ID_commande$$
-DELIMITER ;
 
-DELIMITER $$
-CREATE DEFINER=`admin`@`%` PROCEDURE `Stat_Achat_stock`()
-BEGIN
-  SELECT Catalogue.nom, Catalogue.stock, Catalogue.stock * Catalogue.prix_ht * 0.5 AS Valeur_achat
-  FROM Catalogue;
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE DEFINER=`admin`@`%` PROCEDURE `Stat_Chiffre`(IN PDate DATE)
-BEGIN
-  SELECT SUM(prix_ht+prix_tva-remise)
-  FROM  Commande
-  WHERE MONTH(date_solde) = MONTH(PDAte) AND  YEAR(date_solde) = YEAR(PDAte);
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE DEFINER=`admin`@`%` PROCEDURE `Stat_Moins_vendu`()
-BEGIN
-  SELECT Catalogue.nom, SUM(Fournir.quantite) AS quantite_total
-  FROM Fournir
-  INNER JOIN Catalogue ON Catalogue.ID_article = Fournir.ID_article
-  GROUP BY Catalogue.nom
-  ORDER BY quantite_total ASC
-  LIMIT 10;
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE DEFINER=`admin`@`%` PROCEDURE `Stat_Panier_moy`(IN `PNom` VARCHAR(50), IN `PPrenom` VARCHAR(50))
-BEGIN
-  SELECT AVG(prix_ht+prix_tva-remise)
-  FROM Client NATURAL JOIN Commande
-  WHERE nom = PNom AND prenom = PPrenom;
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE DEFINER=`admin`@`%` PROCEDURE `Stat_Plus_vendu`()
-BEGIN
-  SELECT Catalogue.nom, SUM(Fournir.quantite) AS quantite_total
-  FROM Fournir
-  INNER JOIN Catalogue ON Catalogue.ID_article = Fournir.ID_article
-  GROUP BY Catalogue.nom
-  ORDER BY quantite_total DESC
-  LIMIT 10;
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE DEFINER=`admin`@`%` PROCEDURE `Stat_Total_achat_client`(IN `PNom` VARCHAR(50),IN `PPrenom` VARCHAR(50))
-BEGIN
-  SELECT SUM(prix_ht+prix_tva - remise)
-  FROM Client NATURAL JOIN Commande
-  WHERE nom = PNom AND prenom = PPrenom;
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE DEFINER=`admin`@`%` PROCEDURE `Stat_Valeur_stock`()
-BEGIN
-  SELECT Catalogue.nom, Catalogue.stock, Catalogue.stock * Catalogue.prix_ht AS Valeur_Commercial
-  FROM Catalogue;
-END$$
-DELIMITER ;
-
-DELIMITER $$
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `Suppr_Perso` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `Suppr_Perso`(IN `ID_Perso` INT)
-    NO SQL
 BEGIN
 
 DELETE FROM Adresse_personnel WHERE ID_personnel = ID_Perso;
 DELETE FROM Personnel WHERE ID_personnel = ID_Perso;
 
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `VerifIndividus` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `VerifIndividus`(IN `CliPer` BOOLEAN, IN `PNom` VARCHAR(50), IN `PPrenom` VARCHAR(50), IN `PDate` DATE, IN `PSNom` VARCHAR(50), IN `PSPrenom` VARCHAR(50))
 pr: BEGIN
     DECLARE Tab VARCHAR(50);
@@ -141,20 +68,12 @@ pr: BEGIN
 
     END IF;
 
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
-CREATE DEFINER=`admin`@`%` PROCEDURE `adresse_existante`(IN i_id_client INT, IN i_adresse_livraison VARCHAR(50), IN i_adresse_facturation VARCHAR(50))
-BEGIN
-  SELECT * FROM Adresse_client AS Adresse_livraison WHERE i_id_client = ID_client AND ID_type_adresse = 1;
-  IF NOT i_adresse_livraison = Adresse_livraison.adresse_client THEN
-    SELECT "yes";
-  END IF;
-END$$
-DELIMITER ;
 
-DELIMITER $$
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `ajoutUpdate_Adresse_client` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `ajoutUpdate_Adresse_client`(IN `i_id` INT, IN `i_adresse` VARCHAR(50), IN `i_ville` INT(20), IN `i_type` INT(25))
 BEGIN
   DECLARE id_var INT;
@@ -163,11 +82,10 @@ BEGIN
   DECLARE ville_cli INT;
   DECLARE type_cli INT;
 
-  -- DECLARE EXIT HANDLER FOR SQLEXCEPTION
-  -- BEGIN
-    -- ROLLBACK;
-  -- END;
-
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    ROLLBACK;
+  END;
 
   SELECT Adresse_client.ID_client INTO id_var
   FROM Adresse_client
@@ -197,10 +115,12 @@ BEGIN
     END IF;
 
   END IF;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `ajout_Adresse_client` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `ajout_Adresse_client`(IN i_id_client INT, IN i_adresse VARCHAR(50), IN i_ville VARCHAR(20), IN i_type_adresse VARCHAR(25))
 BEGIN
   DECLARE ville_cli INT;
@@ -216,10 +136,12 @@ BEGIN
 
   INSERT INTO Adresse_client (adresse_client, ID_client, ID_ville, ID_type_adresse)
   VALUES (i_adresse, i_id_client, ville_cli, type_cli);
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `ajout_Catalogue_perso` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `ajout_Catalogue_perso`(IN i_nom VARCHAR(50), IN i_ref VARCHAR(50), IN i_prix_ht INT, IN i_tva INT, IN i_coef INT, IN i_stock INT, IN i_seuil INT, IN i_actif BOOLEAN)
 BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -229,18 +151,18 @@ BEGIN
 
   INSERT INTO Catalogue (nom, reference, prix_ht, taux_tva, coefficient_economie, stock, seuil_reapprovisionnement, actif)
   VALUES (i_nom, i_ref, i_prix_ht, i_tva, i_coef, i_stock, i_seuil, i_actif);
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `ajout_Commande` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `ajout_Commande`(IN `i_prix_ht` INT, IN `i_prix_tva` INT, IN `i_remise` INT, IN `date_liv` DATE, IN `date_emi` DATE, IN `date_paye` DATE, IN `date_sol` DATE, IN `i_id_adresse_de_livraison` VARCHAR(50), IN `i_id_adresse_facturation` VARCHAR(50), IN `i_id_cli` INT, IN `id_paye` VARCHAR(50))
 BEGIN
   DECLARE adresseliv_cli INT;
   DECLARE adressefact_cli INT;
   DECLARE paiement_cli INT;
   DECLARE id_commande INT;
-
-  -- DECLARE last INT;
 
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
   BEGIN
@@ -262,12 +184,12 @@ BEGIN
   WHERE Commande.ID_commande = id_commande;
 
   SELECT id_commande;
-  -- SELECT LAST_INSERT_ID() INTO last;
-  -- SELECT last;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `ajout_Date_achat` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `ajout_Date_achat`(IN `i_id_client` INT)
 BEGIN
   DECLARE date_prem DATE;
@@ -288,10 +210,12 @@ BEGIN
       SET Client.date_premier_achat = date_actuelle
     WHERE Client.ID_client = i_id_client;
   END IF;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `ajout_Fournir` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `ajout_Fournir`(IN i_quant INT, IN i_id_art INT, IN i_id_com INT)
 BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -301,10 +225,12 @@ BEGIN
 
   INSERT INTO Fournir (ID_fournir, quantite, ID_article, ID_commande)
   VALUES (NULL, i_quant, i_id_art, i_id_com);
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `delete_Adresse_client` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `delete_Adresse_client`(IN i_id INT)
 BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -312,15 +238,15 @@ BEGIN
     ROLLBACK;
   END;
 
-  -- DELETE FROM Adresse_client
-  -- WHERE ID_adresse_client = i_id;
   UPDATE Adresse_client
   SET Adresse_client.ID_client = NULL
   WHERE Adresse_client.ID_adresse_client = i_id;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `delete_Commande` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `delete_Commande`()
 BEGIN
   DECLARE date_moins_10 DATE;
@@ -334,16 +260,41 @@ BEGIN
 
   DELETE FROM COMMANDE
   WHERE date_paiement < date_moins_10;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `delete_Adresse_client_deref` |
+CREATE DEFINER=`admin`@`%` PROCEDURE `delete_Adresse_client_deref` ()
+BEGIN
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    ROLLBACK;
+  END;
+
+  DELETE FROM Adresse_client
+  WHERE (
+    ISNULL(Adresse_client.ID_client)
+    AND (
+      NOT (
+        (ID_adresse_client IN (SELECT DISTINCT ID_adresse_livraison FROM Commande))
+        OR (ID_adresse_client IN (SELECT DISTINCT ID_adresse_facturation FROM Commande))
+      )
+    )
+  );
+END |
+DELIMITER ;
+
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `envoie_Commande` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `envoie_Commande`(IN i_id_com INT)
 BEGIN
-  -- DECLARE EXIT HANDLER FOR SQLEXCEPTION
-  -- BEGIN
-  --   ROLLBACK;
-  -- END;
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    ROLLBACK;
+  END;
 
   SELECT Client.nom, Client.prenom, Client.date_naissance, Paiement.moyen_paiement, j.quantite, j.nom
   FROM Commande
@@ -355,19 +306,12 @@ BEGIN
     INNER JOIN Catalogue ON Catalogue.ID_article = Fournir.ID_article
   ) AS j ON j.ID_commande = Commande.ID_commande
   WHERE Commande.ID_commande = i_id_com;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
-CREATE DEFINER=`admin`@`%` PROCEDURE `facture`(IN `i_id_commande` INT)
-SELECT * FROM Commande
-INNER JOIN Paiement ON Paiement.ID_paiement = Commande.ID_paiement
-INNER JOIN Adresse_client AS l ON l.ID_adresse_client = Commande.ID_adresse_livraison
-INNER JOIN Adresse_client AS f ON f.ID_adresse_client = Commande.ID_adresse_facturation
-WHERE Commande.ID_commande = i_id_commande$$
-DELIMITER ;
 
-DELIMITER $$
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `generer_reference` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `generer_reference`(IN `id_client` INT, IN `id_commande` INT, OUT `reference` VARCHAR(50))
 BEGIN
    SELECT CONCAT(LEFT(T1.prenom, 2), LEFT(T1.nom, 2), YEAR(NOW()), LEFT(T2.ville, 3), id_commande) INTO reference
@@ -376,10 +320,12 @@ BEGIN
   INNER JOIN (SELECT * FROM Adresse_client
   NATURAL JOIN Ville) AS T2
  ON T2.ID_adresse_client = T1.ID_adresse_livraison;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `remplissage_Client` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `remplissage_Client`(IN i_nom VARCHAR(20), IN i_prenom VARCHAR(20), IN i_date_naissance DATE, IN i_adresse_client VARCHAR(50), IN i_ville VARCHAR(20), IN i_type_adresse VARCHAR(25))
 BEGIN
   DECLARE id_cli INT;
@@ -400,10 +346,12 @@ BEGIN
 
   INSERT INTO Adresse_client (ID_adresse_client, adresse_client, ID_client, ID_type_adresse, ID_ville)
   VALUES (NULL, i_adresse_client, id_cli, type_cli, ville_cli);
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `update_Adresse_client` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `update_Adresse_client`(IN i_id INT, IN i_id_adresse INT, IN i_adresse VARCHAR(50), IN ancienne_adr VARCHAR(50), IN i_ville VARCHAR(20), IN i_type VARCHAR(25))
 BEGIN
   DECLARE a_livr INT DEFAULT 0;
@@ -412,10 +360,10 @@ BEGIN
   DECLARE ville_cli INT;
   DECLARE type_cli INT;
 
-  -- DECLARE EXIT HANDLER FOR SQLEXCEPTION
-  -- BEGIN
-  --   ROLLBACK;
---  END;
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    ROLLBACK;
+  END;
 
   SELECT COUNT(Commande.ID_adresse_livraison) INTO a_livr
   FROM Commande
@@ -447,17 +395,19 @@ BEGIN
     VALUES (i_adresse, i_id, ville_cli, type_cli);
 
   END IF;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `update_Catalogue` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `update_Catalogue`(IN `i_quantite` INT, IN `i_id_article` INT)
 UPDATE Catalogue
 Set stock = (stock - quantite)
-WHERE ID_article = i_id_article$$
+WHERE ID_article = i_id_article |
 DELIMITER ;
 
-DELIMITER $$
+DELIMITER  |
 CREATE DEFINER=`admin`@`%` PROCEDURE `update_Catalogue_perso`(IN i_id_cat INT, IN i_nom VARCHAR(50), IN i_ref VARCHAR(50), IN i_prix_ht INT, IN i_tva INT, IN i_coef INT, IN i_stock INT, IN i_seuil INT, IN i_actif BOOLEAN)
 BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -476,10 +426,12 @@ BEGIN
     Catalogue.seuil_reapprovisionnement = i_seuil,
     Catalogue.actif = i_actif
   WHERE Catalogue.ID_article = i_id_cat;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `update_Catalogue_stock` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `update_Catalogue_stock`(IN i_id_art INT, IN i_dif INT)
 BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -491,28 +443,32 @@ BEGIN
   SET
     Catalogue.stock = Catalogue.stock - i_dif
   WHERE Catalogue.ID_article = i_id_art;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `update_Client` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `update_Client`(IN i_nom VARCHAR(50), IN i_prenom VARCHAR(50), IN i_date_naissance DATE, IN i_date_premier_achat DATE, IN i_id_client INT)
 BEGIN
   UPDATE Client
     SET Client.nom = i_nom, Client.prenom = i_prenom, Client.date_naissance = i_date_naissance, Client.date_premier_achat = i_date_premier_achat
   WHERE Client.ID_client = i_id_client;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+DELIMITER  |
 CREATE DEFINER=`admin`@`%` PROCEDURE `update_Perso`(IN i_nom VARCHAR(50), IN i_prenom VARCHAR(50), IN i_date_embauche DATE, IN i_id_perso INT, IN i_id_superieur INT)
 BEGIN
   UPDATE Personnel
     SET Personnel.nom = i_nom, Personnel.prenom = i_prenom, Personnel.date_embauche = i_date_embauche, Personnel.ID_superieur = i_id_superieur
   WHERE Personnel.ID_personnel = i_id_personnel;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `verification_Adresse_client` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `verification_Adresse_client`(IN i_id_client INT)
 BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -526,10 +482,12 @@ BEGIN
   INNER JOIN Type_adresse ON Adresse_client.ID_type_adresse = Type_adresse.ID_type_adresse
   INNER JOIN Ville ON Adresse_client.ID_ville = Ville.ID_ville
   WHERE Adresse_client.ID_client = i_id_client;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `verification_Catalogue_perso` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `verification_Catalogue_perso`(IN i_id INT)
 BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -540,10 +498,12 @@ BEGIN
   SELECT Catalogue.nom, Catalogue.reference, Catalogue.prix_ht, Catalogue.taux_tva, Catalogue.coefficient_economie, Catalogue.stock, Catalogue.seuil_reapprovisionnement, Catalogue.actif
   FROM Catalogue
   WHERE Catalogue.ID_article = i_id;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS `verification_Client` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `verification_Client`(IN i_nom VARCHAR(20), IN i_prenom VARCHAR(20), IN i_date_naissance DATE, IN i_adresse_client VARCHAR(50), IN i_ville VARCHAR(20), i_type_adresse VARCHAR(25))
 BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -557,10 +517,12 @@ BEGIN
   INNER JOIN Type_adresse ON Adresse_client.ID_type_adresse = Type_adresse.ID_type_adresse
   INNER JOIN Ville ON Adresse_client.ID_ville = Ville.ID_ville
   WHERE nom = i_nom AND prenom = i_prenom AND date_naissance = i_date_naissance;
-END$$
+END |
 DELIMITER ;
 
-DELIMITER $$
+
+DELIMITER  |
+DROP PROCEDURE IF EXISTS  `verification_ajout_Catalogue_perso` |
 CREATE DEFINER=`admin`@`%` PROCEDURE `verification_ajout_Catalogue_perso`(IN i_nom VARCHAR(50), IN i_ref VARCHAR(50), IN i_prix_ht INT, IN i_tva INT, IN i_coef INT, IN i_stock INT, IN i_seuil INT, IN i_actif BOOLEAN)
 BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -571,5 +533,5 @@ BEGIN
   SELECT *
   FROM Catalogue
   WHERE Catalogue.nom = i_nom AND Catalogue.reference = i_ref AND Catalogue.prix_ht = i_prix_ht AND Catalogue.taux_tva = i_tva AND Catalogue.coefficient_economie = i_coef AND Catalogue.stock = i_stock AND Catalogue.seuil_reapprovisionnement = i_seuil AND Catalogue.actif = i_actif;
-END$$
+END |
 DELIMITER ;
