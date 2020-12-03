@@ -492,6 +492,24 @@ namespace NS_EspacePersonnel {
 		if (Test->row_count > 0) {
 			MYSQL_ROW row = mysql_fetch_row(Test);
 			Steve->SetID(gcnew String(row[0]));
+			mysql_free_result(Test);
+			Test = executerQuery(Steve->MapAdrese());
+			ArrayList^ ArrayNouv = gcnew ArrayList(Test->row_count);
+			if (Test != NULL) {
+				while (row = mysql_fetch_row(Test)) {
+					Struct_Adresse^ cellule = gcnew Struct_Adresse();
+					cellule->ID = gcnew String(row[0]);
+					cellule->Adresse = gcnew String(row[1]);
+					cellule->Ville = gcnew String(row[2]);
+					cellule->Pays = gcnew String(row[3]);
+					if (Rb_Client->Checked) {
+						cellule->Type_adresse = gcnew String(row[4]);
+					}
+					ArrayNouv->Add(cellule);
+				}
+
+				Steve->SetAdresse(ArrayNouv);
+			}
 			this->Hide();
 			CLRecherche^ PageSuivante = gcnew CLRecherche(this, Steve);
 			PageSuivante->Show();

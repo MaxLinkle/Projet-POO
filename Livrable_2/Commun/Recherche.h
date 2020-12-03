@@ -2,6 +2,7 @@
 #include <mysql.h>
 #include <iostream>
 #include "individu.h"
+#include "SC.h"
 
 namespace NS_Recherche {
 
@@ -11,17 +12,17 @@ namespace NS_Recherche {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace NS_SuperC;
 
 	/// <summary>
 	/// Description résumée de Recherche
 	/// </summary>
-	public ref class CLRecherche : public System::Windows::Forms::Form
+	public ref class CLRecherche : public SuperC
 	{
 	public:
-		CLRecherche(Form^ InpPrecedent, Individu^ ESteve)
+		CLRecherche(Form^ InpPrecedent, Individu^ ESteve): SuperC(InpPrecedent)
 		{
 			SteveInter = ESteve;
-			Precedent = InpPrecedent;
 			InitializeComponent();
 			//
 			//TODO: ajoutez ici le code du constructeur
@@ -45,11 +46,11 @@ namespace NS_Recherche {
 	Individu^ SteveInter;
 
 	private:
-		MYSQL* con;
+		//MYSQL* con;
 		MYSQL_RES* res;
 		MYSQL_ROW row;
 
-	private: System::Windows::Forms::Button^ Button;
+	
 	private: System::Windows::Forms::TextBox^ Nom;
 	private: System::Windows::Forms::TextBox^ Prenom;
 	private: System::Windows::Forms::TextBox^ Date_naissance;
@@ -67,8 +68,9 @@ namespace NS_Recherche {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Pays;
 	private: System::Windows::Forms::DataGridViewCheckBoxColumn^ Adresse_livraison;
 	private: System::Windows::Forms::DataGridViewCheckBoxColumn^ Adresse_facturation;
-	private: System::Windows::Forms::DataGridViewButtonColumn^ Delete;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ Update;
+	private: System::Windows::Forms::DataGridViewButtonColumn^ Cache;
+	private: System::Windows::Forms::DataGridViewButtonColumn^ Delete;
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Label^ label3;
@@ -89,7 +91,7 @@ namespace NS_Recherche {
 		   /// </summary>
 		   void InitializeComponent(void)
 		   {
-			   this->Button = (gcnew System::Windows::Forms::Button());
+			  
 			   this->Nom = (gcnew System::Windows::Forms::TextBox());
 			   this->Prenom = (gcnew System::Windows::Forms::TextBox());
 			   this->Date_naissance = (gcnew System::Windows::Forms::TextBox());
@@ -106,8 +108,9 @@ namespace NS_Recherche {
 			   this->Pays = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			   this->Adresse_livraison = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
 			   this->Adresse_facturation = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			   this->Update = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
 			   this->Delete = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			   this->Update = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			   this->Cache = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
 			   this->label1 = (gcnew System::Windows::Forms::Label());
 			   this->label2 = (gcnew System::Windows::Forms::Label());
 			   this->label3 = (gcnew System::Windows::Forms::Label());
@@ -122,14 +125,14 @@ namespace NS_Recherche {
 			   // 
 			   // Button
 			   // 
-			   this->Button->Location = System::Drawing::Point(16, 15);
+	/*		   this->Button->Location = System::Drawing::Point(16, 15);
 			   this->Button->Margin = System::Windows::Forms::Padding(4);
 			   this->Button->Name = L"Button";
 			   this->Button->Size = System::Drawing::Size(33, 31);
 			   this->Button->TabIndex = 1;
 			   this->Button->Text = L"<";
 			   this->Button->UseVisualStyleBackColor = true;
-			   this->Button->Click += gcnew System::EventHandler(this, &CLRecherche::Button_Click);
+			   this->Button->Click += gcnew System::EventHandler(this, &CLRecherche::Button_Click);*/
 			   // 
 			   // Nom
 			   // 
@@ -212,9 +215,9 @@ namespace NS_Recherche {
 			   // dataGridView1
 			   // 
 			   this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			   this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(8) {
+			   this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(9) {
 				   this->Id_adresse,
-					   this->Adresse, this->Ville, this->Pays, this->Adresse_livraison, this->Adresse_facturation, this->Update, this->Delete
+					   this->Adresse, this->Ville, this->Pays, this->Adresse_livraison, this->Adresse_facturation, this->Delete, this->Update, this->Cache
 			   });
 			   this->dataGridView1->Location = System::Drawing::Point(13, 216);
 			   this->dataGridView1->Margin = System::Windows::Forms::Padding(4);
@@ -266,19 +269,27 @@ namespace NS_Recherche {
 			   this->Adresse_facturation->Name = L"Adresse_facturation";
 			   this->Adresse_facturation->Width = 125;
 			   // 
+			   // Delete
+			   // 
+			   this->Delete->HeaderText = L"Supprimer";
+			   this->Delete->MinimumWidth = 6;
+			   this->Delete->Name = L"Delete";
+			   this->Delete->Width = 125;
+			   // 
 			   // Update
 			   // 
-			   this->Update->HeaderText = L"";
+			   this->Update->HeaderText = L"Sauvegarder";
 			   this->Update->MinimumWidth = 6;
 			   this->Update->Name = L"Update";
 			   this->Update->Width = 125;
 			   // 
-			   // Delete
+			   // Update
 			   // 
-			   this->Delete->HeaderText = L"";
-			   this->Delete->MinimumWidth = 6;
-			   this->Delete->Name = L"Delete";
-			   this->Delete->Width = 125;
+			   this->Cache->HeaderText = L"";
+			   this->Cache->MinimumWidth = 6;
+			   this->Cache->Name = L"Cache";
+			   this->Cache->Width = 125;
+			   this->Visible = false;
 			   // 
 			   // label1
 			   // 
@@ -346,20 +357,20 @@ namespace NS_Recherche {
 			   // Supprimer
 			   // 
 			   this->Supprimer->Location = System::Drawing::Point(735, 108);
-			   this->Supprimer->Name = L"Supprimer";
+			   this->Supprimer->Name = L"Sauvegarder";
 			   this->Supprimer->Size = System::Drawing::Size(140, 23);
 			   this->Supprimer->TabIndex = 17;
-			   this->Supprimer->Text = L"Supprimer";
+			   this->Supprimer->Text = L"Sauvegarder";
 			   this->Supprimer->UseVisualStyleBackColor = true;
 			   this->Supprimer->Click += gcnew System::EventHandler(this, &CLRecherche::Supprimer_Click);
 			   // 
 			   // Sauvegarder
 			   // 
 			   this->Sauvegarder->Location = System::Drawing::Point(735, 174);
-			   this->Sauvegarder->Name = L"Sauvegarder";
+			   this->Sauvegarder->Name = L"Supprimer";
 			   this->Sauvegarder->Size = System::Drawing::Size(140, 23);
 			   this->Sauvegarder->TabIndex = 18;
-			   this->Sauvegarder->Text = L"Sauvegarder";
+			   this->Sauvegarder->Text = L"Supprimer";
 			   this->Sauvegarder->UseVisualStyleBackColor = true;
 			   this->Sauvegarder->Click += gcnew System::EventHandler(this, &CLRecherche::Sauvegarder_Click);
 			   // 
@@ -378,7 +389,6 @@ namespace NS_Recherche {
 			   this->Controls->Add(this->label3);
 			   this->Controls->Add(this->label2);
 			   this->Controls->Add(this->label1);
-			   this->Controls->Add(this->Button);
 			   this->Controls->Add(this->dataGridView1);
 			   this->Controls->Add(this->Nom);
 			   this->Controls->Add(this->Prenom);
@@ -423,10 +433,10 @@ namespace NS_Recherche {
 	//		}
 	//	}
 
-	private: System::Void Button_Click(System::Object^ sender, System::EventArgs^ e) {
-		this->Close();
-		Precedent->Show();
-	}
+	//private: System::Void Button_Click(System::Object^ sender, System::EventArgs^ e) {
+	//	this->Close();
+	//	Precedent->Show();
+	//}
 
 	private: System::Void Recherche_Load(System::Object^ sender, System::EventArgs^ e) {
 		dataGridView1->Columns->Clear();
@@ -440,9 +450,9 @@ namespace NS_Recherche {
 			this->label5->Visible = false;
 			this->label7->Visible = false;
 			this->Supprimer->Visible = false;
-			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(8) {
+			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(9) {
 				   this->Id_adresse,
-					   this->Adresse, this->Ville, this->Pays, this->Adresse_livraison, this->Adresse_facturation, this->Update, this->Delete
+					   this->Adresse, this->Ville, this->Pays, this->Adresse_livraison, this->Adresse_facturation, this->Delete, this->Update, this->Cache
 			});
 
 			int i = 0;
@@ -456,19 +466,33 @@ namespace NS_Recherche {
 			Id_client->Text = SteveInter->GetId();
 
 			for each(Struct_Adresse^ current in SteveInter->GetAdresse()){
+				dataGridView1->Rows->Add();
 				dataGridView1->Rows[i]->Cells[0]->Value = current->ID;
 				dataGridView1->Rows[i]->Cells[1]->Value = current->Adresse;
 				dataGridView1->Rows[i]->Cells[2]->Value = current->Ville;
-				dataGridView1->Rows[i]->Cells[3]->Value = "France";
-				//dataGridView1->Rows[i]->Cells[3]->Value = SteveInter->GetAdresse()->Pays; 
-				if (current->Type_adresse == "livraison" || current->Type_adresse == "livraison et facturation"){
+				dataGridView1->Rows[i]->Cells[3]->Value = current->Pays; 
+				/*if (current->Type_adresse == "livraison" || current->Type_adresse == "livraison et facturation"){
 					dataGridView1->Rows[i]->Cells[4]->Value = true;
 				}
 				else if (current->Type_adresse == "facturation" || current->Type_adresse == "livraison et facturation"){
 					dataGridView1->Rows[i]->Cells[5]->Value = true;
+				}*/
+				if (current->Type_adresse == "livraison et facturation") {
+						dataGridView1->Rows[i]->Cells[4]->Value = true;
+						dataGridView1->Rows[i]->Cells[5]->Value = true;
 				}
+				else if (current->Type_adresse == "livraison") {
+						dataGridView1->Rows[i]->Cells[4]->Value = true;
+						dataGridView1->Rows[i]->Cells[5]->Value = false;
+				}
+				else if (current->Type_adresse == "facturation") {
+						dataGridView1->Rows[i]->Cells[4]->Value = false;
+						dataGridView1->Rows[i]->Cells[5]->Value = true;
+				}
+
 				dataGridView1->Rows[i]->Cells[6]->Value = "supprimer";
 				dataGridView1->Rows[i]->Cells[7]->Value = "sauvegarder";
+				dataGridView1->Rows[i]->Cells[8]->Value = current->Adresse;
 				i++;
 				
 			}
@@ -483,7 +507,7 @@ namespace NS_Recherche {
 			this->label7->Visible = false;
 			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(6) {
 				   this->Id_adresse,
-					   this->Adresse, this->Ville, this->Pays, this->Update, this->Delete
+					   this->Adresse, this->Ville, this->Pays, this->Delete, this->Update
 			   });
 
 			//Struct_Adresse^ current = SteveInter->Adresse;
@@ -496,20 +520,22 @@ namespace NS_Recherche {
 
 			System::String^ query = SteveInter->GetSup();
 
-			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
-			size_t convertedChars = 0;
-			size_t  sizeInBytes = ((query->Length + 1) * 2);
-			errno_t err = 0;
+			//pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+			//size_t convertedChars = 0;
+			//size_t  sizeInBytes = ((query->Length + 1) * 2);
+			//errno_t err = 0;
 
-			char* ch = (char*)malloc(sizeInBytes);
-			err = wcstombs_s(&convertedChars,
-				ch, sizeInBytes,
-				wch, sizeInBytes);
+			//char* ch = (char*)malloc(sizeInBytes);
+			//err = wcstombs_s(&convertedChars,
+			//	ch, sizeInBytes,
+			//	wch, sizeInBytes);
 
-			bool qstate;
+			//bool qstate;
 
-			qstate = mysql_query(con, ch);
-			res = mysql_store_result(con);
+			//qstate = mysql_query(con, ch);
+			//res = mysql_store_result(con);
+
+			res = executerQuery(query);
 			row = mysql_fetch_row(res);
 
 			Nom_superieur->Text = gcnew String(row[0]);
@@ -521,7 +547,6 @@ namespace NS_Recherche {
 				dataGridView1->Rows[i]->Cells[0]->Value = current->ID;
 				dataGridView1->Rows[i]->Cells[1]->Value = current->Adresse;
 				dataGridView1->Rows[i]->Cells[2]->Value = current->Ville;
-				//dataGridView1->Rows[i]->Cells[3]->Value = "France";
 				dataGridView1->Rows[i]->Cells[3]->Value = current->Pays; 
 				dataGridView1->Rows[i]->Cells[6]->Value = "supprimer";
 				dataGridView1->Rows[i]->Cells[7]->Value = "sauvegarder";
@@ -541,9 +566,9 @@ namespace NS_Recherche {
 		if (SteveInter->IsClient()){
 			if (j == 6 && dataGridView1->Rows[i]->Cells[6]->Value->ToString() == "supprimer") {
 				query = "START TRANSACTION; CALL delete_Adresse_client('";
-				query += dataGridView1->Rows[i]->Cells[6]->Value->ToString();
+				query += dataGridView1->Rows[i]->Cells[0]->Value->ToString();
 				query += "'); CALL verification_Adresse_client('";
-				query += dataGridView1->Rows[i]->Cells[8]->Value->ToString();
+				query += Id_client->Text;
 				query += "'); COMMIT;";
 			}
 			else if (j == 6 && dataGridView1->Rows[i]->Cells[6]->Value->ToString() == "ajout") {
@@ -551,13 +576,14 @@ namespace NS_Recherche {
 				if (dataGridView1->Rows[i]->Cells[1]->Value->ToString() != "" && dataGridView1->Rows[i]->Cells[2]->Value->ToString() != "" && dataGridView1->Rows[i]->Cells[3]->Value->ToString() != "" && (dataGridView1->Rows[i]->Cells[4]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[4]->Value->ToString() == "True" || dataGridView1->Rows[i]->Cells[5]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[5]->Value->ToString() == "True")) {
 
 					query = "START TRANSACTION; CALL ajout_Adresse_client('";
-					query += dataGridView1->Rows[i]->Cells[8]->Value->ToString();
+					//query += dataGridView1->Rows[i]->Cells[8]->Value->ToString();
+					query += Id_client->Text;
+					query += "', '";
+					query += dataGridView1->Rows[i]->Cells[0]->Value->ToString();
 					query += "', '";
 					query += dataGridView1->Rows[i]->Cells[1]->Value->ToString();
 					query += "', '";
 					query += dataGridView1->Rows[i]->Cells[2]->Value->ToString();
-					query += "', '";
-					query += dataGridView1->Rows[i]->Cells[3]->Value->ToString();
 
 					if ((dataGridView1->Rows[i]->Cells[4]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[4]->Value->ToString() == "True") && (dataGridView1->Rows[i]->Cells[5]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[5]->Value->ToString() == "True")) {
 						query += "', 'livraison et facturation');";
@@ -570,7 +596,7 @@ namespace NS_Recherche {
 					}
 
 					query += " CALL verification_Adresse_client('";
-					query += SteveInter->GetId();
+					query += Id_client->Text;
 					query += "'); COMMIT;";
 				}
 			}
@@ -579,11 +605,13 @@ namespace NS_Recherche {
 				if (dataGridView1->Rows[i]->Cells[1]->Value->ToString() != "" && dataGridView1->Rows[i]->Cells[2]->Value->ToString() != "" && dataGridView1->Rows[i]->Cells[3]->Value->ToString() != "" && (dataGridView1->Rows[i]->Cells[4]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[4]->Value->ToString() == "True" || dataGridView1->Rows[i]->Cells[5]->Value->ToString() == "1" || dataGridView1->Rows[i]->Cells[5]->Value->ToString() == "True")) {
 					
 					query = "START TRANSACTION; CALL update_Adresse_client('";
-					query += dataGridView1->Rows[i]->Cells[8]->Value->ToString();
+					query += Id_client->Text;
 					query += "', '";
 					query += dataGridView1->Rows[i]->Cells[0]->Value->ToString();
 					query += "', '";
 					query += dataGridView1->Rows[i]->Cells[1]->Value->ToString();
+					query += "', '";
+					query += dataGridView1->Rows[i]->Cells[8]->Value->ToString();
 					query += "', '";
 					query += dataGridView1->Rows[i]->Cells[2]->Value->ToString();
 
@@ -598,7 +626,7 @@ namespace NS_Recherche {
 					}
 
 					query += " CALL verification_Adresse_client('";
-					query += dataGridView1->Rows[i]->Cells[8]->Value->ToString();
+					query += Id_client->Text;
 					query += "'); COMMIT;";
 				}
 			}
@@ -606,7 +634,7 @@ namespace NS_Recherche {
 				return;
 			}
 
-			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+			/*pin_ptr<const wchar_t> wch = PtrToStringChars(query);
 			size_t convertedChars = 0;
 			size_t  sizeInBytes = ((query->Length + 1) * 2);
 			errno_t err = 0;
@@ -618,7 +646,16 @@ namespace NS_Recherche {
 
 			bool qstate;
 
-			qstate = mysql_query(con, ch);
+			qstate = mysql_query(con, ch);*/
+
+			executerNonQuery(query);
+
+		}
+		else{
+
+
+
+
 		}
 
 	}
@@ -637,7 +674,7 @@ namespace NS_Recherche {
 		query += Convert::ToInt32(SteveInter->GetId());
 		query += ");";
 
-		pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+		/*pin_ptr<const wchar_t> wch = PtrToStringChars(query);
 		size_t convertedChars = 0;
 		size_t  sizeInBytes = ((query->Length + 1) * 2);
 		errno_t err = 0;
@@ -649,7 +686,8 @@ namespace NS_Recherche {
 
 		bool qstate;
 
-		qstate = mysql_query(con, ch);
+		qstate = mysql_query(con, ch);*/
+		executerNonQuery(query);
 		 
 		this->Close();
 		Precedent->Show();
@@ -659,7 +697,7 @@ namespace NS_Recherche {
 		if(SteveInter->IsClient()){
 			System::String^ query;
 
-			query = "CALL update_Client('";
+			query = "CALL Delete_Client('";
 			query += Nom->Text;
 			query += "', '";
 			query += Prenom->Text;
@@ -671,7 +709,7 @@ namespace NS_Recherche {
 			query += Convert::ToInt32(Id_client->Text);
 			query += ");";
 
-			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+			/*pin_ptr<const wchar_t> wch = PtrToStringChars(query);
 			size_t convertedChars = 0;
 			size_t  sizeInBytes = ((query->Length + 1) * 2);
 			errno_t err = 0;
@@ -680,10 +718,11 @@ namespace NS_Recherche {
 			err = wcstombs_s(&convertedChars,
 				ch, sizeInBytes,
 				wch, sizeInBytes);
-
+				*/
 			bool qstate;
 
-			qstate = mysql_query(con, ch);
+			/*qstate = mysql_query(con, ch);*/
+			qstate = executerNonQuery(query);
 			if(!qstate){
 				Nom->BackColor = System::Drawing::Color::LightGreen;
 				Prenom->BackColor = System::Drawing::Color::LightGreen;
@@ -721,7 +760,7 @@ namespace NS_Recherche {
 			query += Prenom_Superieur->Text;
 			query += "';";
 
-			pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+			/*pin_ptr<const wchar_t> wch = PtrToStringChars(query);
 			size_t convertedChars = 0;
 			size_t  sizeInBytes = ((query->Length + 1) * 2);
 			errno_t err = 0;
@@ -731,18 +770,18 @@ namespace NS_Recherche {
 				ch, sizeInBytes,
 				wch, sizeInBytes);
 
-			bool qstate = mysql_query(con, ch);
+			bool qstate = mysql_query(con, ch);*/
+			res = executerQuery(query);
 			
-			if (!qstate) {
-				res = mysql_store_result(con);
+			if (res != NULL) {
 				if (res->row_count == 0) {
 					Nom_superieur->ForeColor = System::Drawing::Color::Red;
 					Prenom_Superieur->ForeColor = System::Drawing::Color::Red;
 				}
 				else {
-					row = mysql_fetch_row(res)
+					row = mysql_fetch_row(res);
 
-					query = "CALL update_Perso('";
+					query = "CALL Delete_Perso('";
 					query += Nom->Text;
 					query += "', '";
 					query += Prenom->Text;
@@ -754,7 +793,7 @@ namespace NS_Recherche {
 					query += gcnew String(row[0]);
 					query += ");";
 
-					pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+					/*pin_ptr<const wchar_t> wch = PtrToStringChars(query);
 					size_t convertedChars = 0;
 					size_t  sizeInBytes = ((query->Length + 1) * 2);
 					errno_t err = 0;
@@ -762,11 +801,11 @@ namespace NS_Recherche {
 					char* ch = (char*)malloc(sizeInBytes);
 					err = wcstombs_s(&convertedChars,
 						ch, sizeInBytes,
-						wch, sizeInBytes);
+						wch, sizeInBytes);*/
 
 					bool qstate;
 
-					qstate = mysql_query(con, ch);
+					qstate = executerNonQuery(query);/*mysql_query(con, ch);*/
 					if (!qstate) {
 						Nom->BackColor = System::Drawing::Color::LightGreen;
 						Prenom->BackColor = System::Drawing::Color::LightGreen;

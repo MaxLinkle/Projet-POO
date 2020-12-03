@@ -26,7 +26,7 @@ public class MapCLi : public MapIndi {
 public:
 	String^ MapperIDtoAddr(String^ ID) {
 
-		String^ Query = "SELECT ID_adresse_client FROM Client NATURAL JOIN Adresse_client WHERE ";
+		String^ Query = "SELECT ID_adresse_client , adresse_client , ville , pays , type_adresse  FROM (SELECT * FROM Client NATURAL JOIN (SELECT * FROM Adresse_client NATURAL JOIN Type_adresse) AS T3 ) AS T1 NATURAL JOIN (SELECT * FROM Ville NATURAL JOIN Pays ) AS T2 WHERE ";
 		if (ID != "") {
 			Query += " ID_Client = '" + ID + "'";
 		}
@@ -153,6 +153,10 @@ public:
 	}
 
 	ArrayList^ GetAdresse(){ return Adresse; }
+	void SetAdresse(ArrayList^ list) {
+		Adresse = gcnew ArrayList(list);
+	}
+
 	virtual String^ GetDPA() { return nullptr; }
 	virtual String^ GetIdSup() { return nullptr; }
 	virtual String^ GetSup() { return nullptr; }
