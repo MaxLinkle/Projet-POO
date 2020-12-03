@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-//#include "Connection_Client.h"
+#include "Connection_Client.h"
 #include "PersonnelCO.h"
 
 namespace NS_Choix {
@@ -11,9 +11,9 @@ namespace NS_Choix {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	 
+
 	/// <summary>
-	/// Zusammenfassung für Form1
+	/// Zusammenfassung fï¿½r Form1
 	/// </summary>
 	public ref class Choix : public System::Windows::Forms::Form
 	{
@@ -47,8 +47,8 @@ namespace NS_Choix {
 
 #pragma region Windows Choix Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung.
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Erforderliche Methode fï¿½r die Designerunterstï¿½tzung.
+		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geï¿½ndert werden.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -58,9 +58,9 @@ namespace NS_Choix {
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
-			// 
+			//
 			// Client
-			// 
+			//
 			this->Client->Location = System::Drawing::Point(264, 201);
 			this->Client->Name = L"Client";
 			this->Client->Size = System::Drawing::Size(174, 41);
@@ -68,9 +68,9 @@ namespace NS_Choix {
 			this->Client->Text = L" Espace Client";
 			this->Client->UseVisualStyleBackColor = true;
 			this->Client->Click += gcnew System::EventHandler(this, &Choix::button1_Click);
-			// 
+			//
 			// Personnel
-			// 
+			//
 			this->Personnel->Location = System::Drawing::Point(264, 72);
 			this->Personnel->Name = L"Personnel";
 			this->Personnel->Size = System::Drawing::Size(174, 38);
@@ -78,9 +78,9 @@ namespace NS_Choix {
 			this->Personnel->Text = L"Espace Personnel";
 			this->Personnel->UseVisualStyleBackColor = true;
 			this->Personnel->Click += gcnew System::EventHandler(this, &Choix::Personnel_Click);
-			// 
+			//
 			// pictureBox1
-			// 
+			//
 			this->pictureBox1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 //			this->pictureBox1->InitialImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.InitialImage")));
 			this->pictureBox1->Location = System::Drawing::Point(21, 72);
@@ -89,9 +89,9 @@ namespace NS_Choix {
 			this->pictureBox1->TabIndex = 2;
 			this->pictureBox1->TabStop = false;
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
-			// 
+			//
 			// Choix
-			// 
+			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(468, 268);
@@ -107,7 +107,7 @@ namespace NS_Choix {
 		}
 #pragma endregion
 	private: System::Void Personnel_Click(System::Object^ sender, System::EventArgs^ e) {
-		
+
 			this->Hide();
 			this->Inter_Personnel = gcnew NS_Personnel::Personnel(this);
 			this->Inter_Personnel->Show();
@@ -115,11 +115,11 @@ namespace NS_Choix {
 
 	}
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-	
-		//this->Hide();
-		///this->Inter_Client = gcnew NS_Client::Client(this);
-		//this->Inter_Client->Show();
-	
+
+		this->Hide();
+		Client::Connection_Client^ connection_client = gcnew Client::Connection_Client(this);
+		connection_client->Show();
+
 	}
 	private: System::Void Choix_Load(System::Object^ sender, System::EventArgs^ e) {
 		this->pictureBox1->Image = (gcnew System::Drawing::Bitmap("LOGO.png"));

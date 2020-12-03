@@ -1,4 +1,5 @@
 #pragma once
+#include "SC.h"
 #include <mysql.h>
 #include <iostream>
 #include"Formulaire_achat.h"
@@ -13,9 +14,9 @@ namespace Client {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Description résumée de MyForm
+	/// Description rï¿½sumï¿½e de MyForm
 	/// </summary>
-	public ref class MyForm : public System::Windows::Forms::Form
+	public ref class MyForm : public NS_SuperC::SuperC // public System::Windows::Forms::Form
 	{
 	private:String^ id;
 	private: System::Windows::Forms::Label^ remise;
@@ -32,14 +33,18 @@ namespace Client {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Max;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ TVA;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ IDarticle;
+		   String^ Anniv;
+		   String^ Achat;
+		   bool i = true;
 
 
 
 	public:DateTimePicker^ dateAnniv = gcnew DateTimePicker();
-		  MyForm(String^ i_id)
+		  MyForm(Form^ inpPrecedent, Form^ inpPageClient, String^ i_id): SuperC(inpPrecedent)
 		  {
 			  InitializeComponent();
-
+			  // Precedent = inpPrecedent;
+			  PageClient = inpPageClient;
 			  id = i_id;
 			  //
 			  //TODO: ajoutez ici le code du constructeur
@@ -49,7 +54,7 @@ namespace Client {
 
 		  void finish_with_error(MYSQL* con)
 		  {
-			  std::cout << "Error: " << mysql_error(con);
+			  // std::cout << "Error: " << mysql_error(con);
 			  mysql_close(con);
 			  exit(1);
 		  }
@@ -69,14 +74,14 @@ namespace Client {
 				  exit(1);
 			  }
 			  else {
-				  std::cout << "Success!\n";
+				  // std::cout << "Success!\n";
 			  }
 
 			  if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
 				  finish_with_error(con);
 			  }
 			  else {
-				  std::cout << "Success!\n";
+				  // std::cout << "Success!\n";
 			  }
 
 			  CheckBox^ Nom = gcnew CheckBox();
@@ -116,11 +121,35 @@ namespace Client {
 
 				  mysql_next_result(con);
 				  res = mysql_store_result(con);
+				  // std::cout << mysql_error(con) << std::endl;
+				  // std::cout << res->row_count << std::endl;
 
 				  while (row = mysql_fetch_row(res))
 				  {
-					  dateAnniv->Value = DateTime::ParseExact(gcnew String(row[0]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
-					  dateAchat->Value = DateTime::ParseExact(gcnew String(row[1]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
+					  if (gcnew String(row[0]) == "")
+					  {
+						  i = false;
+					  }
+					  else
+					  {
+						  i = true;
+						  dateAnniv->Value = DateTime::ParseExact(gcnew String(row[0]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
+
+					  }
+
+					  if (gcnew String(row[1]) == "")
+					  {
+						  i = false;
+					  }
+					  else
+					  {
+						  i = true;
+						  dateAchat->Value = DateTime::ParseExact(gcnew String(row[1]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
+					  }
+
+
+					  //dateAnniv->Value = DateTime::ParseExact(gcnew String(row[0]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
+					  //dateAchat->Value = DateTime::ParseExact(gcnew String(row[1]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
 				  }
 
 			  }
@@ -128,7 +157,7 @@ namespace Client {
 
 	protected:
 		/// <summary>
-		/// Nettoyage des ressources utilisées.
+		/// Nettoyage des ressources utilisï¿½es.
 		/// </summary>
 		~MyForm()
 		{
@@ -137,9 +166,13 @@ namespace Client {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Button^ Precedent;
+// private: System::Windows::Forms::Button^ bouton_precedent;
+protected:
+
 	protected:
 
+	// private:  System::Windows::Forms::Form^ Precedent;
+	private:  System::Windows::Forms::Form^ PageClient;
 
 
 	private: System::Windows::Forms::Button^ button2;
@@ -175,18 +208,18 @@ namespace Client {
 
 	private:
 		/// <summary>
-		/// Variable nécessaire au concepteur.
+		/// Variable nï¿½cessaire au concepteur.
 		/// </summary>
 
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Méthode requise pour la prise en charge du concepteur - ne modifiez pas
-		/// le contenu de cette méthode avec l'éditeur de code.
+		/// Mï¿½thode requise pour la prise en charge du concepteur - ne modifiez pas
+		/// le contenu de cette mï¿½thode avec l'ï¿½diteur de code.
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->Precedent = (gcnew System::Windows::Forms::Button());
+			this->bouton_precedent = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->acheter = (gcnew System::Windows::Forms::Button());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
@@ -211,27 +244,28 @@ namespace Client {
 			this->euroRemise = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
-			// 
-			// Precedent
-			// 
-			this->Precedent->Location = System::Drawing::Point(12, 12);
-			this->Precedent->Name = L"Precedent";
-			this->Precedent->Size = System::Drawing::Size(25, 25);
-			this->Precedent->TabIndex = 1;
-			this->Precedent->Text = L"<";
-			this->Precedent->UseVisualStyleBackColor = true;
-			// 
+			//
+			// bouton_precedent
+			//
+			// this->bouton_precedent->Location = System::Drawing::Point(12, 12);
+			// this->bouton_precedent->Name = L"bouton_precedent";
+			// this->bouton_precedent->Size = System::Drawing::Size(25, 25);
+			// this->bouton_precedent->TabIndex = 1;
+			// this->bouton_precedent->Text = L"<";
+			// this->bouton_precedent->UseVisualStyleBackColor = true;
+			// this->bouton_precedent->Click += gcnew System::EventHandler(this, &MyForm::bouton_precedent_Click);
+			//
 			// button2
-			// 
+			//
 			this->button2->Location = System::Drawing::Point(44, 12);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(25, 25);
 			this->button2->TabIndex = 2;
 			this->button2->Text = L"!";
 			this->button2->UseVisualStyleBackColor = true;
-			// 
+			//
 			// acheter
-			// 
+			//
 			this->acheter->Location = System::Drawing::Point(593, 555);
 			this->acheter->Name = L"acheter";
 			this->acheter->Size = System::Drawing::Size(75, 23);
@@ -239,9 +273,9 @@ namespace Client {
 			this->acheter->Text = L"Acheter";
 			this->acheter->UseVisualStyleBackColor = true;
 			this->acheter->Click += gcnew System::EventHandler(this, &MyForm::acheter_Click);
-			// 
+			//
 			// dataGridView1
-			// 
+			//
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(7) {
 				this->Check,
@@ -252,56 +286,56 @@ namespace Client {
 			this->dataGridView1->Size = System::Drawing::Size(593, 397);
 			this->dataGridView1->TabIndex = 4;
 			this->dataGridView1->CellValidated += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MyForm::dataGridView1_CellValidated);
-			// 
+			//
 			// Check
-			// 
+			//
 			this->Check->HeaderText = L"";
 			this->Check->Name = L"Check";
 			this->Check->Width = 50;
-			// 
+			//
 			// Nom
-			// 
+			//
 			this->Nom->HeaderText = L"Nom";
 			this->Nom->Name = L"Nom";
 			this->Nom->ReadOnly = true;
 			this->Nom->Resizable = System::Windows::Forms::DataGridViewTriState::True;
 			this->Nom->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
 			this->Nom->Width = 300;
-			// 
+			//
 			// Prix
-			// 
+			//
 			this->Prix->HeaderText = L"Prix TTC";
 			this->Prix->Name = L"Prix";
 			this->Prix->ReadOnly = true;
-			// 
+			//
 			// Quantite
-			// 
+			//
 			this->Quantite->HeaderText = L"Quantite";
 			this->Quantite->Name = L"Quantite";
-			// 
+			//
 			// Max
-			// 
+			//
 			this->Max->HeaderText = L"Quantite Max";
 			this->Max->Name = L"Max";
 			this->Max->ReadOnly = true;
 			this->Max->Visible = false;
-			// 
+			//
 			// TVA
-			// 
+			//
 			this->TVA->HeaderText = L"TVA";
 			this->TVA->Name = L"TVA";
 			this->TVA->ReadOnly = true;
 			this->TVA->Visible = false;
-			// 
+			//
 			// IDarticle
-			// 
+			//
 			this->IDarticle->HeaderText = L"IDarticle";
 			this->IDarticle->Name = L"IDarticle";
 			this->IDarticle->ReadOnly = true;
 			this->IDarticle->Visible = false;
-			// 
+			//
 			// label1
-			// 
+			//
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -310,9 +344,9 @@ namespace Client {
 			this->label1->Size = System::Drawing::Size(86, 18);
 			this->label1->TabIndex = 5;
 			this->label1->Text = L"Total TTC : ";
-			// 
+			//
 			// label2
-			// 
+			//
 			this->label2->AutoSize = true;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -321,9 +355,9 @@ namespace Client {
 			this->label2->Size = System::Drawing::Size(142, 18);
 			this->label2->TabIndex = 6;
 			this->label2->Text = L"Nombre d\'article(s) :";
-			// 
+			//
 			// nb_txt
-			// 
+			//
 			this->nb_txt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->nb_txt->Location = System::Drawing::Point(388, 440);
@@ -331,9 +365,9 @@ namespace Client {
 			this->nb_txt->ReadOnly = true;
 			this->nb_txt->Size = System::Drawing::Size(54, 24);
 			this->nb_txt->TabIndex = 7;
-			// 
+			//
 			// total_txt
-			// 
+			//
 			this->total_txt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->total_txt->Location = System::Drawing::Point(584, 472);
@@ -341,9 +375,9 @@ namespace Client {
 			this->total_txt->ReadOnly = true;
 			this->total_txt->Size = System::Drawing::Size(70, 24);
 			this->total_txt->TabIndex = 8;
-			// 
+			//
 			// label3
-			// 
+			//
 			this->label3->AutoSize = true;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -351,10 +385,10 @@ namespace Client {
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(16, 18);
 			this->label3->TabIndex = 9;
-			this->label3->Text = L"€";
-			// 
+			this->label3->Text = L"ï¿½";
+			//
 			// HT
-			// 
+			//
 			this->HT->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->HT->Location = System::Drawing::Point(584, 440);
@@ -362,9 +396,9 @@ namespace Client {
 			this->HT->ReadOnly = true;
 			this->HT->Size = System::Drawing::Size(70, 24);
 			this->HT->TabIndex = 10;
-			// 
+			//
 			// label4
-			// 
+			//
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -374,9 +408,9 @@ namespace Client {
 			this->label4->Size = System::Drawing::Size(73, 18);
 			this->label4->TabIndex = 6;
 			this->label4->Text = L"Total HT :";
-			// 
+			//
 			// label5
-			// 
+			//
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -384,10 +418,10 @@ namespace Client {
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(16, 18);
 			this->label5->TabIndex = 11;
-			this->label5->Text = L"€";
-			// 
+			this->label5->Text = L"ï¿½";
+			//
 			// remise
-			// 
+			//
 			this->remise->AutoSize = true;
 			this->remise->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -397,9 +431,9 @@ namespace Client {
 			this->remise->Size = System::Drawing::Size(0, 18);
 			this->remise->TabIndex = 13;
 			this->remise->Visible = false;
-			// 
+			//
 			// TTCremise
-			// 
+			//
 			this->TTCremise->AutoSize = true;
 			this->TTCremise->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -407,11 +441,11 @@ namespace Client {
 			this->TTCremise->Name = L"TTCremise";
 			this->TTCremise->Size = System::Drawing::Size(176, 18);
 			this->TTCremise->TabIndex = 14;
-			this->TTCremise->Text = L"Total TTC après remise : ";
+			this->TTCremise->Text = L"Total TTC aprï¿½s remise : ";
 			this->TTCremise->Visible = false;
-			// 
+			//
 			// remise_txt
-			// 
+			//
 			this->remise_txt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->remise_txt->Location = System::Drawing::Point(584, 509);
@@ -419,9 +453,10 @@ namespace Client {
 			this->remise_txt->ReadOnly = true;
 			this->remise_txt->Size = System::Drawing::Size(70, 24);
 			this->remise_txt->TabIndex = 15;
-			// 
+			this->remise_txt->Visible = false;
+			//
 			// euroRemise
-			// 
+			//
 			this->euroRemise->AutoSize = true;
 			this->euroRemise->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -429,11 +464,11 @@ namespace Client {
 			this->euroRemise->Name = L"euroRemise";
 			this->euroRemise->Size = System::Drawing::Size(16, 18);
 			this->euroRemise->TabIndex = 16;
-			this->euroRemise->Text = L"€";
+			this->euroRemise->Text = L"ï¿½";
 			this->euroRemise->Visible = false;
-			// 
+			//
 			// MyForm
-			// 
+			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(736, 634);
@@ -452,7 +487,7 @@ namespace Client {
 			this->Controls->Add(this->dataGridView1);
 			this->Controls->Add(this->acheter);
 			this->Controls->Add(this->button2);
-			this->Controls->Add(this->Precedent);
+			this->Controls->Add(this->bouton_precedent);
 			this->Location = System::Drawing::Point(333, 36);
 			this->Name = L"MyForm";
 			this->Text = L"Catalogue";
@@ -486,10 +521,46 @@ namespace Client {
 			remise->Text = "Vous avez une remise de 5%";
 		}
 
-
 	}
 
 	private: System::Void acheter_Click(System::Object^ sender, System::EventArgs^ e) {
+		MYSQL* con;
+		MYSQL_RES* res;
+		MYSQL_ROW row;
+		con = mysql_init(NULL);
+		int qstate;
+		System::String^ query;
+
+		if (con == NULL)
+		{
+			finish_with_error(con);
+			exit(1);
+		}
+
+		if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
+			finish_with_error(con);
+		}
+		query += ("CALL ajout_Date_achat('");
+		query += id;
+		query += ("');");
+
+		pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+		size_t convertedChars = 0;
+		size_t  sizeInBytes = ((query->Length + 1) * 2);
+		errno_t err = 0;
+		char* ch = (char*)malloc(sizeInBytes);
+		err = wcstombs_s(&convertedChars,
+			ch, sizeInBytes,
+			wch, sizeInBytes);
+
+		// std::cout << ch << std::endl << std::endl;
+
+		//Execution de la requï¿½te
+		qstate = mysql_query(con, ch);
+		if (!qstate)
+		{
+			res = mysql_store_result(con);
+		}
 
 		DataTable^ transfert = gcnew DataTable();
 		transfert->Columns->Add("Nom");
@@ -512,12 +583,12 @@ namespace Client {
 		}
 		else if (Convert::ToInt32(nb_txt->Text) <= 0)
 		{
-			MessageBox::Show("Vous ne pouvez pas demander des quantitées négatives ", "Info", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			MessageBox::Show("Vous ne pouvez pas demander des quantitï¿½es nï¿½gatives ", "Info", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		else
 		{
 			this->Hide();
-			this->formu = gcnew Client::Formulaire_achat(nb_txt->Text, total_txt->Text, HT->Text, id, transfert, remise_txt->Text);
+			this->formu = gcnew Client::Formulaire_achat(nb_txt->Text, total_txt->Text, HT->Text, id, transfert, remise_txt->Text, this, PageClient);
 			this->formu->Show();
 
 		}
@@ -528,6 +599,7 @@ namespace Client {
 		double totHT = 0;
 		double Reduc;
 		dateActuel->Value.Today;
+		DateTime dt = DateTime(0001, dt.Month, dt.Day);
 		for (int n = 0; n < dataGridView1->RowCount; n++)
 		{
 			if (Convert::ToInt32(dataGridView1->Rows[n]->Cells[3]->Value) > Convert::ToInt32(dataGridView1->Rows[n]->Cells[4]->Value))
@@ -548,26 +620,41 @@ namespace Client {
 				totHT += Convert::ToDouble(dataGridView1->Rows[n]->Cells["TVA"]->Value) * (Convert::ToDouble(dataGridView1->Rows[n]->Cells["Quantite"]->Value));
 
 			}
-			
+
 			total_txt->Text = total.ToString();
 			nb_txt->Text = totAr.ToString();
 			HT->Text = totHT.ToString();
-			
+
 		}
-		if ((dateActuel->Value.Day == dateAnniv->Value.Day) && (dateAnniv->Value.Month == dateActuel->Value.Month))
+		if (i == true)
 		{
-			Reduc = (total - (total * 0.1));
-			remise_txt->Text = Reduc.ToString();
+			if ((dateActuel->Value.Day == dateAnniv->Value.Day) && (dateAnniv->Value.Month == dateActuel->Value.Month))
+			{
+				Reduc = (total - (total * 0.1));
+				remise_txt->Text = Reduc.ToString();
+			}
+			else if ((dateActuel->Value.Day == dateAchat->Value.Day) && (dateAchat->Value.Month == dateActuel->Value.Month))
+			{
+				Reduc = (total - (total * 0.05));
+				remise_txt->Text = Reduc.ToString();
+			}
+			else
+			{
+				Reduc = 0;
+				remise_txt->Text = Reduc.ToString();
+			}
 		}
-		else if ((dateActuel->Value.Day == dateAchat->Value.Day) && (dateActuel->Value.Month == dateAchat->Value.Month))
-		{
-			Reduc = (total - (total * 0.05));
-			remise_txt->Text = Reduc.ToString();
-		}else
+		else if (i == false)
 		{
 			Reduc = 0;
 			remise_txt->Text = Reduc.ToString();
 		}
+
 	}
-	};
+
+	// private: System::Void bouton_precedent_Click(System::Object^ sender, System::EventArgs^ e) {
+	// 	Precedent->Show();
+	// 	this->Close();
+	// }
+};
 }
