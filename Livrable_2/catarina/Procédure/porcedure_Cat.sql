@@ -73,3 +73,28 @@ BEGIN
   END IF;
 END |
 DELIMITER ;
+
+
+DELIMITER |
+DROP PROCEDURE IF EXISTS envoie_Commande |
+CREATE PROCEDURE envoie_Commande (IN i_id_com INT)
+BEGIN
+  -- DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  -- BEGIN
+  --   ROLLBACK;
+  -- END;
+
+  SELECT Commande.*, Client.nom, Client.prenom, Client.date_naissance, Paiement.moyen_paiement, j.quantite, j.nom
+  FROM Commande
+  JOIN Client ON Client.ID_client = Commande.ID_client
+  JOIN Paiement ON Paiement.ID_paiement = Commande.ID_paiement
+  JOIN (
+    SELECT Fournir.ID_commande, Fournir.quantite, Catalogue.nom
+    FROM Fournir
+    JOIN Catalogue ON Catalogue.ID_article = Fournir.ID_article
+  ) AS j ON j.ID_commande = Commande.ID_commande
+  WHERE Commande.ID_commande = i_id_com;
+END |
+DELIMITER ;
+
+Call envoie_Commande('41');

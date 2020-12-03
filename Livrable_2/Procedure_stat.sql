@@ -52,9 +52,12 @@ END |
 DROP PROCEDURE IF EXISTS Stat_Estimation_marge |
 CREATE PROCEDURE Stat_Estimation_marge (IN i_marge INT)
 BEGIN
-  SELECT Catalogue.nom, Catalogue.stock, Catalogue.stock * Catalogue.prix_ht + (Catalogue.stock * Catalogue.prix_ht * 0.5 * (i_tva / 100)) AS Valeur_stock_TVA
+  SELECT Catalogue.nom, Catalogue.stock, Catalogue.stock * Catalogue.prix_ht + (Catalogue.stock * Catalogue.prix_ht * 0.5 * (i_tva / 100)) AS Valeur_stock_marge
   FROM Catalogue;
 END |
+
+
+
 
 
 DROP PROCEDURE IF EXISTS `Stat_Panier_moy` |

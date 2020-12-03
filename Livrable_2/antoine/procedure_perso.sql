@@ -71,9 +71,8 @@ BEGIN
 
   -- DELETE FROM Adresse_client
   -- WHERE ID_adresse_client = i_id;
-  UPDATE FROM Adresse_client
-  SET
-    ID_client = NULL
+  UPDATE Adresse_client
+  SET Adresse_client.ID_client = NULL
   WHERE Adresse_client.ID_adresse_client = i_id;
 END |
 
@@ -101,33 +100,132 @@ END |
 -- END |
 
 -- DELIMITER |
+-- DROP PROCEDURE IF EXISTS update_Adresse_client |
+-- CREATE PROCEDURE update_Adresse_client (IN i_id INT, IN i_id_adresse INT, IN i_adresse VARCHAR(50), IN ancienne_adr VARCHAR(50), IN i_ville VARCHAR(20), IN i_type VARCHAR(25))
+-- BEGIN
+--   DECLARE a_livr INT DEFAULT NULL;
+--   DECLARE a_fact INT DEFAULT NULL;
+--
+--   DECLARE ville_cli INT;
+--   DECLARE type_cli INT;
+--
+--   -- DECLARE EXIT HANDLER FOR SQLEXCEPTION
+--   -- BEGIN
+--   --   ROLLBACK;
+-- --  END;
+--
+--   SELECT Commande.ID_adresse_livraison INTO a_livr
+--   FROM Commande
+--   INNER JOIN Adresse_client
+--   ON Adresse_client.ID_adresse_client = Commande.ID_adresse_livraison
+--   WHERE Adresse_client.adresse_client = ancienne_adr AND Adresse_client.ID_client = i_id
+--   LIMIT 1;
+--
+--   SELECT Commande.ID_adresse_facturation INTO a_fact
+--   FROM Commande
+--   INNER JOIN Adresse_client
+--   ON Adresse_client.ID_adresse_client = Commande.ID_adresse_livraison
+--   WHERE Adresse_client.adresse_client = ancienne_adr AND Adresse_client.ID_client = i_id
+--   LIMIT 1;
+--
+--   SELECT ID_ville INTO ville_cli FROM Ville WHERE ville = i_ville;
+--   SELECT ID_type_adresse INTO type_cli FROM Type_adresse WHERE type_adresse = i_type;
+--
+--   IF a_livr IS NULL AND a_fact IS NULL THEN
+--     UPDATE Adresse_client
+--     SET
+--       Adresse_client.adresse_client = i_adresse,
+--       Adresse_client.ID_ville = ville_cli,
+--       Adresse_client.ID_type_adresse = type_cli
+--     WHERE Adresse_client.ID_adresse_client = i_id_adresse;
+--   ELSE
+--     CALL delete_Adresse_client(i_id_adresse);
+--
+--     INSERT INTO Adresse_client (adresse_client, ID_client, ID_ville, ID_type_adresse)
+--     VALUES (i_adresse, i_id, ville_cli, type_cli);
+--
+--   END IF;
+-- END |
+
+-- DELIMITER |
+-- DROP PROCEDURE IF EXISTS update_Adresse_client |
+-- CREATE PROCEDURE update_Adresse_client (IN i_id INT, IN i_id_adresse INT, IN i_adresse VARCHAR(50), IN ancienne_adr VARCHAR(50), IN i_ville VARCHAR(20), IN i_type VARCHAR(25))
+-- BEGIN
+--   DECLARE a_livr INT DEFAULT NULL;
+--   DECLARE a_fact INT DEFAULT NULL;
+--
+--   DECLARE ville_cli INT;
+--   DECLARE type_cli INT;
+--
+--   -- DECLARE EXIT HANDLER FOR SQLEXCEPTION
+--   -- BEGIN
+--   --   ROLLBACK;
+-- --  END;
+--
+--   SELECT Commande.ID_adresse_livraison INTO a_livr
+--   FROM Commande
+--   INNER JOIN Adresse_client
+--   ON Adresse_client.ID_adresse_client = Commande.ID_adresse_livraison
+--   WHERE Adresse_client.adresse_client = ancienne_adr AND Adresse_client.ID_client = i_id
+--   LIMIT 1;
+--
+--   SELECT Commande.ID_adresse_facturation INTO a_fact
+--   FROM Commande
+--   INNER JOIN Adresse_client
+--   ON Adresse_client.ID_adresse_client = Commande.ID_adresse_livraison
+--   WHERE Adresse_client.adresse_client = ancienne_adr AND Adresse_client.ID_client = i_id
+--   LIMIT 1;
+--
+--   SELECT ID_ville INTO ville_cli FROM Ville WHERE ville = i_ville;
+--   SELECT ID_type_adresse INTO type_cli FROM Type_adresse WHERE type_adresse = i_type;
+--
+--   IF a_livr IS NULL AND a_fact IS NULL THEN
+--     UPDATE Adresse_client
+--     SET
+--       Adresse_client.adresse_client = i_adresse,
+--       Adresse_client.ID_ville = ville_cli,
+--       Adresse_client.ID_type_adresse = type_cli
+--     WHERE Adresse_client.ID_adresse_client = i_id_adresse;
+--   ELSE
+--     CALL delete_Adresse_client(i_id_adresse);
+--
+--     INSERT INTO Adresse_client (adresse_client, ID_client, ID_ville, ID_type_adresse)
+--     VALUES (i_adresse, i_id, ville_cli, type_cli);
+--
+--   END IF;
+-- END |
+
+DELIMITER |
 DROP PROCEDURE IF EXISTS update_Adresse_client |
-CREATE PROCEDURE update_Adresse_client (IN i_id INT, IN i_id_adresse INT, IN i_adresse VARCHAR(50), IN i_ville VARCHAR(20), IN i_type VARCHAR(25))
+CREATE PROCEDURE update_Adresse_client (IN i_id INT, IN i_id_adresse INT, IN i_adresse VARCHAR(50), IN ancienne_adr VARCHAR(50), IN i_ville VARCHAR(20), IN i_type VARCHAR(25))
 BEGIN
-  DECLARE a_livr INT;
-  DECLARE a_fact INT;
+  DECLARE a_livr INT DEFAULT 0;
+  DECLARE a_fact INT DEFAULT 0;
 
   DECLARE ville_cli INT;
   DECLARE type_cli INT;
 
-  DECLARE EXIT HANDLER FOR SQLEXCEPTION
-  BEGIN
-    ROLLBACK;
-  END;
+  -- DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  -- BEGIN
+  --   ROLLBACK;
+--  END;
 
-  SELECT Commande.ID_adresse_livraison INTO a_livr
+  SELECT COUNT(Commande.ID_adresse_livraison) INTO a_livr
   FROM Commande
   INNER JOIN Adresse_client
   ON Adresse_client.ID_adresse_client = Commande.ID_adresse_livraison
-  WHERE Adresse_client.nom = i_adresse;
+  WHERE Adresse_client.adresse_client = ancienne_adr AND Adresse_client.ID_client = i_id;
 
-  SELECT Commande.ID_adresse_facturation INTO a_fact
+  SELECT COUNT(Commande.ID_adresse_facturation) INTO a_fact
   FROM Commande
   INNER JOIN Adresse_client
   ON Adresse_client.ID_adresse_client = Commande.ID_adresse_livraison
-  WHERE Adresse_client.nom = i_adresse;
+  WHERE Adresse_client.adresse_client = ancienne_adr AND Adresse_client.ID_client = i_id;
 
-  IF a_livr = NULL AND a_fact = NULL
+  SELECT ID_ville INTO ville_cli FROM Ville WHERE ville = i_ville;
+  SELECT ID_type_adresse INTO type_cli FROM Type_adresse WHERE type_adresse = i_type;
+
+  IF a_livr = 0 AND a_fact = 0
   THEN
     UPDATE Adresse_client
     SET
@@ -135,11 +233,7 @@ BEGIN
       Adresse_client.ID_ville = ville_cli,
       Adresse_client.ID_type_adresse = type_cli
     WHERE Adresse_client.ID_adresse_client = i_id_adresse;
-
   ELSE
-    SELECT ID_ville INTO ville_cli FROM Ville WHERE ville = i_ville;
-    SELECT ID_type_adresse INTO type_cli FROM Type_adresse WHERE type_adresse = i_type_adresse;
-
     CALL delete_Adresse_client(i_id_adresse);
 
     INSERT INTO Adresse_client (adresse_client, ID_client, ID_ville, ID_type_adresse)
@@ -147,6 +241,28 @@ BEGIN
 
   END IF;
 END |
+
+
+-- DELIMITER |
+-- DROP PROCEDURE IF EXISTS update_Adresse_client |
+-- CREATE PROCEDURE update_Adresse_client (IN i_id INT, IN i_id_adresse INT, IN i_adresse VARCHAR(50), IN i_ville VARCHAR(20), IN i_type VARCHAR(25))
+-- BEGIN
+--   DECLARE ville_cli INT;
+--   DECLARE type_cli INT;
+--
+--   -- DECLARE EXIT HANDLER FOR SQLEXCEPTION
+--   -- BEGIN
+--   --   ROLLBACK;
+--   -- END;
+--
+--   SELECT ID_ville INTO ville_cli FROM Ville WHERE ville = i_ville;
+--   SELECT ID_type_adresse INTO type_cli FROM Type_adresse WHERE type_adresse = i_type;
+--
+--   CALL delete_Adresse_client(i_id_adresse);
+--
+--   INSERT INTO Adresse_client (adresse_client, ID_client, ID_ville, ID_type_adresse)
+--   VALUES (i_adresse, i_id, ville_cli, type_cli);
+-- END |
 
 
 DROP PROCEDURE IF EXISTS verification_Adresse_client |
@@ -243,15 +359,16 @@ BEGIN
 END |
 
 
+-- DELIMITER |
 DROP PROCEDURE IF EXISTS ajout_Commande |
-CREATE PROCEDURE ajout_Commande(IN i_prix_ht INT, IN i_prix_tva INT, IN i_remise INT, IN date_liv DATE, IN date_emi DATE, IN date_paye DATE, IN date_sol DATE, IN i_id_adresse_de_livraison INT, IN i_id_adresse_facturation INT, IN i_id_cli INT, IN id_paye INT)
+CREATE PROCEDURE ajout_Commande(IN i_prix_ht INT, IN i_prix_tva INT, IN i_remise INT, IN date_liv DATE, IN date_emi DATE, IN date_paye DATE, IN date_sol DATE, IN i_id_adresse_de_livraison VARCHAR(50), IN i_id_adresse_facturation VARCHAR(50), IN i_id_cli INT, IN id_paye VARCHAR(50))
 BEGIN
   DECLARE adresseliv_cli INT;
   DECLARE adressefact_cli INT;
   DECLARE paiement_cli INT;
   DECLARE id_commande INT;
 
-  DECLARE last INT;
+  -- DECLARE last INT;
 
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
   BEGIN
@@ -272,8 +389,9 @@ BEGIN
   SET reference = @reference
   WHERE Commande.ID_commande = id_commande;
 
-  SELECT LAST_INSERT_ID() INTO last;
-  SELECT last;
+  SELECT id_commande;
+  -- SELECT LAST_INSERT_ID() INTO last;
+  -- SELECT last;
 END |
 
 
