@@ -1,6 +1,7 @@
 #pragma once
 #include <mysql.h>
 #include <iostream>
+#include"Facture.h"
 
 namespace Client {
 
@@ -16,6 +17,17 @@ namespace Client {
 	/// </summary>
 	public ref class Historique : public System::Windows::Forms::Form
 	{
+		System::String^ nom;
+		System::String^ prenom;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Date_Emission;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Reference;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ prix_ht;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ prix_tva;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ remise;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Date_Livraison;
+	private: System::Windows::Forms::DataGridViewButtonColumn^ facture;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ ID;
+
 	private: Label^ id_Client = gcnew Label;
 	public:
 		Historique(String^ id)
@@ -53,14 +65,16 @@ namespace Client {
 				//std::cout << "Success!\n";
 			}
 
-			if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, 0) == NULL) {
+			if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
 				//std::cout << "Echec\n";
 			}
 			else {
 				//std::cout << "Success!\n";
 			}
 
-			query = gcnew String("SELECT date_emission, reference, prix_ht, prix_tva, remise, date_livraison_prevue FROM Commande WHERE ID_client =");
+			query = gcnew String("SELECT date_emission, reference, prix_ht, prix_tva, remise, date_livraison_prevue, ID_commande FROM Commande WHERE ID_client =");
+			query += id_Client->Text;
+			query += ("; SELECT nom, prenom FROM Client WHERE ID_client = ");
 			query += id_Client->Text;
 			query += (";");
 
@@ -88,7 +102,18 @@ namespace Client {
 					dataGridView1->Rows[n]->Cells[3]->Value = gcnew String(row[3]);
 					dataGridView1->Rows[n]->Cells[4]->Value = gcnew String(row[4]);
 					dataGridView1->Rows[n]->Cells[5]->Value = gcnew String(row[5]);
+					dataGridView1->Rows[n]->Cells[7]->Value = gcnew String(row[6]);
 
+				}
+				mysql_free_result(res);
+
+				mysql_next_result(con);
+				res = mysql_store_result(con);
+
+				while (row = mysql_fetch_row(res))
+				{
+					nom = gcnew String(row[0]);
+					prenom = gcnew String(row[1]);
 				}
 
 			}
@@ -109,17 +134,7 @@ namespace Client {
 	private: System::Windows::Forms::Button^ Precedent;
 	private: System::Windows::Forms::Button^ Suivant;
 	private: System::Windows::Forms::DataGridView^ dataGridView1;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Date_Emission;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Reference;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ prix_ht;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ prix_tva;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ remise;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Date_Livraison;
-
-
-
-
-
+	private: Client::Facture^ factu;
 
 
 	private:
@@ -127,7 +142,6 @@ namespace Client {
 		/// Variable nécessaire au concepteur.
 		/// </summary>
 		System::ComponentModel::IContainer^ components;
-
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -145,6 +159,8 @@ namespace Client {
 			this->prix_tva = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->remise = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Date_Livraison = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->facture = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			this->ID = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -168,19 +184,21 @@ namespace Client {
 			// 
 			// dataGridView1
 			// 
+			this->dataGridView1->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
 			this->dataGridView1->AllowUserToAddRows = false;
 			this->dataGridView1->AllowUserToDeleteRows = false;
 			this->dataGridView1->AllowUserToResizeColumns = false;
 			this->dataGridView1->AllowUserToResizeRows = false;
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(6) {
+			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(8) {
 				this->Date_Emission,
-					this->Reference, this->prix_ht, this->prix_tva, this->remise, this->Date_Livraison
+					this->Reference, this->prix_ht, this->prix_tva, this->remise, this->Date_Livraison, this->facture, this->ID
 			});
 			this->dataGridView1->Location = System::Drawing::Point(12, 43);
 			this->dataGridView1->Name = L"dataGridView1";
-			this->dataGridView1->Size = System::Drawing::Size(646, 397);
+			this->dataGridView1->Size = System::Drawing::Size(777, 397);
 			this->dataGridView1->TabIndex = 3;
+			this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Historique::dataGridView1_CellContentClick);
 			// 
 			// Date_Emission
 			// 
@@ -224,22 +242,54 @@ namespace Client {
 			this->Date_Livraison->Resizable = System::Windows::Forms::DataGridViewTriState::True;
 			this->Date_Livraison->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
 			// 
+			// facture
+			// 
+			this->facture->HeaderText = L"Facture";
+			this->facture->Name = L"facture";
+			this->facture->Text = L"Voir Facture";
+			this->facture->UseColumnTextForButtonValue = true;
+			// 
+			// ID
+			// 
+			this->ID->HeaderText = L"ID";
+			this->ID->Name = L"ID";
+			this->ID->ReadOnly = true;
+			this->ID->Visible = false;
+			// 
 			// Historique
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(667, 454);
+			this->ClientSize = System::Drawing::Size(820, 491);
 			this->Controls->Add(this->Precedent);
 			this->Controls->Add(this->Suivant);
 			this->Controls->Add(this->dataGridView1);
 			this->Name = L"Historique";
-			this->Text = L"Facture";
+			this->Text = L"Historique des commandes";
+			this->Load += gcnew System::EventHandler(this, &Historique::Historique_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
-	private: System::Void Facture_Load(System::Object^ sender, System::EventArgs^ e) {
+private: System::Void dataGridView1_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
+	int i = e->RowIndex;
+	int j = e->ColumnIndex;
+
+	if (j == 6 && i >= 0)
+	{
+		System::String^ id = dataGridView1->Rows[i]->Cells[7]->Value->ToString();
+		for (int n = 0; n < dataGridView1->RowCount; n++)
+		this->Hide();
+		factu = gcnew Client::Facture(id, this, nom, prenom);
+		factu->Show();
 	}
-	};
+}
+private: System::Void Historique_Load(System::Object^ sender, System::EventArgs^ e) {
+	for (int n = 0; n < dataGridView1->RowCount; n++)
+	{
+		dataGridView1->Rows[n]->Cells[6]->Value = "Voir Facture";
+	}
+}
+};
 }

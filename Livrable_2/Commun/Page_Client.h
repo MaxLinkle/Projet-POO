@@ -1,5 +1,7 @@
 #pragma once
 #include "Modifier_Client.h"
+#include "Catalogue_Client.h"
+#include "Historique.h"
 
 namespace Client {
 
@@ -61,6 +63,7 @@ namespace Client {
 			this->button1->TabIndex = 9;
 			this->button1->Text = L"Catalogue";
 			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &Page_Client::button1_Click);
 			// 
 			// button2
 			// 
@@ -70,6 +73,7 @@ namespace Client {
 			this->button2->TabIndex = 10;
 			this->button2->Text = L"Facture précédente";
 			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &Page_Client::button2_Click);
 			// 
 			// button4
 			// 
@@ -92,6 +96,7 @@ namespace Client {
 			this->Controls->Add(this->button3);
 			this->Name = L"Page_Client";
 			this->Text = L"Page_Client";
+			this->Load += gcnew System::EventHandler(this, &Page_Client::Page_Client_Load);
 			this->ResumeLayout(false);
 
 		}
@@ -100,18 +105,32 @@ namespace Client {
 #pragma endregion
 
 
-	
 
-		private: System::Void but_Retour_Page_Cli_Click(System::Object^ sender, System::EventArgs^ e) {
-			//fermeture = false;
-			this->Close();
-			Precedent->Show();
-		}
+ 
+	private: System::Void but_Retour_Page_Cli_Click(System::Object^ sender, System::EventArgs^ e) {
+		//fermeture = false;
+		this->Close();
+		Precedent->Show();
+	}
+
+	private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Hide();
+		Client::Modifier_Client^ Page = gcnew Client::Modifier_Client(this, id);
+		Page->Show();
+	}
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Hide();
+		MyForm^ Page = gcnew MyForm(this, this, id);
+		Page->Show();
+	}
 	
-		private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
-			this->Hide();
-			Client::Modifier_Client^ Page = gcnew Client::Modifier_Client(this, id);
-			Page->Show();
-		}
-	};
+	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Hide();
+		Client::Historique^ Page = gcnew Client::Historique(id);
+		Page->Show();	
+	}
+	
+	private: System::Void Page_Client_Load(System::Object^ sender, System::EventArgs^ e) {
+	}
+};
 }

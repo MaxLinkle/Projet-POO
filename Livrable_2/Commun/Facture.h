@@ -26,6 +26,7 @@ namespace Client {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ total;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ HT;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ TVA;
+	private: System::Windows::Forms::Button^ continuer;
 
 	private: Label^ id_paye = gcnew Label();
 	public:
@@ -37,9 +38,12 @@ namespace Client {
 			//
 		}
 	public:
-		Facture(String^ i_id_commande)
+		Facture(String^ i_id_commande, Form^ inpPageClient, String^ i_nom, String^ i_prenom)
 		{
+			PageClient = inpPageClient;
 			InitializeComponent();
+			nom_txt->Text = i_nom;
+			prenom_txt->Text = i_prenom;
 			id_commande = i_id_commande;
 			ConnexionBase();
 			
@@ -148,8 +152,11 @@ namespace Client {
 
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::Label^ label2;
-	private: System::Windows::Forms::TextBox^ nb_txt;
-	private: System::Windows::Forms::Label^ lbl_NombArt;
+
+
+	private: System::Windows::Forms::Form^ PageClient;
+
+
 	private: System::Windows::Forms::TextBox^ tot_txt;
 	private: System::Windows::Forms::Label^ lbl_tot;
 	private: System::Windows::Forms::TextBox^ Ref;
@@ -193,8 +200,6 @@ namespace Client {
 		{
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->nb_txt = (gcnew System::Windows::Forms::TextBox());
-			this->lbl_NombArt = (gcnew System::Windows::Forms::Label());
 			this->tot_txt = (gcnew System::Windows::Forms::TextBox());
 			this->lbl_tot = (gcnew System::Windows::Forms::Label());
 			this->Ref = (gcnew System::Windows::Forms::TextBox());
@@ -228,6 +233,7 @@ namespace Client {
 			this->remise = (gcnew System::Windows::Forms::TextBox());
 			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->totRemise = (gcnew System::Windows::Forms::Label());
+			this->continuer = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->recap))->BeginInit();
 			this->SuspendLayout();
@@ -250,28 +256,6 @@ namespace Client {
 			this->label2->Size = System::Drawing::Size(13, 13);
 			this->label2->TabIndex = 27;
 			this->label2->Text = L"€";
-			// 
-			// nb_txt
-			// 
-			this->nb_txt->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->nb_txt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->nb_txt->Location = System::Drawing::Point(164, 752);
-			this->nb_txt->Name = L"nb_txt";
-			this->nb_txt->ReadOnly = true;
-			this->nb_txt->Size = System::Drawing::Size(100, 17);
-			this->nb_txt->TabIndex = 26;
-			// 
-			// lbl_NombArt
-			// 
-			this->lbl_NombArt->AutoSize = true;
-			this->lbl_NombArt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->lbl_NombArt->Location = System::Drawing::Point(15, 751);
-			this->lbl_NombArt->Name = L"lbl_NombArt";
-			this->lbl_NombArt->Size = System::Drawing::Size(154, 18);
-			this->lbl_NombArt->TabIndex = 25;
-			this->lbl_NombArt->Text = L"Nombres d\'article(s) : ";
 			// 
 			// tot_txt
 			// 
@@ -605,11 +589,22 @@ namespace Client {
 			this->totRemise->Text = L" Total TTC avec remise :";
 			this->totRemise->Visible = false;
 			// 
+			// continuer
+			// 
+			this->continuer->Location = System::Drawing::Point(624, 832);
+			this->continuer->Name = L"continuer";
+			this->continuer->Size = System::Drawing::Size(75, 23);
+			this->continuer->TabIndex = 54;
+			this->continuer->Text = L"Ok";
+			this->continuer->UseVisualStyleBackColor = true;
+			this->continuer->Click += gcnew System::EventHandler(this, &Facture::continuer_Click);
+			// 
 			// Facture
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(732, 847);
+			this->ClientSize = System::Drawing::Size(732, 867);
+			this->Controls->Add(this->continuer);
 			this->Controls->Add(this->totRemise);
 			this->Controls->Add(this->label7);
 			this->Controls->Add(this->remise);
@@ -637,8 +632,6 @@ namespace Client {
 			this->Controls->Add(this->Nom_Cli);
 			this->Controls->Add(this->reference);
 			this->Controls->Add(this->label2);
-			this->Controls->Add(this->nb_txt);
-			this->Controls->Add(this->lbl_NombArt);
 			this->Controls->Add(this->tot_txt);
 			this->Controls->Add(this->lbl_tot);
 			this->Controls->Add(this->pictureBox1);
@@ -671,9 +664,12 @@ namespace Client {
 			remise->Visible = true;
 			totRemise->Visible = true;
 			
-		}
-		
+		}	
+	}
 
+	private: System::Void continuer_Click(System::Object^ sender, System::EventArgs^ e) {
+		PageClient->Show();
+		this->Close();
 	}
 };
 }

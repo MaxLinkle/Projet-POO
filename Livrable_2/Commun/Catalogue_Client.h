@@ -32,14 +32,18 @@ namespace Client {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Max;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ TVA;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ IDarticle;
+		   String^ Anniv;
+		   String^ Achat;
+		   bool i = true;
 
 
 
 	public:DateTimePicker^ dateAnniv = gcnew DateTimePicker();
-		  MyForm(String^ i_id)
+		  MyForm(Form^ inpPrecedent, Form^ inpPageClient, String^ i_id)
 		  {
 			  InitializeComponent();
-
+			  Precedent = inpPrecedent;
+			  PageClient = inpPageClient;
 			  id = i_id;
 			  //
 			  //TODO: ajoutez ici le code du constructeur
@@ -116,11 +120,35 @@ namespace Client {
 
 				  mysql_next_result(con);
 				  res = mysql_store_result(con);
+				  std::cout << mysql_error(con) << std::endl;
+				  std::cout << res->row_count << std::endl;
 
 				  while (row = mysql_fetch_row(res))
 				  {
-					  dateAnniv->Value = DateTime::ParseExact(gcnew String(row[0]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
-					  dateAchat->Value = DateTime::ParseExact(gcnew String(row[1]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
+					  if (gcnew String(row[0]) == "")
+					  {
+						  i = false;
+					  }
+					  else
+					  {
+						  i = true;
+						  dateAnniv->Value = DateTime::ParseExact(gcnew String(row[0]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
+						  
+					  }
+
+					  if (gcnew String(row[1]) == "")
+					  {
+						  i = false;
+					  }
+					  else
+					  {
+						  i = true; 
+						  dateAchat->Value = DateTime::ParseExact(gcnew String(row[1]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
+					  }
+					  
+					  
+					  //dateAnniv->Value = DateTime::ParseExact(gcnew String(row[0]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
+					  //dateAchat->Value = DateTime::ParseExact(gcnew String(row[1]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
 				  }
 
 			  }
@@ -137,9 +165,13 @@ namespace Client {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Button^ Precedent;
+private: System::Windows::Forms::Button^ bouton_precedent;
+protected:
+
 	protected:
 
+	private:  System::Windows::Forms::Form^ Precedent;
+	private:  System::Windows::Forms::Form^ PageClient;
 
 
 	private: System::Windows::Forms::Button^ button2;
@@ -186,7 +218,7 @@ namespace Client {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->Precedent = (gcnew System::Windows::Forms::Button());
+			this->bouton_precedent = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->acheter = (gcnew System::Windows::Forms::Button());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
@@ -212,14 +244,15 @@ namespace Client {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
 			// 
-			// Precedent
+			// bouton_precedent
 			// 
-			this->Precedent->Location = System::Drawing::Point(12, 12);
-			this->Precedent->Name = L"Precedent";
-			this->Precedent->Size = System::Drawing::Size(25, 25);
-			this->Precedent->TabIndex = 1;
-			this->Precedent->Text = L"<";
-			this->Precedent->UseVisualStyleBackColor = true;
+			this->bouton_precedent->Location = System::Drawing::Point(12, 12);
+			this->bouton_precedent->Name = L"bouton_precedent";
+			this->bouton_precedent->Size = System::Drawing::Size(25, 25);
+			this->bouton_precedent->TabIndex = 1;
+			this->bouton_precedent->Text = L"<";
+			this->bouton_precedent->UseVisualStyleBackColor = true;
+			this->bouton_precedent->Click += gcnew System::EventHandler(this, &MyForm::bouton_precedent_Click);
 			// 
 			// button2
 			// 
@@ -419,6 +452,7 @@ namespace Client {
 			this->remise_txt->ReadOnly = true;
 			this->remise_txt->Size = System::Drawing::Size(70, 24);
 			this->remise_txt->TabIndex = 15;
+			this->remise_txt->Visible = false;
 			// 
 			// euroRemise
 			// 
@@ -452,7 +486,7 @@ namespace Client {
 			this->Controls->Add(this->dataGridView1);
 			this->Controls->Add(this->acheter);
 			this->Controls->Add(this->button2);
-			this->Controls->Add(this->Precedent);
+			this->Controls->Add(this->bouton_precedent);
 			this->Location = System::Drawing::Point(333, 36);
 			this->Name = L"MyForm";
 			this->Text = L"Catalogue";
@@ -486,10 +520,46 @@ namespace Client {
 			remise->Text = "Vous avez une remise de 5%";
 		}
 
-
 	}
 
 	private: System::Void acheter_Click(System::Object^ sender, System::EventArgs^ e) {
+		MYSQL* con;
+		MYSQL_RES* res;
+		MYSQL_ROW row;
+		con = mysql_init(NULL);
+		int qstate;
+		System::String^ query;
+
+		if (con == NULL)
+		{
+			finish_with_error(con);
+			exit(1);
+		}
+
+		if (mysql_real_connect(con, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
+			finish_with_error(con);
+		}
+		query += ("CALL ajout_Date_achat('");
+		query += id;
+		query += ("');");
+
+		pin_ptr<const wchar_t> wch = PtrToStringChars(query);
+		size_t convertedChars = 0;
+		size_t  sizeInBytes = ((query->Length + 1) * 2);
+		errno_t err = 0;
+		char* ch = (char*)malloc(sizeInBytes);
+		err = wcstombs_s(&convertedChars,
+			ch, sizeInBytes,
+			wch, sizeInBytes);
+
+		std::cout << ch << std::endl << std::endl;
+
+		//Execution de la requête
+		qstate = mysql_query(con, ch);
+		if (!qstate)
+		{
+			res = mysql_store_result(con);
+		}
 
 		DataTable^ transfert = gcnew DataTable();
 		transfert->Columns->Add("Nom");
@@ -517,7 +587,7 @@ namespace Client {
 		else
 		{
 			this->Hide();
-			this->formu = gcnew Client::Formulaire_achat(nb_txt->Text, total_txt->Text, HT->Text, id, transfert, remise_txt->Text);
+			this->formu = gcnew Client::Formulaire_achat(nb_txt->Text, total_txt->Text, HT->Text, id, transfert, remise_txt->Text, this, PageClient);
 			this->formu->Show();
 
 		}
@@ -528,6 +598,7 @@ namespace Client {
 		double totHT = 0;
 		double Reduc;
 		dateActuel->Value.Today;
+		DateTime dt = DateTime(0001, dt.Month, dt.Day);
 		for (int n = 0; n < dataGridView1->RowCount; n++)
 		{
 			if (Convert::ToInt32(dataGridView1->Rows[n]->Cells[3]->Value) > Convert::ToInt32(dataGridView1->Rows[n]->Cells[4]->Value))
@@ -554,20 +625,35 @@ namespace Client {
 			HT->Text = totHT.ToString();
 			
 		}
-		if ((dateActuel->Value.Day == dateAnniv->Value.Day) && (dateAnniv->Value.Month == dateActuel->Value.Month))
+		if (i == true)
 		{
-			Reduc = (total - (total * 0.1));
-			remise_txt->Text = Reduc.ToString();
+			if ((dateActuel->Value.Day == dateAnniv->Value.Day) && (dateAnniv->Value.Month == dateActuel->Value.Month))
+			{
+				Reduc = (total - (total * 0.1));
+				remise_txt->Text = Reduc.ToString();
+			}
+			else if ((dateActuel->Value.Day == dateAchat->Value.Day) && (dateAchat->Value.Month == dateActuel->Value.Month))
+			{
+				Reduc = (total - (total * 0.05));
+				remise_txt->Text = Reduc.ToString();
+			}
+			else
+			{
+				Reduc = 0;
+				remise_txt->Text = Reduc.ToString();
+			}
 		}
-		else if ((dateActuel->Value.Day == dateAchat->Value.Day) && (dateActuel->Value.Month == dateAchat->Value.Month))
-		{
-			Reduc = (total - (total * 0.05));
-			remise_txt->Text = Reduc.ToString();
-		}else
+		else if (i == false)
 		{
 			Reduc = 0;
 			remise_txt->Text = Reduc.ToString();
 		}
+		
 	}
-	};
+
+	private: System::Void bouton_precedent_Click(System::Object^ sender, System::EventArgs^ e) {
+		Precedent->Show();
+		this->Close();
+	}
+};
 }
