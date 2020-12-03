@@ -195,7 +195,6 @@ END |
 --   END IF;
 -- END |
 
-DELIMITER |
 DROP PROCEDURE IF EXISTS update_Adresse_client |
 CREATE PROCEDURE update_Adresse_client (IN i_id INT, IN i_id_adresse INT, IN i_adresse VARCHAR(50), IN ancienne_adr VARCHAR(50), IN i_ville VARCHAR(20), IN i_type VARCHAR(25))
 BEGIN
@@ -205,10 +204,10 @@ BEGIN
   DECLARE ville_cli INT;
   DECLARE type_cli INT;
 
-  -- DECLARE EXIT HANDLER FOR SQLEXCEPTION
-  -- BEGIN
-  --   ROLLBACK;
---  END;
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    ROLLBACK;
+  END;
 
   SELECT COUNT(Commande.ID_adresse_livraison) INTO a_livr
   FROM Commande
@@ -406,4 +405,68 @@ BEGIN
   INSERT INTO Fournir (ID_fournir, quantite, ID_article, ID_commande)
   VALUES (NULL, i_quant, i_id_art, i_id_com);
 END |
+
+
+-- DELIMITER |
+DROP PROCEDURE IF EXISTS delete_Commande |
+CREATE PROCEDURE delete_Commande ()
+BEGIN
+  DECLARE date_moins_10 DATE;
+
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    ROLLBACK;
+  END;
+
+  SELECT CURRENT_DATE - INTERVAL 10 YEAR INTO date_moins_10;
+
+  DELETE FROM COMMANDE
+  WHERE date_paiement < date_moins_10;
+END |
+
+
+DROP PROCEDURE IF EXISTS delete_Adresse_client_deref |
+CREATE PROCEDURE delete_Commande_deref ()
+BEGIN
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    ROLLBACK;
+  END;
+
+  DELETE FROM Adresse_client
+  WHERE (
+    ISNULL(Adresse_client.ID_client)
+    AND (
+      NOT (
+        (ID_adresse_client IN (SELECT DISTINCT ID_adresse_livraison FROM Commande))
+        OR (ID_adresse_client IN (SELECT DISTINCT ID_adresse_facturation FROM Commande))
+      )
+    )
+  );
+END |
 DELIMITER ;
+
+
+-- DELIMITER |
+DROP PROCEDURE IF EXISTS ajout_Date_achat |
+CREATE PROCEDURE ajout_Date_achat (IN i_id_client INT)
+BEGIN
+  DECLARE date_prem DATE;
+  DECLARE date_actuelle DATE;
+
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    ROLLBACK;
+  END;
+
+  SELECT Client.date_premier_achat INTO date_prem FROM Client WHERE Client.ID_client = i_id_client;
+
+  IF date_prem IS NULL
+  THEN
+    SELECT CURRENT_DATE INTO date_actuelle;
+
+    UPDATE Client
+      SET Client.date_premier_achat = date_actuelle
+    WHERE Client.ID_client = i_id_client;
+  END IF;
+END |
