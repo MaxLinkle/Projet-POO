@@ -457,12 +457,28 @@ BEGIN
 END |
 DELIMITER ;
 
+
 DELIMITER  |
-CREATE DEFINER=`admin`@`%` PROCEDURE `update_Perso`(IN i_nom VARCHAR(50), IN i_prenom VARCHAR(50), IN i_date_embauche DATE, IN i_id_perso INT, IN i_id_superieur INT)
+DROP PROCEDURE IF EXISTS `update_Perso` |
+CREATE DEFINER=`admin`@`%` PROCEDURE `update_Perso`(IN i_id_personnel INT, IN i_nom VARCHAR(50), IN i_prenom VARCHAR(50), IN i_date_embauche DATE, IN i_id_superieur INT, IN i_id_adresse INT, IN adresse_perso VARCHAR(50), IN ville_perso VARCHAR(20))
 BEGIN
+  DECLARE ville_cli INT;
+
+  SELECT ID_ville INTO ville_cli FROM Ville WHERE ville = ville_perso;
+
   UPDATE Personnel
-    SET Personnel.nom = i_nom, Personnel.prenom = i_prenom, Personnel.date_embauche = i_date_embauche, Personnel.ID_superieur = i_id_superieur
+  SET
+    Personnel.nom = i_nom,
+    Personnel.prenom = i_prenom,
+    Personnel.date_embauche = i_date_embauche,
+    Personnel.ID_superieur = i_id_superieur
   WHERE Personnel.ID_personnel = i_id_personnel;
+
+  UPDATE Adresse_personnel
+  SET
+    Adresse_personnel.adresse_personnel = adresse_perso,
+    Adresse_personnel.ID_ville = ville_cli
+  WHERE Adresse_personnel.ID_adresse_personnel = i_id_adresse;
 END |
 DELIMITER ;
 

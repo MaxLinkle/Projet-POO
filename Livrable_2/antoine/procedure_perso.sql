@@ -426,7 +426,7 @@ END |
 
 
 DROP PROCEDURE IF EXISTS delete_Adresse_client_deref |
-CREATE PROCEDURE delete_Commande_deref ()
+CREATE PROCEDURE delete_Adresse_client_deref ()
 BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
   BEGIN
