@@ -169,8 +169,14 @@ BEGIN
     ROLLBACK;
   END;
 
-  SELECT ID_adresse_client INTO adresseliv_cli FROM Adresse_client WHERE Adresse_client.adresse_client = i_id_adresse_de_livraison LIMIT 1;
-  SELECT ID_adresse_client INTO adressefact_cli FROM Adresse_client WHERE Adresse_client.adresse_client = i_id_adresse_facturation LIMIT 1;
+  SELECT ID_adresse_client INTO adresseliv_cli FROM Adresse_client
+  WHERE Adresse_client.adresse_client = i_id_adresse_de_livraison AND Adresse_client.ID_client = i_id_cli
+  LIMIT 1;
+
+  SELECT ID_adresse_client INTO adressefact_cli FROM Adresse_client 
+  WHERE Adresse_client.adresse_client = i_id_adresse_facturation AND Adresse_client.ID_client = i_id_cli
+  LIMIT 1;
+
   SELECT ID_paiement INTO paiement_cli FROM Paiement WHERE Paiement.moyen_paiement = id_paye;
 
   INSERT INTO Commande(ID_commande, reference, prix_ht, prix_tva, remise, date_livraison_prevue, date_emission, date_paiement, date_solde, ID_adresse_livraison, ID_adresse_facturation, ID_client, ID_paiement)
