@@ -4,6 +4,7 @@
 #include "SC.h"
 #include "Recherche.h"
 #include "catalogue_perso.h"
+#include "Stats.h"
 namespace NS_EspacePersonnel {
 
 	using namespace System;
@@ -14,13 +15,16 @@ namespace NS_EspacePersonnel {
 	using namespace System::Drawing;
 	using namespace NS_Recherche;
 	using namespace NS_SuperC;
+	using namespace NS_CataloPerso;
+	using namespace NS_Stats;
+
 	delegate System::Void PRecherche(System::Object^ sender, System::EventArgs^ e);
 	
 
 	/// <summary>
 	/// Zusammenfassung für Form1
 	/// </summary>
-	public ref class EspPerso : public SuperC
+	public ref class EspPerso : public NS_SuperC::SuperC
 	{
 	public:
 		EspPerso(Form^ Precedent,int indice):SuperC(Precedent)
@@ -342,6 +346,7 @@ namespace NS_EspacePersonnel {
 			   this->button1->TabIndex = 10;
 			   this->button1->Text = L"Article >>";
 			   this->button1->UseVisualStyleBackColor = true;
+			   this->button1->Click += gcnew System::EventHandler(this, &EspPerso::Catalo_Click);
 			   // 
 			   // Stat
 			   // 
@@ -351,7 +356,7 @@ namespace NS_EspacePersonnel {
 			   this->Stat->TabIndex = 11;
 			   this->Stat->Text = L"Statistique";
 			   this->Stat->UseVisualStyleBackColor = true;
-			   //this->Stat->Click += gcnew System::EventHandler(this, &EspPerso::Stat_Click);
+			   this->Stat->Click += gcnew System::EventHandler(this, &EspPerso::Stat_Click);
 			   // 
 			   // EspPerso
 			   // 
@@ -407,7 +412,7 @@ namespace NS_EspacePersonnel {
 		dataGridView1->Columns->Add("Adresse", "Adresse");
 		dataGridView1->Columns->Add("Ville", "Ville");
 		
-
+		
 		array<String^>^ Valcl = gcnew array<String^>(3);
 		Valcl[0] = ("livraison");
 		Valcl[1] = ("facturation");
@@ -509,7 +514,20 @@ namespace NS_EspacePersonnel {
 				}
 
 				Steve->SetAdresse(ArrayNouv);
+				
 			}
+
+			if (Rb_Personnel->Checked) {
+				Steve->SetIDSup("");
+				mysql_free_result(Test);
+				Test = executerQuery(Steve->GetIdSup());
+				if (Test != NULL) {
+					if (Test->row_count > 0) {
+						Steve->SetIDSup(gcnew String(row[0]));
+					}
+				}
+			}
+
 			this->Hide();
 			CLRecherche^ PageSuivante = gcnew CLRecherche(this, Steve);
 			PageSuivante->Show();
@@ -531,7 +549,7 @@ namespace NS_EspacePersonnel {
 		String^ PDate;
 		if (Client == "1" && !(CheckDate->Checked)) {
 
-			PDate = "null";
+			PDate = "NULL";
 
 		}
 		else {
@@ -549,9 +567,6 @@ namespace NS_EspacePersonnel {
 		if (result != NULL) {
 			Qrow = mysql_fetch_row(result);
 			String^ ID = gcnew String(Qrow[0]);
-			mysql_free_result(result);
-			result = executerQuery(QueryTest);
-			this->Text = QueryTest;
 
 			if (result->row_count > 0) {
 				CommitSC();
@@ -728,6 +743,18 @@ private: System::Void checkBox1_CheckedChanged(System::Object^ sender, System::E
 		   return Adr;
 	   }
 
+	   System::Void Stat_Click(System::Object^ sender, System::EventArgs^ e) {
+			this->Hide();
+			Stats^ Suivant = gcnew Stats(this);
+			Suivant->Show();
+	   }
+
+	   System::Void Catalo_Click(System::Object^ sender, System::EventArgs^ e) {
+			
+		   this->Hide();
+		   Catalogue_Perso^ Suivant = gcnew Catalogue_Perso(this);
+		   Suivant->Show();
+	   }
 
 };
 }

@@ -71,6 +71,12 @@
     <ClInclude Include="..\UserControle.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="..\IHM_Stats.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Stats.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">

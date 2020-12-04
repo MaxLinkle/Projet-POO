@@ -1,6 +1,5 @@
 #pragma once
 #include <mysql.h>
-#include <iostream>
 #include <vcclr.h>
 #include "IHM_Stats.h"
 
@@ -12,7 +11,7 @@ namespace NS_Stats {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	using namespace std;
+	/*using namespace std;*/
 	
 	/// <summary>
 	/// Description résumée de Stats
@@ -20,7 +19,7 @@ namespace NS_Stats {
 	public ref class Stats : public System::Windows::Forms::Form
 	{
 	public:
-		Stats(/*Form^ InpPrecedent*/)
+		Stats(Form^ InpPrecedent)
 		{
 			//Precedent = InpPrecedent;
 			InitializeComponent();
@@ -431,7 +430,7 @@ namespace NS_Stats {
 					this->dataGridView1->Rows->Clear();
 					this->dataGridView1->Columns->Clear();
 					this->dataGridView1->Refresh();
-
+					
 					this->dataGridView1->Columns->Add(this->Total_achat_client);
 
 					ConnectDatabase();

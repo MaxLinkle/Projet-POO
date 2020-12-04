@@ -499,7 +499,8 @@ namespace NS_Recherche {
 
 		}
 		else {
-
+			dataGridView1->AllowUserToAddRows = false;
+			dataGridView1->AllowUserToDeleteRows = false;
 			this->Date_naissance->Visible = false;
 			this->Date_premier_achat->Visible = false;
 			this->label3->Visible = false;
@@ -507,7 +508,7 @@ namespace NS_Recherche {
 			this->label7->Visible = false;
 			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(6) {
 				   this->Id_adresse,
-					   this->Adresse, this->Ville, this->Pays, this->Delete, this->Update
+					   this->Adresse, this->Ville, this->Pays,this->Delete, this->Update
 			   });
 
 			//Struct_Adresse^ current = SteveInter->Adresse;
@@ -534,22 +535,25 @@ namespace NS_Recherche {
 
 			//qstate = mysql_query(con, ch);
 			//res = mysql_store_result(con);
+			if (SteveInter->GetIdSup() != "") {
+				res = executerQuery(query);
+				row = mysql_fetch_row(res);
 
-			res = executerQuery(query);
-			row = mysql_fetch_row(res);
+				Nom_superieur->Text = gcnew String(row[0]);
+				Prenom_Superieur->Text = gcnew String(row[1]);
+			}
 
-			Nom_superieur->Text = gcnew String(row[0]);
-			Prenom_Superieur->Text = gcnew String(row[1]);
-			
+
 			int i = 0;
 
 			for each(Struct_Adresse^ current in SteveInter->GetAdresse()){
+				dataGridView1->Rows->Add();
 				dataGridView1->Rows[i]->Cells[0]->Value = current->ID;
 				dataGridView1->Rows[i]->Cells[1]->Value = current->Adresse;
 				dataGridView1->Rows[i]->Cells[2]->Value = current->Ville;
 				dataGridView1->Rows[i]->Cells[3]->Value = current->Pays; 
-				dataGridView1->Rows[i]->Cells[6]->Value = "supprimer";
-				dataGridView1->Rows[i]->Cells[7]->Value = "sauvegarder";
+				dataGridView1->Rows[i]->Cells[4]->Value = "supprimer";
+				dataGridView1->Rows[i]->Cells[5]->Value = "sauvegarder";
 				i++;
 				
 			}
@@ -652,12 +656,35 @@ namespace NS_Recherche {
 
 		}
 		else{
-
-
-
-
+			if (j == 4 && dataGridView1->Rows[i]->Cells[4]->Value->ToString() == "supprimer") {
+				query = "CALL Suppr_Perso(" + Id_client + ");";
+			} 
+			else if (j == 5) {
+				query = "START TRANSACTION; CALL update_Perso('";
+				query += Id_client->Text;
+				query += "', '";
+				query += Nom->Text;
+				query += "', '";
+				query += Prenom->Text;
+				query += "', '";
+				query += Date_embauche->Text;
+				query += "', ";
+				query += ((SteveInter->GetIdSup() == "")? "NULL" : "'"+ SteveInter->GetIdSup()+"'" );
+				query += ", '";
+				query += dataGridView1->Rows[i]->Cells[0]->Value->ToString();
+				query += "', '";
+				query += dataGridView1->Rows[i]->Cells[1]->Value->ToString();
+				query += "', '";
+				query += dataGridView1->Rows[i]->Cells[2]->Value->ToString();
+				query += "'); COMMIT;";
+				Prenom_Superieur->Text = query;
+			}
+			else {
+				return;
+			}
+		
+			executerNonQuery(query);
 		}
-
 	}
 
 	private: System::Void dataGridView1_UserAddedRow(System::Object^ sender, System::Windows::Forms::DataGridViewRowEventArgs^ e) {

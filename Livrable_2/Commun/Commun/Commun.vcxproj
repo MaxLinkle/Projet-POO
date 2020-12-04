@@ -176,6 +176,7 @@
     <ClInclude Include="..\Historique.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="..\IHM_Stats.h" />
     <ClInclude Include="..\Individu.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -193,6 +194,9 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="..\SC.h" />
+    <ClInclude Include="..\Stats.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="..\UserControle.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -215,6 +219,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\catalogue_perso.resx">
+      <DependentUpon>..\catalogue_perso.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="..\Modifier_Client.resx">
       <DependentUpon>..\Modifier_Client.h</DependentUpon>
     </EmbeddedResource>

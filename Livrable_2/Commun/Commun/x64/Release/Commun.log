@@ -1,2 +1,7 @@
 ﻿  CppCLR_WinformsProjekt.cpp
+C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Formulaire_achat.h(834,19): warning C4101: 'Fact' : variable locale non référencée
+C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Formulaire_achat.h(833,19): warning C4101: 'Liv' : variable locale non référencée
+C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Catalogue_Client.h(530,13): warning C4101: 'row' : variable locale non référencée
+C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Connection_Client.h(194,21): warning C4101: 'id' : variable locale non référencée
+C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\EspacePerso.h(502,47): warning C4244: 'argument' : conversion de 'uint64_t' en 'int', perte possible de données
   Commun.vcxproj -> C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Commun\x64\Release\Commun.exe

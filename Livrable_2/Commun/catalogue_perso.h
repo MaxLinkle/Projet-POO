@@ -1,8 +1,9 @@
 #pragma once
 #include <mysql.h>
 #include <vcclr.h>
+#include "SC.h"
 
-namespace Perso {
+namespace NS_CataloPerso {
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -10,14 +11,15 @@ namespace Perso {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-
+	using namespace NS_SuperC;
 	/// <summary> 
 	/// Zusammenfassung für Form1
 	/// </summary>
-	public ref class Catalogue_Perso : public System::Windows::Forms::Form
+	public ref class Catalogue_Perso : public SuperC
 	{
 	public:
-		Catalogue_Perso(void) {
+		Catalogue_Perso(Form^ Precedent):SuperC(Precedent)
+		{
 			ConnectDatabase();
 			InitializeComponent();
 		}
@@ -52,7 +54,7 @@ namespace Perso {
 
 
 
-	private: System::Windows::Forms::TextBox^ textBox1;
+
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ data_id;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ data_nom;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ data_ref;
@@ -63,7 +65,7 @@ namespace Perso {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ data_seuil;
 	private: System::Windows::Forms::DataGridViewCheckBoxColumn^ data_actif;
 	private: System::Windows::Forms::DataGridViewButtonColumn^ data_save;
-	private: System::Windows::Forms::RichTextBox^ richTextBox1;
+
 
 
 
@@ -76,8 +78,6 @@ namespace Perso {
 		   void InitializeComponent(void)
 		   {
 			   this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
-			   this->textBox1 = (gcnew System::Windows::Forms::TextBox());
-			   this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
 			   this->data_id = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			   this->data_nom = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			   this->data_ref = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
@@ -100,32 +100,15 @@ namespace Perso {
 					   this->data_nom, this->data_ref, this->data_prixht, this->data_tva, this->data_coeff, this->data_stock, this->data_seuil, this->data_actif,
 					   this->data_save
 			   });
-			   this->dataGridView1->Location = System::Drawing::Point(9, 46);
-			   this->dataGridView1->Margin = System::Windows::Forms::Padding(2);
+			   this->dataGridView1->Location = System::Drawing::Point(12, 57);
+			   this->dataGridView1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			   this->dataGridView1->Name = L"dataGridView1";
 			   this->dataGridView1->RowHeadersWidth = 51;
 			   this->dataGridView1->RowTemplate->Height = 24;
-			   this->dataGridView1->Size = System::Drawing::Size(1204, 214);
+			   this->dataGridView1->Size = System::Drawing::Size(1268, 314);
 			   this->dataGridView1->TabIndex = 0;
 			   this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Catalogue_Perso::dataGridView1_CellContentClick);
 			   this->dataGridView1->UserAddedRow += gcnew System::Windows::Forms::DataGridViewRowEventHandler(this, &Catalogue_Perso::dataGridView1_UserAddedRow);
-			   // 
-			   // textBox1
-			   // 
-			   this->textBox1->Location = System::Drawing::Point(303, 376);
-			   this->textBox1->Margin = System::Windows::Forms::Padding(2);
-			   this->textBox1->Name = L"textBox1";
-			   this->textBox1->Size = System::Drawing::Size(458, 20);
-			   this->textBox1->TabIndex = 1;
-			   // 
-			   // richTextBox1
-			   // 
-			   this->richTextBox1->Location = System::Drawing::Point(773, 347);
-			   this->richTextBox1->Margin = System::Windows::Forms::Padding(2);
-			   this->richTextBox1->Name = L"richTextBox1";
-			   this->richTextBox1->Size = System::Drawing::Size(440, 106);
-			   this->richTextBox1->TabIndex = 2;
-			   this->richTextBox1->Text = L"";
 			   // 
 			   // data_id
 			   // 
@@ -202,19 +185,16 @@ namespace Perso {
 			   // 
 			   // Catalogue_Perso
 			   // 
-			   this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			   this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			   this->ClientSize = System::Drawing::Size(1290, 461);
-			   this->Controls->Add(this->richTextBox1);
-			   this->Controls->Add(this->textBox1);
+			   this->ClientSize = System::Drawing::Size(1352, 442);
 			   this->Controls->Add(this->dataGridView1);
-			   this->Margin = System::Windows::Forms::Padding(2);
+			   this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			   this->Name = L"Catalogue_Perso";
 			   this->Text = L"Choix";
 			   this->Load += gcnew System::EventHandler(this, &Catalogue_Perso::Catalogue_Perso_Load);
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			   this->ResumeLayout(false);
-			   this->PerformLayout();
 
 		   }
 #pragma endregion
@@ -379,7 +359,7 @@ namespace Perso {
 			return;
 		}
 
-		richTextBox1->Text = query;
+
 
 		pin_ptr<const wchar_t> wch = PtrToStringChars(query);
 		size_t convertedChars = 0;

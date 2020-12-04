@@ -11,6 +11,7 @@ namespace Client {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace NS_SuperC;
 
 	/// <summary>
 	/// Description r�sum�e de Facture
@@ -39,7 +40,7 @@ namespace Client {
 			//
 		}
 	public:
-		Facture(String^ i_id_commande, Form^ inpPageClient, String^ i_nom, String^ i_prenom)
+		Facture(String^ i_id_commande, Form^ inpPageClient, String^ i_nom, String^ i_prenom): SuperC(inpPageClient)
 		{
 			PageClient = inpPageClient;
 			InitializeComponent();
@@ -256,7 +257,7 @@ namespace Client {
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(13, 13);
 			this->label2->TabIndex = 27;
-			this->label2->Text = L"�";
+			this->label2->Text = L"€";
 			//
 			// tot_txt
 			//
@@ -316,7 +317,7 @@ namespace Client {
 			this->Prenom_Cli->Name = L"Prenom_Cli";
 			this->Prenom_Cli->Size = System::Drawing::Size(61, 13);
 			this->Prenom_Cli->TabIndex = 30;
-			this->Prenom_Cli->Text = L"Pr�nom : ";
+			this->Prenom_Cli->Text = L"Prénom : ";
 			//
 			// Nom_Cli
 			//
@@ -338,7 +339,7 @@ namespace Client {
 			this->reference->Name = L"reference";
 			this->reference->Size = System::Drawing::Size(139, 13);
 			this->reference->TabIndex = 28;
-			this->reference->Text = L"R�f�rence Commande :";
+			this->reference->Text = L"Référence Commande :";
 			//
 			// lbl_addFact
 			//
@@ -501,7 +502,7 @@ namespace Client {
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(13, 13);
 			this->label5->TabIndex = 48;
-			this->label5->Text = L"�";
+			this->label5->Text = L"€";
 			//
 			// label6
 			//
@@ -510,7 +511,7 @@ namespace Client {
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(13, 13);
 			this->label6->TabIndex = 49;
-			this->label6->Text = L"�";
+			this->label6->Text = L"€";
 			//
 			// recap
 			//

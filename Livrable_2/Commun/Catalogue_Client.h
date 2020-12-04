@@ -40,6 +40,7 @@ namespace Client {
 
 
 	public:DateTimePicker^ dateAnniv = gcnew DateTimePicker();
+
 		  MyForm(Form^ inpPrecedent, Form^ inpPageClient, String^ i_id): SuperC(inpPrecedent)
 		  {
 			  InitializeComponent();
@@ -219,7 +220,7 @@ protected:
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->bouton_precedent = (gcnew System::Windows::Forms::Button());
+			/*this->bouton_precedent = (gcnew System::Windows::Forms::Button());*/
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->acheter = (gcnew System::Windows::Forms::Button());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
@@ -487,7 +488,7 @@ protected:
 			this->Controls->Add(this->dataGridView1);
 			this->Controls->Add(this->acheter);
 			this->Controls->Add(this->button2);
-			this->Controls->Add(this->bouton_precedent);
+			/*this->Controls->Add(this->bouton_precedent);*/
 			this->Location = System::Drawing::Point(333, 36);
 			this->Name = L"MyForm";
 			this->Text = L"Catalogue";

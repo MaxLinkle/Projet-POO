@@ -62,7 +62,7 @@ public:
 
 	String^ MapperIDtoAddr(String^ ID) {
 
-		String^ Query = "SELECT ID_adresse_personnel FROM Personnel NATURAL JOIN Adresse_personnel WHERE 0";
+		String^ Query = "SELECT ID_adresse_personnel , adresse_personnel , ville , pays FROM Personnel NATURAL JOIN (SELECT * FROM Adresse_personnel NATURAL JOIN (SELECT * FROM Ville NATURAL JOIN Pays) AS T1 ) AS T2 WHERE 0";
 		if (ID != "") {
 			Query += " OR ID_Personnel = '" + ID + "'";
 		}
@@ -161,11 +161,13 @@ public:
 	virtual String^ GetIdSup() { return nullptr; }
 	virtual String^ GetSup() { return nullptr; }
 	String^ GetId() { return ID; }
+
 	String^ GetNom() { return Nom; }
 	String^ GetPrenom() { return Prenom; }
 	String^ GetDate() { return Date; }
 
 	void SetID(String^ PID) { ID = PID; }
+	virtual void SetIDSup(String^ PID) { return; }
 
 	String^ MapId() { return svc_Mappage->MapperID(Nom , Prenom , Date);  }
 	virtual String^ MapSup() { return nullptr; }
@@ -198,9 +200,10 @@ private:
 public:
 	String^ GetIdSup() override { return ID_Sup; }
 	String^ GetSup() override { return svc_Mappage->MapperIdent(ID_Sup); }
+	void SetIDSup(String^ PID) override { ID_Sup = PID; }
 	String^ MapSup() override { return svc_Mappage->MapperIDSup(ID); }
-	Personnel(ArrayList^ Adr, String^ PNom, String^ PPrenom, String^ PDate) :Individu(PNom, PPrenom, PDate, Adr) { svc_Mappage = new MapPer(); }
-	Personnel(String^ PID) :Individu(PID) {}
+	Personnel(ArrayList^ Adr, String^ PNom, String^ PPrenom, String^ PDate) :Individu(PNom, PPrenom, PDate, Adr) { svc_Mappage = new MapPer(); ID_Sup = ""; }
+	Personnel(String^ PID) :Individu(PID) { ID_Sup = ""; }
 	bool IsClient() override { return false; }
 };
 

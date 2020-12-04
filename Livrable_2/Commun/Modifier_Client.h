@@ -17,7 +17,7 @@ namespace Client {
 	public ref class Modifier_Client : public NS_SuperC::SuperC // public System::Windows::Forms::Form
 	{
 	public:
-		Modifier_Client(Form^ InpPrecedent, System::String^ i_id): SuperC(inpPrecedent) {
+		Modifier_Client(Form^ InpPrecedent, System::String^ i_id): SuperC(InpPrecedent) {
 			id = i_id;
 			// Precedent = InpPrecedent;
 			ConnectDatabase();

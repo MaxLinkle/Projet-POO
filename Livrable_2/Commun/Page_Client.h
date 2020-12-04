@@ -17,7 +17,7 @@ namespace Client {
 	public ref class Page_Client : public NS_SuperC::SuperC // public System::Windows::Forms::Form
 	{
 	public:
-		Page_Client(Form^ InpPrecedent, System::String^ i_id): SuperC(inpPrecedent) {
+		Page_Client(Form^ InpPrecedent, System::String^ i_id): SuperC(InpPrecedent) {
 			id = i_id;
 			// Precedent = InpPrecedent;
 			InitializeComponent();
@@ -97,7 +97,7 @@ namespace Client {
 			this->Controls->Add(this->button3);
 			this->Name = L"Page_Client";
 			this->Text = L"Page_Client";
-			this->Load += gcnew System::EventHandler(this, &Page_Client::Page_Client_Load);
+			//this->Load += gcnew System::EventHandler(this, &Page_Client::Page_Client_Load);
 			this->ResumeLayout(false);
 
 		}

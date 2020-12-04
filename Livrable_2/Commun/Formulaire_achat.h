@@ -237,7 +237,7 @@ private: System::Windows::Forms::Label^ label7;
 			this->Num_Cli = (gcnew System::Windows::Forms::Label());
 			this->Nom_Cli = (gcnew System::Windows::Forms::Label());
 			this->Prenom_Cli = (gcnew System::Windows::Forms::Label());
-			this->bouton_precedent = (gcnew System::Windows::Forms::Button());
+			/*this->bouton_precedent = (gcnew System::Windows::Forms::Button());*/
 			this->warni = (gcnew System::Windows::Forms::Button());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->nom = (gcnew System::Windows::Forms::TextBox());
@@ -710,7 +710,7 @@ private: System::Windows::Forms::Label^ label7;
 			this->Controls->Add(this->nom);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->warni);
-			this->Controls->Add(this->bouton_precedent);
+			/*this->Controls->Add(this->bouton_precedent);*/
 			this->Controls->Add(this->Prenom_Cli);
 			this->Controls->Add(this->Nom_Cli);
 			this->Controls->Add(this->Num_Cli);

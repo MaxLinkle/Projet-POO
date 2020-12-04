@@ -1,3 +1,4 @@
+  Commun.catalogue_perso.resources - Embedded, ContainedInManifestFile, 
   Commun.Modifier_Client.resources - Embedded, ContainedInManifestFile, 
   Commun.Recherche.resources - Embedded, ContainedInManifestFile, 
 ImageRuntimeVersion: v4.0.30319
@@ -36,6 +37,7 @@ Class Individu: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
     System.IDisposable
   Methods:
     GetAdresse(): PrivateScope, Public, HideBySig
+    SetAdresse(ArrayList): PrivateScope, Public, HideBySig
     GetDPA(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
     GetIdSup(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
     GetSup(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
@@ -44,7 +46,9 @@ Class Individu: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
     GetPrenom(): PrivateScope, Public, HideBySig
     GetDate(): PrivateScope, Public, HideBySig
     SetID(String): PrivateScope, Public, HideBySig
+    SetIDSup(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
     MapId(): PrivateScope, Public, HideBySig
+    MapSup(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
     MapCredential(): PrivateScope, Public, HideBySig
     MapAdrese(): PrivateScope, Public, HideBySig
     IsClient(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
@@ -63,6 +67,8 @@ Class Personnel: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   Methods:
     GetIdSup(): PrivateScope, Public, Virtual, HideBySig
     GetSup(): PrivateScope, Public, Virtual, HideBySig
+    SetIDSup(String): PrivateScope, Public, Virtual, HideBySig
+    MapSup(): PrivateScope, Public, Virtual, HideBySig
     IsClient(): PrivateScope, Public, Virtual, HideBySig
 Class NS_SuperC.SuperC: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
@@ -74,6 +80,39 @@ Class NS_SuperC.SuperC: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     System.Windows.Forms.Button Actualiser : Public
   Methods:
     Personnel_Load(Object, EventArgs): PrivateScope, Public, HideBySig
+Class Client.Creation_Client: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(System.Windows.Forms.Form): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class Client.Modifier_Client: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :NS_SuperC.SuperC
+    Void .ctor(System.Windows.Forms.Form, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class Client.Facture: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :NS_SuperC.SuperC
+    Void .ctor(System.String, System.Windows.Forms.Form, System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class Client.Formulaire_achat: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :NS_SuperC.SuperC
+    Void .ctor(System.String, System.String, System.String, System.String, System.Data.DataTable, System.String, System.Windows.Forms.Form, System.Windows.Forms.Form): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class Client.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :NS_SuperC.SuperC
+    Void .ctor(System.Windows.Forms.Form, System.Windows.Forms.Form, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    System.Windows.Forms.DateTimePicker dateAnniv : Public
+  Methods:
+    finish_with_error(MYSQL*): PrivateScope, Public, HideBySig
+    ConnexionBase(): PrivateScope, Public, HideBySig
+Class Client.Historique: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :NS_SuperC.SuperC
+    Void .ctor(System.Windows.Forms.Form, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    finish_with_error(MYSQL*): PrivateScope, Public, HideBySig
+    ConnexionBase(): PrivateScope, Public, HideBySig
+Class Client.Page_Client: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :NS_SuperC.SuperC
+    Void .ctor(System.Windows.Forms.Form, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class Client.Connection_Client: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :NS_SuperC.SuperC
+    Void .ctor(System.Windows.Forms.Form): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
 Class UsrContrl.UsrContrle: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.UserControl
     Void .ctor(System.Windows.Forms.Form): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
@@ -90,11 +129,69 @@ Class UsrContrl.UsrContrle: AutoLayout, AnsiClass, Class, Public, BeforeFieldIni
   Methods:
     executerQuery(SByte*): PrivateScope, Public, HideBySig
 Class NS_Recherche.CLRecherche: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
-  :System.Windows.Forms.Form
+  :NS_SuperC.SuperC
     Void .ctor(System.Windows.Forms.Form, Individu): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
-Class Perso.Catalogue_Perso: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
-  :System.Windows.Forms.Form
+Class NS_CataloPerso.Catalogue_Perso: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :NS_SuperC.SuperC
+    Void .ctor(System.Windows.Forms.Form): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class Comp_Panier_moy: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Panier(String, String): PrivateScope, Public, HideBySig
+Class Comp_Total_achat_client: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Achat_client(String, String): PrivateScope, Public, HideBySig
+Class Comp_Chiffre: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Chiffre(String): PrivateScope, Public, HideBySig
+Class Comp_Plus_vendu: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Plus(): PrivateScope, Public, HideBySig
+Class Comp_Moins_vendu: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Moins(): PrivateScope, Public, HideBySig
+Class Comp_Achat_stock: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Achat(): PrivateScope, Public, HideBySig
+Class Comp_Valeur_stock: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Valeur(): PrivateScope, Public, HideBySig
+Class Comp_Estimation: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Estimation(): PrivateScope, Public, HideBySig
+Class svc_Client: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    svc1_1(String, String): PrivateScope, Public, HideBySig
+    svc1_2(String, String): PrivateScope, Public, HideBySig
+Class svc_Chiffre_affaire: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    svc2_1(String): PrivateScope, Public, HideBySig
+Class svc_Vente: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    svc3_1(): PrivateScope, Public, HideBySig
+    svc3_2(): PrivateScope, Public, HideBySig
+Class svc_Stock: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    svc4_1(): PrivateScope, Public, HideBySig
+    svc4_2(): PrivateScope, Public, HideBySig
+Class svc_Estimation: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    svc5_1(): PrivateScope, Public, HideBySig
+Class NS_Stats.Stats: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(System.Windows.Forms.Form): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
 Class NS_EspacePersonnel.EspPerso: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :NS_SuperC.SuperC
     Void .ctor(System.Windows.Forms.Form, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName

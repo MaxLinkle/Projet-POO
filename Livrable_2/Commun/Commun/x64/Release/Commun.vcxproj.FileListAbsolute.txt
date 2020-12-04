@@ -3,3 +3,4 @@ C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Commun\x64\Re
 C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Commun\x64\Release\Commun.Recherche.resources
 C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Commun\x64\Release\Commun.vcxproj.GenerateResource.cache
 C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Commun\x64\Release\Commun.Modifier_Client.resources
+C:\Users\ray-h\source\repos\MaxLinkle\Projet-POO\Livrable_2\Commun\Commun\x64\Release\Commun.catalogue_perso.resources
