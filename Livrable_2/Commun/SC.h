@@ -224,7 +224,7 @@ protected:
 		 while (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {}
 
 		 int state = mysql_query(database, query);
-		 this->Text = gcnew String(mysql_error(database));
+
 
 		 if (!state) {
 
@@ -244,7 +244,6 @@ protected:
 		 while (mysql_real_connect(database, "poo.cokj0wfmdhfw.eu-west-3.rds.amazonaws.com", "admin", "ATCSMMRM", "projet", 3315, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {}
 
 		 int state = mysql_query(database, query);
-		 this->Text = gcnew String(mysql_error(database));
 		 return (!state);
 	 }
 

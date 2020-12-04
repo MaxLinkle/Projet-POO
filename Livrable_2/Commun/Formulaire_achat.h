@@ -413,7 +413,7 @@ private: System::Windows::Forms::Label^ label7;
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(87, 13);
 			this->label1->TabIndex = 2;
-			this->label1->Text = L"M�thode d\'achat";
+			this->label1->Text = L"Méthode d\'achat";
 			//
 			// Metho_achat
 			//
@@ -448,7 +448,7 @@ private: System::Windows::Forms::Label^ label7;
 			this->Prenom_Cli->Name = L"Prenom_Cli";
 			this->Prenom_Cli->Size = System::Drawing::Size(52, 13);
 			this->Prenom_Cli->TabIndex = 6;
-			this->Prenom_Cli->Text = L"Pr�nom : ";
+			this->Prenom_Cli->Text = L"Prenom : ";
 			//
 			// bouton_precedent
 			//
@@ -1004,7 +1004,7 @@ private: System::Windows::Forms::Label^ label7;
 		//Execution de la requ�te
 		qstate = mysql_query(con, ch);
 		//std::cout << con->info << std::endl;
-		// std::cout << mysql_error(con) << std::endl;
+		//std::cout << mysql_error(con) << std::endl;
 		// std::cin >> ch;
 		if (!qstate)
 		{
@@ -1066,7 +1066,7 @@ private: System::Windows::Forms::Label^ label7;
 			finish_with_error(con);
 		}
 
-		//Execution de la requ�te
+		//Execution de la requéte
 		qstate = mysql_query(con, ch_2);
 		if (!qstate)
 		{

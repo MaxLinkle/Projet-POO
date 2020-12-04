@@ -159,7 +159,10 @@ public: MYSQL_RES* Valeur() {
 
 // 5
 public ref class Comp_Estimation {
-public: void Estimation() {
+public: String^ Estimation(String^ TVA, String^ Remise, String^ Marge) {
+
+
+	return "CALL SIMULATION(" + TVA + "," + Remise + "," + Marge + ");";
 
 }
 };
@@ -239,8 +242,19 @@ private:
 	Comp_Estimation^ c1;
 
 public:
-	void svc5_1() {
+
+	MYSQL_RES* svc5_1(String^ TVA, String^ Remise, String^ Marge ) {
 		c1 = gcnew Comp_Estimation;
-		c1->Estimation();
+		
+		int qstate = ConvertQuery(c1->Estimation(TVA, Remise, Marge));
+		if (!qstate) {
+
+		return	res = mysql_store_result(con);
+
+		}
+		else {
+			return nullptr;
+
+		}
 	}
 };

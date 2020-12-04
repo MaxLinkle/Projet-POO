@@ -36,6 +36,7 @@ namespace Client {
 		   String^ Anniv;
 		   String^ Achat;
 		   bool i = true;
+		   bool j = true;
 
 
 
@@ -140,11 +141,11 @@ namespace Client {
 
 					  if (gcnew String(row[1]) == "")
 					  {
-						  i = false;
+						  j = false;
 					  }
 					  else
 					  {
-						  i = true;
+						  j = true;
 						  dateAchat->Value = DateTime::ParseExact(gcnew String(row[1]), "yyyy-MM-dd", System::Globalization::CultureInfo::InvariantCulture);
 					  }
 
@@ -627,14 +628,13 @@ protected:
 			HT->Text = totHT.ToString();
 
 		}
-		if (i == true)
-		{
-			if ((dateActuel->Value.Day == dateAnniv->Value.Day) && (dateAnniv->Value.Month == dateActuel->Value.Month))
+		
+			if ((dateActuel->Value.Day == dateAnniv->Value.Day) && (dateAnniv->Value.Month == dateActuel->Value.Month) && i)
 			{
 				Reduc = (total - (total * 0.1));
 				remise_txt->Text = Reduc.ToString();
 			}
-			else if ((dateActuel->Value.Day == dateAchat->Value.Day) && (dateAchat->Value.Month == dateActuel->Value.Month))
+			else if ((dateActuel->Value.Day == dateAchat->Value.Day) && (dateAchat->Value.Month == dateActuel->Value.Month) && j)
 			{
 				Reduc = (total - (total * 0.05));
 				remise_txt->Text = Reduc.ToString();
@@ -644,12 +644,7 @@ protected:
 				Reduc = 0;
 				remise_txt->Text = Reduc.ToString();
 			}
-		}
-		else if (i == false)
-		{
-			Reduc = 0;
-			remise_txt->Text = Reduc.ToString();
-		}
+				
 
 	}
 

@@ -32,13 +32,7 @@ namespace Client {
 
 	private: Label^ id_paye = gcnew Label();
 	public:
-		Facture(void)
-		{
-			InitializeComponent();
-		//
-		//TODO: ajoutez ici le code du constructeur
-			//
-		}
+		
 	public:
 		Facture(String^ i_id_commande, Form^ inpPageClient, String^ i_nom, String^ i_prenom): SuperC(inpPageClient)
 		{
@@ -593,7 +587,7 @@ namespace Client {
 			//
 			// continuer
 			//
-			this->continuer->Location = System::Drawing::Point(624, 832);
+			this->continuer->Location = System::Drawing::Point(624, 10);
 			this->continuer->Name = L"continuer";
 			this->continuer->Size = System::Drawing::Size(75, 23);
 			this->continuer->TabIndex = 54;

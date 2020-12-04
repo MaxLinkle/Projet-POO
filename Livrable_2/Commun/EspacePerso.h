@@ -474,7 +474,7 @@ namespace NS_EspacePersonnel {
 
 		if(Rb_Client->Checked)
 		{
-			String^ PDate = "";
+			String^ PDate = "NULL";
 			if (CheckDate->Checked) {
 				PDate = Date->Value.ToString(Date->CustomFormat);
 			}
@@ -610,7 +610,7 @@ namespace NS_EspacePersonnel {
 					executerNonQuery(Query);
 					test = executerQuery(QueryTest);
 					
-					if (test->row_count > 0) { CommitSC(); this->Text = Convert::ToString(test->row_count);
+					if (test->row_count > 0) { CommitSC();
 					}
 					else { RollbackSC(); errorProvider1->SetError(Actualiser, "Envoie Echouer"); return; }
 
