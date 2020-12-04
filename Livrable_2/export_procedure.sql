@@ -478,7 +478,7 @@ BEGIN
   SET
     Adresse_personnel.adresse_personnel = adresse_perso,
     Adresse_personnel.ID_ville = ville_cli
-  WHERE Adresse_client.ID_adresse_personel = i_id_adresse;
+  WHERE Adresse_personnel.ID_adresse_personnel = i_id_adresse;
 END |
 DELIMITER ;
 
