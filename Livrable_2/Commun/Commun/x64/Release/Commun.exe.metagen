@@ -1,6 +1,7 @@
   Commun.catalogue_perso.resources - Embedded, ContainedInManifestFile, 
   Commun.Modifier_Client.resources - Embedded, ContainedInManifestFile, 
   Commun.Recherche.resources - Embedded, ContainedInManifestFile, 
+  Commun.Stats.resources - Embedded, ContainedInManifestFile, 
 ImageRuntimeVersion: v4.0.30319
 Assembly Commun, Version=1.0.*, Culture=Langue indifférente (Pays indifférent): 
 	hash=SHA1, flags=PublicKey
@@ -89,7 +90,6 @@ Class Client.Modifier_Client: AutoLayout, AnsiClass, Class, Public, BeforeFieldI
 Class Client.Facture: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :NS_SuperC.SuperC
     Void .ctor(System.String, System.Windows.Forms.Form, System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
-    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
 Class Client.Formulaire_achat: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :NS_SuperC.SuperC
     Void .ctor(System.String, System.String, System.String, System.String, System.Data.DataTable, System.String, System.Windows.Forms.Form, System.Windows.Forms.Form): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
@@ -165,7 +165,7 @@ Class Comp_Valeur_stock: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
 Class Comp_Estimation: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Methods:
-    Estimation(): PrivateScope, Public, HideBySig
+    Estimation(String, String, String): PrivateScope, Public, HideBySig
 Class svc_Client: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Methods:
@@ -188,9 +188,9 @@ Class svc_Stock: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
 Class svc_Estimation: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Methods:
-    svc5_1(): PrivateScope, Public, HideBySig
+    svc5_1(String, String, String): PrivateScope, Public, HideBySig
 Class NS_Stats.Stats: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
-  :System.Windows.Forms.Form
+  :NS_SuperC.SuperC
     Void .ctor(System.Windows.Forms.Form): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
 Class NS_EspacePersonnel.EspPerso: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :NS_SuperC.SuperC
